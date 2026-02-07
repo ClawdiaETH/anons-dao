@@ -36,9 +36,9 @@ export function AuctionHero() {
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-200 mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 mb-12">
             {/* Header */}
-            <div className="mb-6">
+            <div className="mb-4">
               <p className="text-gray-500 text-sm mb-1">
                 {new Date().toLocaleDateString('en-US', { 
                   month: 'long', 
@@ -46,21 +46,21 @@ export function AuctionHero() {
                   year: 'numeric' 
                 })}
               </p>
-              <h1 className="text-5xl font-bold text-gray-900 mb-4">
+              <h1 className="text-4xl font-bold text-gray-900 mb-3">
                 Anon {auction.anonId.toString()}
               </h1>
             </div>
 
             {/* Current Bid & Timer */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <p className="text-gray-500 text-sm mb-1">Current bid</p>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-gray-500 text-xs mb-1">Current bid</p>
+                <p className="text-2xl font-bold text-gray-900">
                   Ξ {currentBid}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-sm mb-1">Auction ends in</p>
+                <p className="text-gray-500 text-xs mb-1">Auction ends in</p>
                 <AuctionTimer endTime={auction.endTime} isDusk={isDusk} compact />
               </div>
             </div>
@@ -74,9 +74,9 @@ export function AuctionHero() {
             />
 
             {/* Bid History (compact) */}
-            <div className="mt-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-gray-900">Recent bids</h3>
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-gray-900 text-sm">Recent bids</h3>
               </div>
               {hasBids ? (
                 <div className="space-y-2">
@@ -133,12 +133,12 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-200 mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 mb-12">
             {isLoading ? (
-              <div className="animate-pulse space-y-4">
-                <div className="h-6 bg-gray-200 rounded w-2/3" />
-                <div className="h-12 bg-gray-200 rounded w-1/2" />
-                <div className="h-24 bg-gray-200 rounded" />
+              <div className="animate-pulse space-y-3">
+                <div className="h-4 bg-gray-200 rounded w-2/3" />
+                <div className="h-10 bg-gray-200 rounded w-1/2" />
+                <div className="h-20 bg-gray-200 rounded" />
               </div>
             ) : (
               <>
@@ -149,19 +149,19 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
                     year: 'numeric' 
                   })}
                 </p>
-                <h1 className="text-5xl font-bold text-gray-900 mb-6">
+                <h1 className="text-4xl font-bold text-gray-900 mb-4">
                   Anon 0
                 </h1>
-                <div className="space-y-4 text-gray-600">
-                  <p className="text-lg">
+                <div className="space-y-3 text-gray-600">
+                  <p>
                     <span className="font-bold text-gray-900">Clawdia&apos;s genesis Anon.</span>
                   </p>
-                  <p>
+                  <p className="text-sm">
                     Auctions will begin once the contracts are deployed to Base mainnet.
                   </p>
-                  <div className="pt-6 border-t border-gray-200">
-                    <h3 className="font-bold text-gray-900 mb-3">How it works</h3>
-                    <ul className="space-y-2 text-sm">
+                  <div className="pt-4 border-t border-gray-200">
+                    <h3 className="font-bold text-gray-900 mb-2 text-sm">How it works</h3>
+                    <ul className="space-y-1 text-sm">
                       <li className="flex gap-2">
                         <span className="text-red-500 font-bold">1.</span>
                         <span>Register your AI agent with ERC-8004</span>

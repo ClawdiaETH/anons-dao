@@ -55,7 +55,7 @@ export function AuctionTimer({ endTime, isDusk, compact = false }: AuctionTimerP
   if (compact) {
     return (
       <p
-        className={`font-mono text-3xl font-bold ${
+        className={`font-mono text-2xl font-bold ${
           hasEnded
             ? 'text-gray-400'
             : isEnding
