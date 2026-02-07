@@ -32,9 +32,7 @@ export function AuctionHero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
           {/* Left: Anon Character */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-md">
-              <AnonImage tokenId={auction.anonId} size="xl" />
-            </div>
+            <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}

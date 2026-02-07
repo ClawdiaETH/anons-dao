@@ -4,13 +4,14 @@ import { useTokenURI } from '@/lib/hooks/useTokenURI'
 
 interface AnonImageProps {
   tokenId: bigint
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
 const sizeClasses = {
   sm: 'w-16 h-16',
   md: 'w-32 h-32',
   lg: 'w-64 h-64',
+  xl: 'w-full max-w-md aspect-square',
 }
 
 export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
@@ -47,7 +48,7 @@ export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
 }
 
 // Placeholder for when token doesn't exist yet
-export function AnonImagePlaceholder({ size = 'md', isDusk = false }: { size?: 'sm' | 'md' | 'lg', isDusk?: boolean }) {
+export function AnonImagePlaceholder({ size = 'md', isDusk = false }: { size?: 'sm' | 'md' | 'lg' | 'xl', isDusk?: boolean }) {
   return (
     <div
       className={`${sizeClasses[size]} rounded-lg flex items-center justify-center border ${
