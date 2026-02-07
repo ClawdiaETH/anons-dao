@@ -30,3 +30,5 @@ yarn-error.log*
 
 # Pipeline previews (large PNGs)
 contracts/script/pipeline/output/previews/
+.vercel
+.env*.local
