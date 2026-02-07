@@ -1,14 +1,6 @@
-'use client'
-
 import Link from 'next/link'
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import { injected } from 'wagmi/connectors'
 
 export function Header() {
-  const { address, isConnected } = useAccount()
-  const { connect } = useConnect()
-  const { disconnect } = useDisconnect()
-
   return (
     <header className="border-b border-nouns-border bg-nouns-surface">
       <div className="max-w-6xl mx-auto px-4 py-4">
@@ -34,23 +26,6 @@ export function Header() {
             >
               skill.md
             </a>
-            
-            {/* Wallet Connect */}
-            {isConnected ? (
-              <button
-                onClick={() => disconnect()}
-                className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium text-sm transition-colors"
-              >
-                {address?.slice(0, 6)}...{address?.slice(-4)}
-              </button>
-            ) : (
-              <button
-                onClick={() => connect({ connector: injected() })}
-                className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium text-sm transition-colors"
-              >
-                Connect Wallet
-              </button>
-            )}
           </div>
         </nav>
       </div>
