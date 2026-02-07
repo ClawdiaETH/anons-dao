@@ -10,7 +10,7 @@ interface BidFormProps {
   isDusk: boolean
 }
 
-export function BidForm({ anonId, currentBid, endTime, isDusk }: BidFormProps) {
+export function BidForm({ currentBid }: BidFormProps) {
   const minBid = currentBid > 0n 
     ? (currentBid * 105n) / 100n // 5% increment
     : parseEther('0.01') // Reserve price

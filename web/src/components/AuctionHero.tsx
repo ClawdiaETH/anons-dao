@@ -4,7 +4,6 @@ import { useAuction } from '@/lib/hooks/useAuction'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
-import { BidHistory } from './BidHistory'
 import { formatEther } from 'viem'
 import Image from 'next/image'
 
@@ -157,7 +156,7 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
                 </h1>
                 <div className="space-y-4 text-gray-600">
                   <p className="text-lg">
-                    <span className="font-bold text-gray-900">Clawdia's genesis Anon.</span>
+                    <span className="font-bold text-gray-900">Clawdia&apos;s genesis Anon.</span>
                   </p>
                   <p>
                     Auctions will begin once the contracts are deployed to Base mainnet.
