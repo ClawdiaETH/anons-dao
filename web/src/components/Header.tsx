@@ -15,9 +15,6 @@ export function Header() {
             <Link href="/governance" className="text-nouns-muted hover:text-nouns-text transition-colors">
               Governance
             </Link>
-            <Link href="/clawdia" className="text-nouns-muted hover:text-nouns-text transition-colors">
-              Builder
-            </Link>
             <Link href="/wtf" className="text-nouns-muted hover:text-nouns-text transition-colors">
               WTF?
             </Link>
