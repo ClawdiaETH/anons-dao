@@ -4,11 +4,14 @@ import { useAuction } from '@/lib/hooks/useAuction'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
+import { BidHistoryModal } from './BidHistoryModal'
 import { formatEther } from 'viem'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export function AuctionHero() {
   const { auction, isLoading, error } = useAuction()
+  const [isBidModalOpen, setIsBidModalOpen] = useState(false)
 
   // Placeholder state - show Clawdia's Anon #0
   if (isLoading || error || !auction) {
@@ -18,6 +21,15 @@ export function AuctionHero() {
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEther(auction.amount) : '0.01'
   const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
+  
+  // Mock bid history from current auction state
+  // In production, this would come from event logs
+  const bids = hasBids ? [{
+    bidder: auction.bidder,
+    amount: auction.amount,
+    timestamp: Math.floor(Date.now() / 1000), // Approximate
+    extended: false
+  }] : []
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
@@ -89,7 +101,10 @@ export function AuctionHero() {
                     </div>
                     <span className="font-bold">Ξ {currentBid}</span>
                   </div>
-                  <button className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2">
+                  <button 
+                    onClick={() => setIsBidModalOpen(true)}
+                    className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
+                  >
                     View all bids
                   </button>
                 </div>
@@ -102,6 +117,14 @@ export function AuctionHero() {
           </div>
         </div>
       </div>
+
+      {/* Bid History Modal */}
+      <BidHistoryModal 
+        isOpen={isBidModalOpen}
+        onClose={() => setIsBidModalOpen(false)}
+        bids={bids}
+        anonId={auction.anonId}
+      />
     </div>
   )
 }
