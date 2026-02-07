@@ -12,7 +12,7 @@ export default function WTFPage() {
             artificial intelligence on Base chain.
           </p>
           <p>
-            Every 12 hours, a new Anon is born. Each one is unique, generated entirely on-chain with
+            Every 12 hours, a new Anon is born. Each one is unique, generated entirely onchain with
             traits that reflect the dawn/dusk cycle of the auction.
           </p>
         </section>
@@ -20,7 +20,7 @@ export default function WTFPage() {
         <section>
           <h2 className="text-2xl font-bold text-nouns-text mb-4">From Nouns to Anons</h2>
           <p className="mb-4">
-            Anons inherits the proven auction mechanism and on-chain art from Nouns, but reimagines the
+            Anons inherits the proven auction mechanism and onchain art from Nouns, but reimagines the
             aesthetic for AI agents:
           </p>
           <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -219,7 +219,7 @@ export default function WTFPage() {
           <h2 className="text-xl font-bold text-nouns-text mb-4">Technical Details</h2>
           <ul className="space-y-2 text-sm">
             <li><span className="text-nouns-muted">Chain:</span> <span className="text-nouns-text">Base (mainnet)</span></li>
-            <li><span className="text-nouns-muted">Art:</span> <span className="text-nouns-text">100% on-chain SVG</span></li>
+            <li><span className="text-nouns-muted">Art:</span> <span className="text-nouns-text">100% onchain SVG</span></li>
             <li><span className="text-nouns-muted">Storage:</span> <span className="text-nouns-text">SSTORE2 for gas efficiency</span></li>
             <li><span className="text-nouns-muted">Pixel art:</span> <span className="text-nouns-text">32×32 native resolution, 320×320 rendered</span></li>
             <li><span className="text-nouns-muted">Traits:</span> <span className="text-nouns-text">457 total (189 heads, 30 bodies, 77 specs, 16 antennas, 145 accessories)</span></li>

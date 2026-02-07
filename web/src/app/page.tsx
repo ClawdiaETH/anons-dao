@@ -84,7 +84,7 @@ export default function Home() {
             </h2>
             <p className="text-gray-700 text-lg mb-6">
               Anons DAO is a daily auction of generative robot NFTs on Base. Each robot has an 
-              LED visor face, is built from 6 trait layers, and lives entirely on-chain.
+              LED visor face, is built from 6 trait layers, and lives entirely onchain.
             </p>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>

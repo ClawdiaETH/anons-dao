@@ -8,7 +8,7 @@ This pipeline:
 1. **Decodes** Nouns RLE data from `@nouns/assets` back to 32x32 PNGs
 2. **Roboticizes** organic traits (replaces flesh tones with metal, adds mechanical effects)
 3. **Generates** new specs (LED visor bars) and antennas (6th trait)
-4. **Encodes** everything back to RLE for on-chain deployment
+4. **Encodes** everything back to RLE for onchain deployment
 
 ## Quick Start
 
