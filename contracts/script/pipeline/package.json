@@ -1,0 +1,25 @@
+{
+  "name": "anons-trait-transformer",
+  "version": "1.0.0",
+  "description": "Programmatically transform Nouns traits into Anons traits",
+  "type": "module",
+  "scripts": {
+    "decode": "node decode-rle.js",
+    "curate": "node curate-heads.js",
+    "generate-heads": "node generate-heads.js",
+    "roboticize": "node roboticize.js",
+    "add-mouths": "node add-mouths.js",
+    "generate-specs": "node generate-specs.js",
+    "generate-antennas": "node generate-antennas.js",
+    "encode": "node encode-anons.js",
+    "generate-trait-data": "node generate-trait-data.js",
+    "build": "npm run decode && npm run curate && npm run generate-heads && npm run roboticize && npm run add-mouths && npm run generate-specs && npm run generate-antennas && npm run encode && npm run generate-trait-data",
+    "preview": "node preview.js"
+  },
+  "dependencies": {
+    "@nouns/assets": "^0.10.0",
+    "@nouns/sdk": "^1.2.0",
+    "sharp": "^0.33.0",
+    "pngjs": "^7.0.0"
+  }
+}

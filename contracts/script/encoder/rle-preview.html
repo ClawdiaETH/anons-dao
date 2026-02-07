@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RLE Pixel Art Preview / Editor</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #111118;
+    color: #cdd6f4;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 13px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    color: #e2e8f0;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  .workspace {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ---- Grid ---- */
+  .grid-panel { display: flex; flex-direction: column; align-items: center; }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(32, 1fr);
+    width: 320px;
+    height: 320px;
+    border: 1px solid #2a2a3a;
+    cursor: crosshair;
+    user-select: none;
+    -webkit-user-select: none;
+    background-image:
+      linear-gradient(45deg, #1a1a28 25%, transparent 25%),
+      linear-gradient(-45deg, #1a1a28 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #1a1a28 75%),
+      linear-gradient(-45deg, transparent 75%, #1a1a28 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    background-color: #15151f;
+  }
+
+  .grid-container .cell {
+    width: 10px;
+    height: 10px;
+    border: 0.5px solid rgba(255,255,255,0.04);
+  }
+
+  .grid-container .cell:hover {
+    outline: 1.5px solid rgba(255,255,255,0.35);
+    outline-offset: -1.5px;
+    z-index: 1;
+  }
+
+  /* ---- SVG Preview ---- */
+  .preview-panel { display: flex; flex-direction: column; align-items: center; }
+
+  .preview-svg {
+    border: 1px solid #2a2a3a;
+    background: none;
+  }
+
+  .panel-label {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ---- Controls ---- */
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .control-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .palette-wrapper {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+
+  .swatch.selected {
+    border-color: #fff;
+    box-shadow: 0 0 0 1px #fff;
+  }
+
+  .swatch-transparent {
+    background-image:
+      linear-gradient(45deg, #444 25%, transparent 25%),
+      linear-gradient(-45deg, #444 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #444 75%),
+      linear-gradient(-45deg, transparent 75%, #444 75%);
+    background-size: 10px 10px;
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+    background-color: #222;
+  }
+
+  .swatch-transparent::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 45%, #f44 45%, #f44 55%, transparent 55%);
+    border-radius: 2px;
+  }
+
+  .swatch-label {
+    font-size: 9px;
+    color: #64748b;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .swatch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border: 1px solid #333348;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  button:hover { background: #2a2a3e; border-color: #555; }
+  button.active { background: #333358; border-color: #7C6BF0; color: #fff; }
+
+  textarea, input[type="text"] {
+    background: #1a1a28;
+    color: #cdd6f4;
+    border: 1px solid #333348;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 12px;
+    resize: vertical;
+  }
+
+  textarea { width: 100%; min-height: 60px; }
+  input[type="text"] { flex: 1; }
+
+  .hex-output {
+    font-size: 11px;
+    word-break: break-all;
+    background: #1a1a28;
+    border: 1px solid #333348;
+    border-radius: 4px;
+    padding: 8px 10px;
+    min-height: 40px;
+    line-height: 1.6;
+    color: #8be9fd;
+    cursor: text;
+    user-select: all;
+    -webkit-user-select: all;
+  }
+
+  .stats {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .separator {
+    height: 1px;
+    background: #2a2a3a;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<h1>RLE Pixel Art Encoder</h1>
+<p class="subtitle">32x32 grid &mdash; click to paint, shift+click to erase &mdash; Solidity hex output</p>
+
+<div class="workspace">
+  <!-- Editor Grid -->
+  <div class="grid-panel">
+    <div class="panel-label">Editor (32x32)</div>
+    <div class="grid-container" id="grid"></div>
+  </div>
+
+  <!-- SVG Preview -->
+  <div class="preview-panel">
+    <div class="panel-label">SVG Preview (320x320)</div>
+    <svg id="preview" class="preview-svg" xmlns="http://www.w3.org/2000/svg"
+         width="320" height="320" viewBox="0 0 320 320" shape-rendering="crispEdges">
+    </svg>
+  </div>
+</div>
+
+<div class="controls">
+  <!-- Palette row -->
+  <div class="control-row">
+    <span class="section-label">Palette</span>
+    <div class="palette-wrapper" id="palette"></div>
+    <button id="btn-toggle-palette">Switch to Dusk</button>
+    <button id="btn-visor-mode">Visor Mode: OFF</button>
+    <button id="btn-clear">Clear Grid</button>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- Export -->
+  <div class="control-row">
+    <span class="section-label">Export</span>
+    <button id="btn-export">Encode RLE Hex</button>
+    <span class="stats" id="stats"></span>
+  </div>
+  <div class="hex-output" id="hex-output">Click "Encode RLE Hex" to generate...</div>
+
+  <div class="separator"></div>
+
+  <!-- Import -->
+  <div class="control-row">
+    <span class="section-label">Import</span>
+    <input type="text" id="hex-input" placeholder="Paste hex bytes (e.g. 0x03 0005010100 0a05030100 ...)">
+    <button id="btn-import">Import Hex</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// State
+// ============================================================
+const GRID = 32;
+const SCALE = 10;
+
+const PALETTES = {
+  dawn: ["#E8825A", "#2D3748", "#D4A853", "#F5E6D3", "#1A1A2E"],
+  dusk: ["#7C6BF0", "#374151", "#2DD4BF", "#E2E8F0", "#0F0D1A"],
+};
+
+const TRANSPARENT = -1; // internal sentinel
+
+let currentPaletteName = "dawn";
+let visorMode = false;
+let selectedColor = 0; // palette index, or TRANSPARENT
+let isPainting = false;
+let paintColor = null; // color being applied during drag
+
+// grid[y][x] = palette index (0-4) or TRANSPARENT
+const grid = Array.from({ length: GRID }, () => Array(GRID).fill(TRANSPARENT));
+
+// ============================================================
+// DOM refs
+// ============================================================
+const gridEl = document.getElementById("grid");
+const previewEl = document.getElementById("preview");
+const paletteEl = document.getElementById("palette");
+const hexOutputEl = document.getElementById("hex-output");
+const hexInputEl = document.getElementById("hex-input");
+const statsEl = document.getElementById("stats");
+
+// ============================================================
+// Palette rendering
+// ============================================================
+function currentPalette() {
+  return PALETTES[currentPaletteName];
+}
+
+function rebuildPalette() {
+  paletteEl.innerHTML = "";
+
+  const colors = currentPalette();
+  const maxIdx = visorMode ? 1 : colors.length;
+
+  for (let i = 0; i < maxIdx; i++) {
+    const col = document.createElement("div");
+    col.className = "swatch-col";
+
+    const sw = document.createElement("div");
+    sw.className = "swatch" + (selectedColor === i ? " selected" : "");
+    sw.style.background = colors[i];
+    sw.addEventListener("click", () => { selectedColor = i; rebuildPalette(); });
+    col.appendChild(sw);
+
+    const lbl = document.createElement("div");
+    lbl.className = "swatch-label";
+    lbl.textContent = i;
+    col.appendChild(lbl);
+
+    paletteEl.appendChild(col);
+  }
+
+  // Transparent / eraser
+  {
+    const col = document.createElement("div");
+    col.className = "swatch-col";
+
+    const sw = document.createElement("div");
+    sw.className = "swatch swatch-transparent" + (selectedColor === TRANSPARENT ? " selected" : "");
+    sw.addEventListener("click", () => { selectedColor = TRANSPARENT; rebuildPalette(); });
+    col.appendChild(sw);
+
+    const lbl = document.createElement("div");
+    lbl.className = "swatch-label";
+    lbl.textContent = "skip";
+    col.appendChild(lbl);
+
+    paletteEl.appendChild(col);
+  }
+
+  // Recolor existing grid cells
+  refreshGridColors();
+}
+
+// ============================================================
+// Grid rendering
+// ============================================================
+function buildGrid() {
+  gridEl.innerHTML = "";
+  for (let y = 0; y < GRID; y++) {
+    for (let x = 0; x < GRID; x++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.dataset.x = x;
+      cell.dataset.y = y;
+      applyCellStyle(cell, grid[y][x]);
+      gridEl.appendChild(cell);
+    }
+  }
+}
+
+function applyCellStyle(cell, colorIdx) {
+  if (colorIdx === TRANSPARENT) {
+    cell.style.background = "transparent";
+  } else {
+    const pal = currentPalette();
+    cell.style.background = pal[colorIdx] || "#ff00ff";
+  }
+}
+
+function refreshGridColors() {
+  const cells = gridEl.children;
+  for (let i = 0; i < cells.length; i++) {
+    const c = cells[i];
+    const x = +c.dataset.x;
+    const y = +c.dataset.y;
+    applyCellStyle(c, grid[y][x]);
+  }
+}
+
+function cellAt(x, y) {
+  return gridEl.children[y * GRID + x];
+}
+
+// ============================================================
+// Paint logic
+// ============================================================
+function paint(x, y, color) {
+  if (x < 0 || x >= GRID || y < 0 || y >= GRID) return;
+  grid[y][x] = color;
+  applyCellStyle(cellAt(x, y), color);
+  updatePreview();
+}
+
+gridEl.addEventListener("mousedown", (e) => {
+  const cell = e.target;
+  if (!cell.dataset.x) return;
+  e.preventDefault();
+  isPainting = true;
+  paintColor = e.shiftKey ? TRANSPARENT : selectedColor;
+  paint(+cell.dataset.x, +cell.dataset.y, paintColor);
+});
+
+gridEl.addEventListener("mousemove", (e) => {
+  if (!isPainting) return;
+  const cell = e.target;
+  if (!cell.dataset.x) return;
+  paint(+cell.dataset.x, +cell.dataset.y, paintColor);
+});
+
+document.addEventListener("mouseup", () => { isPainting = false; });
+
+// ============================================================
+// SVG preview
+// ============================================================
+function updatePreview() {
+  const pal = currentPalette();
+  let rects = "";
+  for (let y = 0; y < GRID; y++) {
+    for (let x = 0; x < GRID; x++) {
+      const c = grid[y][x];
+      if (c === TRANSPARENT) continue;
+      const color = pal[c] || "#ff00ff";
+      rects += `<rect x="${x * SCALE}" y="${y * SCALE}" width="${SCALE}" height="${SCALE}" fill="${color}"/>`;
+    }
+  }
+  previewEl.innerHTML = rects;
+}
+
+// ============================================================
+// RLE Encoding
+// ============================================================
+function encodeRLE() {
+  // Scan left-to-right, top-to-bottom.
+  // Group contiguous horizontal pixels of the same non-transparent color.
+  // Output: [numRects, x, y, w, h, colorIdx, ...]
+  // h is always 1 (row-based).
+  const rects = [];
+
+  for (let y = 0; y < GRID; y++) {
+    let x = 0;
+    while (x < GRID) {
+      const c = grid[y][x];
+      if (c === TRANSPARENT) { x++; continue; }
+      // start a run
+      let runLen = 1;
+      while (x + runLen < GRID && grid[y][x + runLen] === c) runLen++;
+      rects.push({ x, y, w: runLen, h: 1, colorIdx: c });
+      x += runLen;
+    }
+  }
+
+  // Build bytes array
+  const bytes = [rects.length];
+  for (const r of rects) {
+    bytes.push(r.x, r.y, r.w, r.h, r.colorIdx);
+  }
+
+  // Convert to hex string
+  const hex = "0x" + bytes.map(b => b.toString(16).padStart(2, "0")).join("");
+  return { hex, numRects: rects.length, numBytes: bytes.length };
+}
+
+// ============================================================
+// RLE Decoding (Import)
+// ============================================================
+function decodeRLE(hexStr) {
+  // Strip whitespace, 0x prefix
+  let h = hexStr.replace(/\s+/g, "").replace(/^0x/i, "");
+  if (h.length < 2) return false;
+
+  const bytes = [];
+  for (let i = 0; i < h.length; i += 2) {
+    bytes.push(parseInt(h.substr(i, 2), 16));
+  }
+
+  const numRects = bytes[0];
+  if (bytes.length < 1 + numRects * 5) {
+    alert("Hex too short: expected " + (1 + numRects * 5) + " bytes for " + numRects + " rects, got " + bytes.length);
+    return false;
+  }
+
+  // Clear grid
+  for (let y = 0; y < GRID; y++)
+    for (let x = 0; x < GRID; x++)
+      grid[y][x] = TRANSPARENT;
+
+  for (let i = 0; i < numRects; i++) {
+    const off = 1 + i * 5;
+    const rx = bytes[off];
+    const ry = bytes[off + 1];
+    const rw = bytes[off + 2];
+    const rh = bytes[off + 3];
+    const rc = bytes[off + 4];
+
+    for (let dy = 0; dy < rh; dy++) {
+      for (let dx = 0; dx < rw; dx++) {
+        const px = rx + dx;
+        const py = ry + dy;
+        if (px < GRID && py < GRID) {
+          grid[py][px] = rc;
+        }
+      }
+    }
+  }
+
+  refreshGridColors();
+  updatePreview();
+  return true;
+}
+
+// ============================================================
+// Button handlers
+// ============================================================
+document.getElementById("btn-export").addEventListener("click", () => {
+  const { hex, numRects, numBytes } = encodeRLE();
+  hexOutputEl.textContent = hex;
+  statsEl.textContent = numRects + " rects, " + numBytes + " bytes";
+});
+
+document.getElementById("btn-import").addEventListener("click", () => {
+  const v = hexInputEl.value.trim();
+  if (!v) { alert("Paste hex first"); return; }
+  decodeRLE(v);
+});
+
+document.getElementById("btn-clear").addEventListener("click", () => {
+  for (let y = 0; y < GRID; y++)
+    for (let x = 0; x < GRID; x++)
+      grid[y][x] = TRANSPARENT;
+  refreshGridColors();
+  updatePreview();
+  hexOutputEl.textContent = 'Click "Encode RLE Hex" to generate...';
+  statsEl.textContent = "";
+});
+
+document.getElementById("btn-toggle-palette").addEventListener("click", function () {
+  currentPaletteName = currentPaletteName === "dawn" ? "dusk" : "dawn";
+  this.textContent = "Switch to " + (currentPaletteName === "dawn" ? "Dusk" : "Dawn");
+  if (selectedColor !== TRANSPARENT && selectedColor >= currentPalette().length) {
+    selectedColor = 0;
+  }
+  rebuildPalette();
+  updatePreview();
+});
+
+document.getElementById("btn-visor-mode").addEventListener("click", function () {
+  visorMode = !visorMode;
+  this.textContent = "Visor Mode: " + (visorMode ? "ON" : "OFF");
+  if (visorMode) {
+    this.classList.add("active");
+    selectedColor = 0;
+  } else {
+    this.classList.remove("active");
+  }
+  rebuildPalette();
+});
+
+// ============================================================
+// Init
+// ============================================================
+buildGrid();
+rebuildPalette();
+updatePreview();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/
+decoded-traits/
+curated-traits/
+roboticized-traits/
+generated-traits/
+output/*
+!output/image-data.json

@@ -1,0 +1,66 @@
+{
+  "total": 106,
+  "categories": {
+    "animals": [
+      "head-aardvark", "head-ape", "head-bat", "head-bear", "head-beluga",
+      "head-bigfoot", "head-bigfoot-yeti", "head-capybara", "head-cat",
+      "head-chameleon", "head-chicken", "head-cow", "head-crab", "head-crane",
+      "head-croc-hat", "head-dino", "head-dog", "head-duck", "head-ducky",
+      "head-flamingo", "head-fox", "head-frog", "head-ghost-B", "head-gnome",
+      "head-goat", "head-goldfish", "head-green-snake", "head-grouper",
+      "head-horse-deepfried", "head-jellyfish", "head-kangaroo", "head-moose",
+      "head-mosquito", "head-mouse", "head-orangutan", "head-orca", "head-otter",
+      "head-owl", "head-oyster", "head-panda", "head-pufferfish", "head-rabbit",
+      "head-raven", "head-scorpion", "head-shark", "head-shrimp-tempura",
+      "head-squid", "head-tiger", "head-undead", "head-unicorn", "head-werewolf",
+      "head-whale", "head-whale-alive", "head-zebra"
+    ],
+    "bodyParts": [
+      "head-lips", "head-brain", "head-hair", "head-tooth"
+    ],
+    "plants": [
+      "head-bonsai", "head-clover", "head-fir", "head-flower",
+      "head-peyote", "head-rosebud", "head-saguaro", "head-weed"
+    ],
+    "organicFoods": [
+      "head-banana", "head-beet", "head-blueberry", "head-cherry",
+      "head-chilli", "head-garlic", "head-mushroom", "head-onion",
+      "head-peanut", "head-pickle", "head-pineapple", "head-potato",
+      "head-pumpkin", "head-watermelon", "head-egg", "head-coffeebean",
+      "head-bubblegum", "head-cottonball", "head-lint", "head-sponge"
+    ],
+    "wearablesSports": [
+      "head-bagpipe", "head-backpack", "head-beanie", "head-baseball-gameball",
+      "head-basketball", "head-volleyball", "head-hockeypuck", "head-boxingglove",
+      "head-boot", "head-highheel", "head-pillow", "head-retainer",
+      "head-thumbsup", "head-smile", "head-heart", "head-chefhat",
+      "head-wizardhat", "head-skeleton-hat", "head-queencrown", "head-crown"
+    ]
+  },
+  "all": [
+    "head-aardvark", "head-ape", "head-backpack", "head-bagpipe",
+    "head-banana", "head-baseball-gameball", "head-basketball", "head-bat",
+    "head-beanie", "head-bear", "head-beet", "head-beluga", "head-bigfoot",
+    "head-bigfoot-yeti", "head-blueberry", "head-bonsai", "head-boot",
+    "head-boxingglove", "head-brain", "head-bubblegum", "head-capybara",
+    "head-cat", "head-chameleon", "head-chefhat", "head-cherry", "head-chicken",
+    "head-chilli", "head-clover", "head-coffeebean", "head-cottonball",
+    "head-cow", "head-crab", "head-crane", "head-croc-hat", "head-crown",
+    "head-dino", "head-dog", "head-duck", "head-ducky", "head-egg",
+    "head-fir", "head-flamingo", "head-flower", "head-fox", "head-frog",
+    "head-garlic", "head-ghost-B", "head-gnome", "head-goat", "head-goldfish",
+    "head-green-snake", "head-grouper", "head-hair", "head-heart",
+    "head-highheel", "head-hockeypuck", "head-horse-deepfried", "head-jellyfish",
+    "head-kangaroo", "head-lint", "head-lips", "head-moose", "head-mosquito",
+    "head-mouse", "head-mushroom", "head-onion", "head-orangutan", "head-orca",
+    "head-otter", "head-owl", "head-oyster", "head-panda", "head-peanut",
+    "head-peyote", "head-pickle", "head-pillow", "head-pineapple", "head-potato",
+    "head-pufferfish", "head-pumpkin", "head-queencrown", "head-rabbit",
+    "head-raven", "head-retainer", "head-rosebud", "head-saguaro",
+    "head-scorpion", "head-shark", "head-shrimp-tempura", "head-skeleton-hat",
+    "head-smile", "head-sponge", "head-squid", "head-thumbsup", "head-tiger",
+    "head-tooth", "head-undead", "head-unicorn", "head-volleyball",
+    "head-watermelon", "head-weed", "head-werewolf", "head-whale",
+    "head-whale-alive", "head-wizardhat", "head-zebra"
+  ]
+}

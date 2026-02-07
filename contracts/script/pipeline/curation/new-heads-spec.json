@@ -1,0 +1,590 @@
+{
+  "total": 65,
+  "categories": {
+    "screensMonitors": {
+      "count": 8,
+      "heads": [
+        {
+          "name": "head-crt-static",
+          "category": "screens-monitors",
+          "description": "CRT TV showing static/snow pattern",
+          "colors": ["#2a2a2a", "#c0c0c0", "#ffffff"],
+          "complexity": "medium",
+          "notes": "Randomized static dots in white/gray on dark screen"
+        },
+        {
+          "name": "head-oscilloscope",
+          "category": "screens-monitors",
+          "description": "Green waveform display on dark background",
+          "colors": ["#1a1a1a", "#00ff41", "#003300"],
+          "complexity": "medium",
+          "notes": "Sine wave pattern in phosphor green"
+        },
+        {
+          "name": "head-terminal",
+          "category": "screens-monitors",
+          "description": "Green text on black terminal screen",
+          "colors": ["#0d0d0d", "#00ff41", "#333333"],
+          "complexity": "complex",
+          "notes": "Monospace text rows, cursor blink indicator"
+        },
+        {
+          "name": "head-broken-lcd",
+          "category": "screens-monitors",
+          "description": "Cracked LCD with glitch colors bleeding through",
+          "colors": ["#ff00ff", "#00ffff", "#000000"],
+          "complexity": "complex",
+          "notes": "Crack lines with rainbow color bleed at edges"
+        },
+        {
+          "name": "head-security-monitor",
+          "category": "screens-monitors",
+          "description": "Split-screen security camera view with 4 quadrants",
+          "colors": ["#1a1a2e", "#4a4a6a", "#888888"],
+          "complexity": "complex",
+          "notes": "4-quadrant split, slight scan line effect"
+        },
+        {
+          "name": "head-led-matrix",
+          "category": "screens-monitors",
+          "description": "LED dot matrix display showing a simple face",
+          "colors": ["#1a1a1a", "#ff3300", "#ff6600"],
+          "complexity": "simple",
+          "notes": "Grid of circular LEDs, some lit to form face pattern"
+        },
+        {
+          "name": "head-e-ink",
+          "category": "screens-monitors",
+          "description": "E-ink display with low contrast gray tones",
+          "colors": ["#d4d4d0", "#8a8a86", "#3a3a36"],
+          "complexity": "simple",
+          "notes": "Paper-like texture, muted contrast"
+        },
+        {
+          "name": "head-hologram",
+          "category": "screens-monitors",
+          "description": "Translucent blue holographic display with scan lines",
+          "colors": ["#00aaff", "#0066cc", "#003366"],
+          "complexity": "complex",
+          "notes": "Semi-transparent blue, horizontal scan lines, slight glow"
+        }
+      ]
+    },
+    "camerasSurveillance": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-cctv",
+          "category": "cameras-surveillance",
+          "description": "Dome security camera with tinted lens",
+          "colors": ["#e0e0e0", "#333333", "#1a1a1a"],
+          "complexity": "medium",
+          "notes": "Dome shape with dark lens visible underneath"
+        },
+        {
+          "name": "head-webcam",
+          "category": "cameras-surveillance",
+          "description": "Simple webcam with recording LED indicator",
+          "colors": ["#2a2a2a", "#444444", "#ff0000"],
+          "complexity": "simple",
+          "notes": "Circular lens with small red LED dot"
+        },
+        {
+          "name": "head-polaroid",
+          "category": "cameras-surveillance",
+          "description": "Instant camera front with rainbow stripe",
+          "colors": ["#f0f0f0", "#ff4444", "#ffaa00"],
+          "complexity": "medium",
+          "notes": "White body with classic rainbow stripe detail"
+        },
+        {
+          "name": "head-projector",
+          "category": "cameras-surveillance",
+          "description": "Film projector emitting a light beam",
+          "colors": ["#3a3a3a", "#c0c0c0", "#ffff99"],
+          "complexity": "medium",
+          "notes": "Projector body with cone of light emanating from lens"
+        },
+        {
+          "name": "head-dashcam",
+          "category": "cameras-surveillance",
+          "description": "Dashboard camera with wide-angle lens",
+          "colors": ["#1a1a1a", "#333333", "#4488ff"],
+          "complexity": "simple",
+          "notes": "Compact rectangular body with prominent lens"
+        }
+      ]
+    },
+    "industrialUrban": {
+      "count": 6,
+      "heads": [
+        {
+          "name": "head-traffic-light",
+          "category": "industrial-urban",
+          "description": "3-light traffic signal with one light active",
+          "colors": ["#333333", "#ff0000", "#00ff00"],
+          "complexity": "simple",
+          "notes": "Vertical 3-circle layout, one randomly lit"
+        },
+        {
+          "name": "head-parking-meter",
+          "category": "industrial-urban",
+          "description": "Coin-operated parking meter with dial display",
+          "colors": ["#808080", "#c0c0c0", "#ff4444"],
+          "complexity": "medium",
+          "notes": "Rounded top with expired/time indicator"
+        },
+        {
+          "name": "head-atm",
+          "category": "industrial-urban",
+          "description": "ATM screen with card slot and keypad",
+          "colors": ["#2a4a8a", "#c0c0c0", "#00ff00"],
+          "complexity": "complex",
+          "notes": "Blue screen, metal card slot, number pad grid"
+        },
+        {
+          "name": "head-gas-pump",
+          "category": "industrial-urban",
+          "description": "Vintage gas pump with price display",
+          "colors": ["#cc0000", "#f0f0f0", "#ffcc00"],
+          "complexity": "medium",
+          "notes": "Retro rounded shape with analog number display"
+        },
+        {
+          "name": "head-circuit-breaker",
+          "category": "industrial-urban",
+          "description": "Electrical panel with rows of switches",
+          "colors": ["#808080", "#333333", "#ff6600"],
+          "complexity": "complex",
+          "notes": "Grid of toggle switches, some on (orange indicator)"
+        },
+        {
+          "name": "head-transformer",
+          "category": "industrial-urban",
+          "description": "Electrical transformer box with warning signs",
+          "colors": ["#556b2f", "#808080", "#ffcc00"],
+          "complexity": "medium",
+          "notes": "Utilitarian box shape with high voltage warning"
+        }
+      ]
+    },
+    "audioMusic": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-speaker-stack",
+          "category": "audio-music",
+          "description": "Marshall-style amplifier speaker stack",
+          "colors": ["#1a1a1a", "#333333", "#c0a000"],
+          "complexity": "medium",
+          "notes": "Black cabinet with speaker cone circles and gold logo area"
+        },
+        {
+          "name": "head-vinyl",
+          "category": "audio-music",
+          "description": "Vinyl record on turntable platter",
+          "colors": ["#1a1a1a", "#333333", "#ff3333"],
+          "complexity": "medium",
+          "notes": "Concentric grooves visible, colored center label"
+        },
+        {
+          "name": "head-radio-vintage",
+          "category": "audio-music",
+          "description": "1950s tube radio with dial and speaker grille",
+          "colors": ["#8b4513", "#c0a060", "#ffcc00"],
+          "complexity": "complex",
+          "notes": "Wooden cabinet look, horizontal grille lines, circular dial"
+        },
+        {
+          "name": "head-walkie-talkie",
+          "category": "audio-music",
+          "description": "Two-way radio with antenna and push-to-talk button",
+          "colors": ["#2a2a2a", "#444444", "#00ff00"],
+          "complexity": "simple",
+          "notes": "Rectangular body, stubby antenna on top, green indicator"
+        },
+        {
+          "name": "head-synthesizer",
+          "category": "audio-music",
+          "description": "Modular synth panel with knobs and patch cables",
+          "colors": ["#333333", "#c0c0c0", "#ff4444"],
+          "complexity": "complex",
+          "notes": "Grid of knobs and jack sockets, patch cable lines"
+        }
+      ]
+    },
+    "retroTech": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-floppy",
+          "category": "retro-tech",
+          "description": "3.5-inch floppy disk with metal shutter",
+          "colors": ["#2244aa", "#c0c0c0", "#1a1a1a"],
+          "complexity": "simple",
+          "notes": "Square body with metal sliding shutter and label area"
+        },
+        {
+          "name": "head-gameboy",
+          "category": "retro-tech",
+          "description": "Handheld game console with screen and d-pad",
+          "colors": ["#b0b0b0", "#8bac0f", "#306230"],
+          "complexity": "medium",
+          "notes": "Gray body, green-tinted screen, cross d-pad, A/B buttons"
+        },
+        {
+          "name": "head-pager",
+          "category": "retro-tech",
+          "description": "90s pager with small LCD display",
+          "colors": ["#1a1a1a", "#333333", "#88ccaa"],
+          "complexity": "simple",
+          "notes": "Small form factor with tiny LCD showing numbers"
+        },
+        {
+          "name": "head-vcr",
+          "category": "retro-tech",
+          "description": "VCR with tape slot and clock display",
+          "colors": ["#2a2a2a", "#444444", "#00ff00"],
+          "complexity": "medium",
+          "notes": "Rectangular box with tape slot, blinking 12:00 display"
+        },
+        {
+          "name": "head-rotary-phone",
+          "category": "retro-tech",
+          "description": "Rotary dial telephone face",
+          "colors": ["#1a1a1a", "#c0c0c0", "#f0f0f0"],
+          "complexity": "medium",
+          "notes": "Circular dial with number holes, chrome center"
+        }
+      ]
+    },
+    "appliances": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-blender",
+          "category": "appliances",
+          "description": "Kitchen blender with clear container and base",
+          "colors": ["#c0c0c0", "#aaddff", "#333333"],
+          "complexity": "medium",
+          "notes": "Transparent container with metallic base and button panel"
+        },
+        {
+          "name": "head-coffee-maker",
+          "category": "appliances",
+          "description": "Drip coffee machine with carafe",
+          "colors": ["#1a1a1a", "#804000", "#c0c0c0"],
+          "complexity": "medium",
+          "notes": "Body with glass carafe showing coffee level"
+        },
+        {
+          "name": "head-air-conditioner",
+          "category": "appliances",
+          "description": "Window AC unit with horizontal vents",
+          "colors": ["#f0f0f0", "#c0c0c0", "#4488ff"],
+          "complexity": "simple",
+          "notes": "White/gray box with horizontal vent slats"
+        },
+        {
+          "name": "head-space-heater",
+          "category": "appliances",
+          "description": "Portable heater with glowing coils visible",
+          "colors": ["#333333", "#ff4400", "#ff8800"],
+          "complexity": "medium",
+          "notes": "Dark body with visible orange-glowing heating element"
+        },
+        {
+          "name": "head-vacuum",
+          "category": "appliances",
+          "description": "Vacuum cleaner body with hose attachment",
+          "colors": ["#cc0000", "#808080", "#333333"],
+          "complexity": "medium",
+          "notes": "Rounded body shape with hose connector"
+        }
+      ]
+    },
+    "weirdFun": {
+      "count": 6,
+      "heads": [
+        {
+          "name": "head-lava-lamp",
+          "category": "weird-fun",
+          "description": "Lava lamp with floating blobs",
+          "colors": ["#c0c0c0", "#ff00ff", "#ff6600"],
+          "complexity": "medium",
+          "notes": "Metal base/cap with transparent body showing floating blobs"
+        },
+        {
+          "name": "head-disco-ball",
+          "category": "weird-fun",
+          "description": "Mirrored disco ball with light reflections",
+          "colors": ["#c0c0c0", "#e0e0e0", "#ffffff"],
+          "complexity": "complex",
+          "notes": "Grid of mirrored facets with specular highlights"
+        },
+        {
+          "name": "head-gumball",
+          "category": "weird-fun",
+          "description": "Gumball machine with colorful balls visible",
+          "colors": ["#ff0000", "#ffcc00", "#00cc00"],
+          "complexity": "medium",
+          "notes": "Glass dome on red base filled with multicolor circles"
+        },
+        {
+          "name": "head-slot-machine",
+          "category": "weird-fun",
+          "description": "Casino slot machine display with spinning reels",
+          "colors": ["#cc0000", "#ffcc00", "#c0c0c0"],
+          "complexity": "complex",
+          "notes": "Three reel windows with fruit/bar symbols, chrome trim"
+        },
+        {
+          "name": "head-vaporwave",
+          "category": "weird-fun",
+          "description": "Aesthetic vaporwave bust with perspective grid",
+          "colors": ["#ff71ce", "#01cdfe", "#b967ff"],
+          "complexity": "complex",
+          "notes": "Classical bust silhouette with neon pink/cyan/purple, grid lines"
+        },
+        {
+          "name": "head-magic-8ball",
+          "category": "weird-fun",
+          "description": "Magic 8-ball fortune telling toy",
+          "colors": ["#1a1a1a", "#000080", "#ffffff"],
+          "complexity": "simple",
+          "notes": "Black sphere with blue triangle window showing white text"
+        }
+      ]
+    },
+    "computing": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-server-rack",
+          "category": "computing",
+          "description": "Server rack with blinking status LEDs",
+          "colors": ["#1a1a1a", "#333333", "#00ff00"],
+          "complexity": "medium",
+          "notes": "Dark rack with drive bays and green/amber LEDs"
+        },
+        {
+          "name": "head-hard-drive",
+          "category": "computing",
+          "description": "Hard drive with exposed platter and read arm",
+          "colors": ["#c0c0c0", "#888888", "#1a1a1a"],
+          "complexity": "medium",
+          "notes": "Metal housing, visible platter with arm"
+        },
+        {
+          "name": "head-usb-drive",
+          "category": "computing",
+          "description": "USB flash drive with connector",
+          "colors": ["#2244cc", "#c0c0c0", "#1a1a1a"],
+          "complexity": "simple",
+          "notes": "Compact body with metal USB connector"
+        },
+        {
+          "name": "head-motherboard",
+          "category": "computing",
+          "description": "Circuit board with chips and traces",
+          "colors": ["#006600", "#c0c0c0", "#1a1a1a"],
+          "complexity": "complex",
+          "notes": "Green PCB with IC chips and trace lines"
+        },
+        {
+          "name": "head-router",
+          "category": "computing",
+          "description": "WiFi router with antennas",
+          "colors": ["#1a1a1a", "#333333", "#4488ff"],
+          "complexity": "medium",
+          "notes": "Flat body with upright antennas and status LEDs"
+        }
+      ]
+    },
+    "instruments": {
+      "count": 4,
+      "heads": [
+        {
+          "name": "head-speedometer",
+          "category": "instruments",
+          "description": "Analog speedometer gauge",
+          "colors": ["#1a1a1a", "#f0f0f0", "#ff0000"],
+          "complexity": "medium",
+          "notes": "Circular gauge with needle and numbered markings"
+        },
+        {
+          "name": "head-compass",
+          "category": "instruments",
+          "description": "Navigation compass with needle",
+          "colors": ["#c0a060", "#f0f0f0", "#ff0000"],
+          "complexity": "medium",
+          "notes": "Brass housing, white dial, red/white needle"
+        },
+        {
+          "name": "head-stopwatch",
+          "category": "instruments",
+          "description": "Stopwatch with crown button",
+          "colors": ["#c0c0c0", "#f0f0f0", "#ff0000"],
+          "complexity": "medium",
+          "notes": "Round body, white face, thin hands"
+        },
+        {
+          "name": "head-thermostat",
+          "category": "instruments",
+          "description": "Digital smart thermostat display",
+          "colors": ["#f0f0f0", "#333333", "#4488ff"],
+          "complexity": "simple",
+          "notes": "Round white body with temperature display"
+        }
+      ]
+    },
+    "safetyIndustrial": {
+      "count": 4,
+      "heads": [
+        {
+          "name": "head-fire-extinguisher",
+          "category": "safety-industrial",
+          "description": "Red fire extinguisher with nozzle",
+          "colors": ["#cc0000", "#333333", "#c0c0c0"],
+          "complexity": "simple",
+          "notes": "Red cylindrical body with handle and gauge"
+        },
+        {
+          "name": "head-smoke-detector",
+          "category": "safety-industrial",
+          "description": "Circular smoke detector with LED",
+          "colors": ["#f0f0f0", "#c0c0c0", "#00ff00"],
+          "complexity": "simple",
+          "notes": "White disc with vents and indicator LED"
+        },
+        {
+          "name": "head-megaphone",
+          "category": "safety-industrial",
+          "description": "Bullhorn megaphone",
+          "colors": ["#c0c0c0", "#ff4444", "#333333"],
+          "complexity": "medium",
+          "notes": "Cone shape with handle and trigger"
+        },
+        {
+          "name": "head-battery",
+          "category": "safety-industrial",
+          "description": "Battery with charge indicator",
+          "colors": ["#1a1a1a", "#ffcc00", "#00ff00"],
+          "complexity": "simple",
+          "notes": "Cylindrical body with positive terminal and charge level"
+        }
+      ]
+    },
+    "science": {
+      "count": 3,
+      "heads": [
+        {
+          "name": "head-telescope",
+          "category": "science",
+          "description": "Refracting telescope on mount",
+          "colors": ["#c0c0c0", "#333333", "#4488ff"],
+          "complexity": "medium",
+          "notes": "Tubular body angled upward on tripod base"
+        },
+        {
+          "name": "head-microscope",
+          "category": "science",
+          "description": "Laboratory microscope",
+          "colors": ["#1a1a1a", "#c0c0c0", "#4488ff"],
+          "complexity": "medium",
+          "notes": "Eyepiece, body tube, stage, base"
+        },
+        {
+          "name": "head-lightbulb",
+          "category": "science",
+          "description": "Incandescent light bulb glowing",
+          "colors": ["#ffee88", "#ffcc00", "#c0c0c0"],
+          "complexity": "simple",
+          "notes": "Glass bulb with filament glow and screw base"
+        }
+      ]
+    },
+    "spaceVehicles": {
+      "count": 4,
+      "heads": [
+        {
+          "name": "head-flip-phone",
+          "category": "retro-tech",
+          "description": "Open clamshell flip phone with screen and keypad",
+          "colors": ["#c0c0c0", "#333333", "#4488ff"],
+          "complexity": "medium",
+          "notes": "Open flip phone showing screen on top half and keypad on bottom"
+        },
+        {
+          "name": "head-satellite-dish",
+          "category": "industrial-urban",
+          "description": "Parabolic satellite dish with feed horn",
+          "colors": ["#e0e0e0", "#c0c0c0", "#ff0000"],
+          "complexity": "medium",
+          "notes": "Large circular dish with arm extending to feed point"
+        },
+        {
+          "name": "head-space-station",
+          "category": "science",
+          "description": "Modular space station with solar panels",
+          "colors": ["#c0c0c0", "#333333", "#4488ff"],
+          "complexity": "complex",
+          "notes": "Central module with extending solar panel arrays"
+        },
+        {
+          "name": "head-rocket-ship",
+          "category": "science",
+          "description": "Retro rocket ship with fins and exhaust",
+          "colors": ["#e0e0e0", "#cc0000", "#ff6600"],
+          "complexity": "medium",
+          "notes": "Classic pointed rocket with side fins and flame exhaust"
+        }
+      ]
+    },
+    "mediaInput": {
+      "count": 5,
+      "heads": [
+        {
+          "name": "head-joystick",
+          "category": "media-input",
+          "description": "Classic arcade joystick",
+          "colors": ["#1a1a1a", "#ff0000", "#c0c0c0"],
+          "complexity": "simple",
+          "notes": "Black base with red ball-top stick and buttons"
+        },
+        {
+          "name": "head-clapperboard",
+          "category": "media-input",
+          "description": "Film slate clapperboard",
+          "colors": ["#1a1a1a", "#f0f0f0", "#ff0000"],
+          "complexity": "simple",
+          "notes": "Black and white striped clapper with slate board"
+        },
+        {
+          "name": "head-qr-code",
+          "category": "media-input",
+          "description": "QR code pattern",
+          "colors": ["#f0f0f0", "#1a1a1a"],
+          "complexity": "complex",
+          "notes": "White background with black QR pattern modules"
+        },
+        {
+          "name": "head-barcode",
+          "category": "media-input",
+          "description": "UPC barcode with lines",
+          "colors": ["#f0f0f0", "#1a1a1a"],
+          "complexity": "simple",
+          "notes": "White background with vertical black bars"
+        },
+        {
+          "name": "head-alarm-clock",
+          "category": "media-input",
+          "description": "Twin-bell alarm clock",
+          "colors": ["#c0c0c0", "#f0f0f0", "#ff0000"],
+          "complexity": "medium",
+          "notes": "Round face with bells on top and clock hands"
+        }
+      ]
+    }
+  }
+}

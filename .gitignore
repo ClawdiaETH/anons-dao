@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Foundry
+contracts/cache/
+contracts/out/
+contracts/docs/
+contracts/broadcast/**/dry-run/
+contracts/broadcast/*/31337/
+
+# Node / Next.js
+node_modules/
+web/.next/
+web/out/
+web/build/
+web/coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+
+# Pipeline previews (large PNGs)
+contracts/script/pipeline/output/previews/
