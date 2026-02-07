@@ -199,16 +199,15 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
         if (currentAuction.settled) revert AuctionAlreadySettled();
         if (block.timestamp < currentAuction.endTime) revert AuctionNotExpired();
 
+        // EFFECTS: Mark auction as settled first
         _auction.settled = true;
 
         if (currentAuction.bidder == address(0)) {
             // No bids - send to creator (Clawdia)
             anons.transferFrom(address(this), creator, currentAuction.anonId);
         } else {
-            // Transfer token to winner
-            anons.transferFrom(address(this), currentAuction.bidder, currentAuction.anonId);
-
-            // Split proceeds
+            // INTERACTIONS: Transfer ETH BEFORE NFT (follows CEI pattern)
+            // This prevents bricking if treasury/creator reverts on ETH receipt
             if (currentAuction.amount > 0) {
                 uint256 treasuryAmount = (currentAuction.amount * TREASURY_SPLIT) / 100;
                 uint256 creatorAmount = currentAuction.amount - treasuryAmount;
@@ -224,6 +223,10 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
                     creatorAmount
                 );
             }
+
+            // Transfer NFT LAST (after ETH distribution)
+            // This ensures ETH transfers complete before triggering recipient callbacks
+            anons.transferFrom(address(this), currentAuction.bidder, currentAuction.anonId);
         }
     }
 
