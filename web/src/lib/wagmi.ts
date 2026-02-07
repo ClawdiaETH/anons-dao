@@ -7,6 +7,8 @@ export const config = createConfig({
     [base.id]: http(process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'),
     [baseSepolia.id]: http('https://sepolia.base.org'),
   },
+  // Auto-detects injected wallet connectors (MetaMask, etc)
+  ssr: true,
 })
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || base.id
