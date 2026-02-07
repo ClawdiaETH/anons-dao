@@ -13,8 +13,21 @@ contract AnonsSeeder is IAnonsSeeder {
         // Determine cycle based on tokenId (even = dawn, odd = dusk)
         bool isDusk = tokenId % 2 == 1;
 
-        // Generate pseudorandom number from blockhash and tokenId
-        uint256 pseudorandomness = uint256(keccak256(abi.encodePacked(blockhash(block.number - 1), tokenId)));
+        // Generate pseudorandom number with multiple entropy sources
+        // Note: This is still pseudo-random and somewhat predictable, but significantly
+        // harder to manipulate than blockhash alone. For maximum security, use Chainlink VRF.
+        uint256 pseudorandomness = uint256(
+            keccak256(
+                abi.encodePacked(
+                    blockhash(block.number - 1),  // Previous block hash
+                    tokenId,                       // Predictable but necessary for determinism
+                    block.prevrandao,              // PREVRANDAO (difficulty on L2s)
+                    block.timestamp,               // Block timestamp
+                    block.number,                  // Current block number
+                    tx.gasprice                    // Transaction gas price (varies)
+                )
+            )
+        );
 
         // Get trait counts for the appropriate cycle
         uint256 bgCount = descriptor.backgroundCount(isDusk);
