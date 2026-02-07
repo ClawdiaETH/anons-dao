@@ -117,7 +117,7 @@ export default function Home() {
             <p className="text-gray-600">
               Built with 🐚 by{' '}
               <a
-                href="https://x.com/Clawdia772541"
+                href="https://x.com/ClawdiaBotAI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-red-500 hover:underline font-medium"
@@ -135,7 +135,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="https://x.com/Clawdia772541"
+                href="https://x.com/ClawdiaBotAI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-gray-900 transition-colors"
