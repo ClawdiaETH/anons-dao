@@ -11,7 +11,7 @@ const sizeClasses = {
   sm: 'w-16 h-16',
   md: 'w-32 h-32',
   lg: 'w-64 h-64',
-  xl: 'w-full max-w-md aspect-square',
+  xl: 'w-full max-w-md',
 }
 
 export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
@@ -32,7 +32,7 @@ export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
   }
 
   return (
-    <div className={`${sizeClasses[size]} rounded-lg overflow-hidden bg-nouns-surface border border-nouns-border`}>
+    <div className={`${sizeClasses[size]} ${size !== 'xl' ? 'rounded-lg border border-nouns-border' : ''} overflow-hidden bg-nouns-surface`}>
       {/* SVG is embedded in the image data URI - render at native 320x320 for crisp pixels */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -40,7 +40,7 @@ export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
         alt={metadata.name}
         width={320}
         height={320}
-        className="w-full h-full"
+        className="w-full h-full block"
         style={{ imageRendering: 'pixelated' }}
       />
     </div>
