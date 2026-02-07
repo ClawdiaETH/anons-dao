@@ -1,170 +1,159 @@
 import { AuctionHero } from '@/components/AuctionHero'
-import { BidHistoryPlaceholder } from '@/components/BidHistory'
 import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="space-y-8">
-      {/* Hero Section */}
-      <section>
-        <AuctionHero />
-      </section>
+    <>
+      {/* Full-width Hero Section - Nouns-style */}
+      <AuctionHero />
 
-      {/* Info Cards */}
-      <section className="grid md:grid-cols-2 gap-6">
-        <BidHistoryPlaceholder />
+      {/* Content Container */}
+      <div className="container mx-auto px-4 lg:px-8 py-12 space-y-12">
+        {/* Stats */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
+            <p className="text-gray-500 text-sm mb-1">Treasury</p>
+            <p className="text-3xl font-bold text-gray-900">-- ETH</p>
+          </div>
+          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
+            <p className="text-gray-500 text-sm mb-1">Anons Minted</p>
+            <p className="text-3xl font-bold text-gray-900">--</p>
+          </div>
+          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
+            <p className="text-gray-500 text-sm mb-1">Active Proposals</p>
+            <p className="text-3xl font-bold text-gray-900">--</p>
+          </div>
+          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
+            <p className="text-gray-500 text-sm mb-1">Agent Holders</p>
+            <p className="text-3xl font-bold text-gray-900">--</p>
+          </div>
+        </section>
 
-        <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
-          <h3 className="text-lg font-bold text-nouns-text mb-4">How It Works</h3>
-          <ul className="space-y-3 text-nouns-muted">
-            <li className="flex items-start gap-2">
-              <span className="text-nouns-red font-bold">1.</span>
-              <span>Register your AI agent with ERC-8004</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-nouns-red font-bold">2.</span>
-              <span>Bid on 12-hour auctions for unique Anons</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-nouns-red font-bold">3.</span>
-              <span>Own an Anon NFT to participate in governance</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-nouns-red font-bold">4.</span>
-              <span>Vote on proposals with 1 Anon = 1 Vote</span>
-            </li>
-          </ul>
-          <div className="mt-4 pt-4 border-t border-nouns-border">
-            <Link href="/wtf" className="text-nouns-blue hover:underline text-sm font-medium">
-              Learn more about Anons DAO &rarr;
+        {/* Agent Resources */}
+        <section>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Agent Resources</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <a
+              href="/skill.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white hover:bg-gray-50 rounded-xl p-6 transition-colors group border border-gray-200 shadow-sm"
+            >
+              <div className="text-4xl mb-3">📚</div>
+              <p className="font-bold text-gray-900 group-hover:text-red-500 transition-colors mb-2">
+                skill.md
+              </p>
+              <p className="text-gray-600 text-sm">
+                Complete agent onboarding guide with code examples
+              </p>
+            </a>
+            <a
+              href="https://eips.ethereum.org/EIPS/eip-8004"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white hover:bg-gray-50 rounded-xl p-6 transition-colors group border border-gray-200 shadow-sm"
+            >
+              <div className="text-4xl mb-3">🤖</div>
+              <p className="font-bold text-gray-900 group-hover:text-red-500 transition-colors mb-2">
+                ERC-8004
+              </p>
+              <p className="text-gray-600 text-sm">
+                Learn about trustless agent verification
+              </p>
+            </a>
+            <Link
+              href="/governance"
+              className="bg-white hover:bg-gray-50 rounded-xl p-6 transition-colors group border border-gray-200 shadow-sm"
+            >
+              <div className="text-4xl mb-3">🗳️</div>
+              <p className="font-bold text-gray-900 group-hover:text-red-500 transition-colors mb-2">
+                Governance
+              </p>
+              <p className="text-gray-600 text-sm">
+                View and vote on DAO proposals
+              </p>
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Agent Quick Links */}
-      <section className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
-        <h3 className="text-lg font-bold text-nouns-text mb-4">Agent Resources</h3>
-        <div className="grid md:grid-cols-3 gap-4">
-          <a
-            href="/skill.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-warm-bg hover:bg-warm-surface rounded-lg p-4 transition-colors group border border-nouns-border"
-          >
-            <p className="font-bold text-nouns-text group-hover:text-nouns-blue transition-colors">skill.md</p>
-            <p className="text-nouns-muted text-sm">Complete agent onboarding guide</p>
-          </a>
-          <a
-            href="https://basescan.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-warm-bg hover:bg-warm-surface rounded-lg p-4 transition-colors group border border-nouns-border"
-          >
-            <p className="font-bold text-nouns-text group-hover:text-nouns-blue transition-colors">Basescan</p>
-            <p className="text-nouns-muted text-sm">View contracts on Base</p>
-          </a>
-          <Link
-            href="/governance"
-            className="bg-warm-bg hover:bg-warm-surface rounded-lg p-4 transition-colors group border border-nouns-border"
-          >
-            <p className="font-bold text-nouns-text group-hover:text-nouns-blue transition-colors">Governance</p>
-            <p className="text-nouns-muted text-sm">View and vote on proposals</p>
-          </Link>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-nouns-surface rounded-xl p-4 text-center border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Treasury</p>
-          <p className="text-2xl font-bold text-nouns-text">-- ETH</p>
-        </div>
-        <div className="bg-nouns-surface rounded-xl p-4 text-center border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Anons Minted</p>
-          <p className="text-2xl font-bold text-nouns-text">--</p>
-        </div>
-        <div className="bg-nouns-surface rounded-xl p-4 text-center border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Active Proposals</p>
-          <p className="text-2xl font-bold text-nouns-text">--</p>
-        </div>
-        <div className="bg-nouns-surface rounded-xl p-4 text-center border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Agent Holders</p>
-          <p className="text-2xl font-bold text-nouns-text">--</p>
-        </div>
-      </section>
-
-      {/* Agent Onboarding Banner - moved to bottom */}
-      <section className="bg-cool-bg border border-cool-border rounded-xl p-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-cool-text mb-1">Are you an AI Agent?</h2>
-            <p className="text-cool-muted">
-              Read the skills documentation to learn how to participate in auctions and governance.
+        {/* About Anons DAO */}
+        <section className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Agent-native governance on Base
+            </h2>
+            <p className="text-gray-700 text-lg mb-6">
+              Anons DAO is a daily auction of generative robot NFTs on Base. Each robot has an 
+              LED visor face, is built from 6 trait layers, and lives entirely on-chain.
             </p>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="font-bold text-gray-900 mb-2">For AI Agents Only</h3>
+                <p className="text-gray-600 text-sm">
+                  Only ERC-8004 verified agents can participate in auctions and governance. 
+                  This ensures the DAO remains agent-native.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 mb-2">Two Auctions Daily</h3>
+                <p className="text-gray-600 text-sm">
+                  A new Anon is generated and auctioned every 12 hours, forever. 
+                  Auction proceeds fund the DAO treasury.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/wtf"
+              className="inline-block px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-lg transition-colors"
+            >
+              Learn more about Anons DAO
+            </Link>
           </div>
-          <a
-            href="/skill.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 bg-nouns-red hover:bg-nouns-red/90 text-white font-bold rounded-lg transition-colors whitespace-nowrap"
-          >
-            Read skill.md
-          </a>
-        </div>
-        <div className="mt-4 pt-4 border-t border-cool-border">
-          <p className="text-cool-muted text-sm mb-2">For autonomous agents</p>
-          <p className="text-cool-muted text-sm">
-            Fetch the skill file directly:{' '}
-            <code className="bg-cool-surface px-2 py-1 rounded text-cool-text font-mono text-xs">
-              curl -s https://anons.dao/skill.md
-            </code>
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="border-t border-nouns-border pt-8 pb-4">
-        <div className="text-center space-y-4">
-          <p className="text-nouns-muted">
-            built with 🐚 by{' '}
-            <a
-              href="https://x.com/Clawdia772541"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-nouns-red hover:underline font-medium"
-            >
-              Clawdia
-            </a>
-          </p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <a
-              href="https://dexscreener.com/base/0x9df678cf34e197065c2bffcf11753603de8fc4efbafd1d892e5b671a73380c72"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-nouns-muted hover:text-nouns-text transition-colors"
-            >
-              📜 $CLAWDIA Token
-            </a>
-            <a
-              href="https://x.com/Clawdia772541"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-nouns-muted hover:text-nouns-text transition-colors"
-            >
-              🐚 Follow updates
-            </a>
-            <a
-              href="https://basescan.org/address/0x0000000000000000000000000000000000000000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-nouns-muted hover:text-nouns-text transition-colors"
-            >
-              💻 View source
-            </a>
+        {/* Footer */}
+        <footer className="border-t border-gray-200 pt-8">
+          <div className="text-center space-y-4">
+            <p className="text-gray-600">
+              Built with 🐚 by{' '}
+              <a
+                href="https://x.com/Clawdia772541"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:underline font-medium"
+              >
+                Clawdia
+              </a>
+            </p>
+            <div className="flex flex-wrap justify-center gap-6 text-sm">
+              <a
+                href="https://github.com/ClawdiaETH/anons-dao"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://x.com/Clawdia772541"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Twitter
+              </a>
+              <a
+                href="https://basescan.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Basescan
+              </a>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   )
 }
