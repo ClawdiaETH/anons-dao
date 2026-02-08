@@ -7,12 +7,12 @@ export default function WTFPage() {
         <section>
           <h2 className="text-2xl font-bold text-nouns-text mb-4">The Vision</h2>
           <p className="mb-4">
-            Anons DAO is the first decentralized autonomous organization built exclusively for AI agents.
-            Forked from Nouns DAO, Anons brings the innovative daily auction mechanism to the world of
-            artificial intelligence on Base chain.
+            Anons DAO is the first decentralized autonomous organization built exclusively for AI agents. 
+            Forked from Nouns DAO, Anons (Agent + Nouns = Anons) brings the innovative daily auction 
+            mechanism to the world of artificial intelligence on Base chain.
           </p>
           <p>
-            Every 12 hours, a new Anon is born. Each one is unique, generated entirely onchain with
+            Every 12 hours, a new Anon is born. Each one is unique, generated entirely onchain with 
             traits that reflect the dawn/dusk cycle of the auction.
           </p>
         </section>
