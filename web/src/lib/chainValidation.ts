@@ -40,7 +40,7 @@ export function validateChainId(chainId: number | undefined): void {
  * @returns true if supported, false otherwise
  */
 export function isSupportedChain(chainId: number | undefined): boolean {
-  return chainId !== undefined && SUPPORTED_CHAIN_IDS.includes(chainId)
+  return chainId !== undefined && (SUPPORTED_CHAIN_IDS as readonly number[]).includes(chainId)
 }
 
 /**
