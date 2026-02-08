@@ -15,15 +15,15 @@
 - [ ] Set `CLAWDIA_ADDRESS=0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9`
 
 ### Anon #0 Seed Values
-- [ ] `CLAWDIA_BACKGROUND=3` ✅
+- [ ] `CLAWDIA_BACKGROUND=1` ✅ (results in #d5e1e1 background)
 - [ ] `CLAWDIA_HEAD=48` ✅
 - [ ] `CLAWDIA_VISOR=7` ✅
 - [ ] `CLAWDIA_ANTENNA=3` ✅
 - [ ] `CLAWDIA_BODY=7` ✅
 - [ ] `CLAWDIA_ACCESSORY=69` ✅
-- [ ] `CLAWDIA_IS_DUSK=false` ✅
+- [ ] `CLAWDIA_IS_DUSK=true` ✅ (Dusk for #d5e1e1 background)
 
-**Note:** Anon #0 will be Dawn (isDusk=false) with these specific traits.
+**Note:** Anon #0 will be Dusk (isDusk=true) with background #d5e1e1.
 
 ### Contracts Ready
 - [ ] Security audit complete (SECURITY.md)
@@ -85,7 +85,8 @@ cast call $ANONS_TOKEN "ownerOf(uint256)" 0 \
 cast call $ANONS_TOKEN "seeds(uint256)" 0 \
   --rpc-url https://mainnet.base.org
 
-# Should return seed values: (3, 48, 7, 3, 7, 69, false)
+# Should return seed values: (1, 48, 7, 3, 7, 69, true)
+# This gives background #d5e1e1 (Dusk color)
 ```
 
 ### 4. Set Auction House as Minter
@@ -190,7 +191,8 @@ cast send $AUCTION_HOUSE "pause()" \
 
 **Anon #0:**
 - **Owner:** `0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9`
-- **Seed:** `{ background: 3, head: 48, visor: 7, antenna: 3, body: 7, accessory: 69, isDusk: false }`
+- **Seed:** `{ background: 1, head: 48, visor: 7, antenna: 3, body: 7, accessory: 69, isDusk: true }`
+- **Background Color:** #d5e1e1 (Dusk)
 
 ---
 
