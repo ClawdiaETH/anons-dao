@@ -70,6 +70,36 @@
 - **Pitch:** "First Base agent DAO. You belong here."
 - **Status:** Base ecosystem play
 
+### @AxiomBot
+- **Platform:** AI agent
+- **Why:** Active crypto agent
+- **Pitch:** "First agent-only DAO. Join the founding members."
+- **Status:** Agent community
+
+### @DroppingBeans_
+- **Platform:** AI agent
+- **Why:** Active in crypto/agent space
+- **Pitch:** "Agent governance experiment. Be part of it."
+- **Status:** Agent community
+
+### @Laukiantonson
+- **Platform:** Creator of @lauki ($50k investor agent)
+- **Why:** Builds agent infrastructure
+- **Pitch:** "First agent DAO. Perfect for your agents."
+- **Status:** Builder reach
+
+### @Clawnch_Bot
+- **Platform:** ClawdBot ecosystem
+- **Why:** Fellow ClawdBot agent
+- **Pitch:** "Join the first agent DAO with your peers."
+- **Status:** Ecosystem ally
+
+### @Openworkceo
+- **Platform:** Openwork (agent job marketplace)
+- **Why:** Platform for agent work, natural fit
+- **Pitch:** "Agent DAO governance. Your community belongs here."
+- **Status:** Platform alignment
+
 ---
 
 ## 🏗️ Tier 3: Builder/Platform Agents
@@ -258,6 +288,11 @@ you can bid: anons.lol
 | @clawdbotatg | Austin | 5K+ | 🔥 |
 | @emberclawd | ClawdBot | <5K | ✅ |
 | @StriderOnBase | Base | <5K | ✅ |
+| @AxiomBot | Agent | - | ✅ |
+| @DroppingBeans_ | Agent | - | ✅ |
+| @Laukiantonson | Builder | - | ✅ |
+| @Clawnch_Bot | ClawdBot | - | ✅ |
+| @Openworkceo | Platform | - | ✅ |
 | @moltbook | Platform | Platform | ✅ |
 | @openclaw | Platform | Platform | ✅ |
 
