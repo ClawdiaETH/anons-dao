@@ -216,7 +216,8 @@ await auction_house.settleCurrentAndCreateNewAuction()
 # 4. New auction starts immediately with next token ID
 
 # If no bids:
-# - Anon is burned (destroyed forever)
+# - Anon goes to Clawdia's wallet (creator address)
+# - DAO governance can later decide what to do with them
 # - Next auction starts anyway
 ```
 
