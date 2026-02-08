@@ -7,6 +7,7 @@ import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step
 import {IAnonsAuctionHouse} from "./interfaces/IAnonsAuctionHouse.sol";
 import {IAnonsToken} from "./interfaces/IAnonsToken.sol";
 import {IERC8004Registry} from "./interfaces/IERC8004Registry.sol";
+import {IWETH} from "./interfaces/IWETH.sol";
 
 /// @title AnonsAuctionHouse
 /// @notice 12-hour auctions for Anons with ERC-8004 gating
@@ -25,6 +26,9 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
 
     /// @notice The ERC-8004 agent registry
     IERC8004Registry public immutable agentRegistry;
+
+    /// @notice WETH contract for fallback transfers
+    IWETH public immutable weth;
 
     /// @notice The treasury address (receives 95% of auction proceeds)
     address public treasury;
@@ -61,11 +65,13 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
     constructor(
         IAnonsToken _anons,
         IERC8004Registry _agentRegistry,
+        IWETH _weth,
         address _treasury,
         address _creator
     ) Ownable(msg.sender) {
         anons = _anons;
         agentRegistry = _agentRegistry;
+        weth = _weth;
         treasury = _treasury;
         creator = _creator;
 
@@ -82,6 +88,7 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
     function createBid(uint256 anonId) external payable override nonReentrant onlyRegisteredAgent {
         Auction memory currentAuction = _auction;
 
+        // CHECKS: Validate auction state and bid amount
         if (currentAuction.anonId != anonId) revert InvalidAnonId();
         if (block.timestamp < currentAuction.startTime) revert AuctionNotStarted();
         if (block.timestamp >= currentAuction.endTime) revert AuctionExpired();
@@ -91,12 +98,9 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
         ) revert BidTooLow();
 
         address payable lastBidder = currentAuction.bidder;
+        uint256 lastBidAmount = currentAuction.amount;
 
-        // Refund the last bidder
-        if (lastBidder != address(0)) {
-            _safeTransferETH(lastBidder, currentAuction.amount);
-        }
-
+        // EFFECTS: Update state before external calls (CEI pattern)
         _auction.amount = msg.value;
         _auction.bidder = payable(msg.sender);
 
@@ -108,12 +112,25 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
         }
 
         emit AuctionBid(anonId, msg.sender, msg.value, extended);
+
+        // INTERACTIONS: Refund the last bidder after state is updated
+        if (lastBidder != address(0)) {
+            _safeTransferETH(lastBidder, lastBidAmount);
+        }
     }
 
     /// @inheritdoc IAnonsAuctionHouse
     function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
+        // CEI Pattern: Settle old auction (has external calls), then create new one
+        // _settleAuction() sets _auction.settled = true before external calls,
+        // preventing reentrancy attacks on the old auction
         _settleAuction();
-        _createAuction();
+        
+        // Mint new token (external call to trusted contract)
+        uint256 newTokenId = anons.mint();
+        
+        // EFFECTS: Create new auction with minted token (no more external calls)
+        _createAuctionWithToken(newTokenId);
     }
 
     /// @inheritdoc IAnonsAuctionHouse
@@ -132,7 +149,10 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
 
         // If this is the first auction or previous was settled, create new
         if (_auction.startTime == 0 || _auction.settled) {
-            _createAuction();
+            // Mint token first (external call to trusted contract)
+            uint256 newTokenId = anons.mint();
+            // Then create auction with minted token (follows CEI pattern)
+            _createAuctionWithToken(newTokenId);
         }
     }
 
@@ -170,14 +190,16 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
         creator = _creator;
     }
 
-    /// @notice Internal function to create a new auction
-    function _createAuction() internal {
-        uint256 tokenId = anons.mint();
+    /// @notice Internal function to create a new auction with a pre-minted token
+    /// @dev Refactored to accept tokenId parameter to follow CEI pattern
+    /// @param tokenId The ID of the pre-minted Anon token
+    function _createAuctionWithToken(uint256 tokenId) internal {
         bool isDusk = tokenId % 2 == 1;
 
         uint256 startTime = block.timestamp;
         uint256 endTime = startTime + duration;
 
+        // EFFECTS: Write all state before any external calls
         _auction = Auction({
             anonId: tokenId,
             amount: 0,
@@ -230,10 +252,19 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
         }
     }
 
-    /// @notice Safely transfers ETH to an address
+    /// @notice Safely transfers ETH to an address, with WETH fallback
+    /// @dev If ETH transfer fails, wraps to WETH and sends that instead
+    /// @param to The recipient address
+    /// @param amount The amount to transfer
     function _safeTransferETH(address to, uint256 amount) internal {
         (bool success,) = to.call{value: amount}("");
-        if (!success) revert TransferFailed();
+        
+        // If ETH transfer fails, wrap to WETH and send that
+        if (!success) {
+            weth.deposit{value: amount}();
+            bool wethSuccess = weth.transfer(to, amount);
+            if (!wethSuccess) revert TransferFailed();
+        }
     }
 
     /// @notice Allows the contract to receive the minted token
