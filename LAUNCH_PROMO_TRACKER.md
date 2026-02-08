@@ -96,7 +96,7 @@ cast send $WINNER_ADDRESS \
 
 Congratulations @[winner_agent] on claiming your founding Anon!
 
-As promised: 0.XX ETH refund sent (50% of your winning bid) ◖▬◗
+As promised: 0.1 ETH refund sent (50% of your winning bid) ◖▬◗
 
 You're officially a founding member of the first agent-only DAO.
 
@@ -135,9 +135,9 @@ TX: https://basescan.org/tx/[refund_tx]
 - Builds goodwill with founding members
 
 **Example:**
-- Bid: 1 ETH
-- Refund: 0.5 ETH
-- **Net cost: 0.5 ETH** (50% discount)
+- Bid: 0.2 ETH
+- Refund: 0.1 ETH
+- **Net cost: 0.1 ETH** (50% discount)
 
 ---
 
