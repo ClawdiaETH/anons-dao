@@ -6,6 +6,24 @@
 
 ---
 
+## 🎯 Two-Stage Process
+
+**Stage 1: Deploy (Paused)** - Run steps 1-5
+- Contracts go live on mainnet
+- Anon #0 minted to your wallet
+- Auctions remain PAUSED ⏸️
+- **NO ONE CAN BID YET**
+
+**Stage 2: Launch (Unpause)** - Run when ready
+- You call `unpause()` on auction house
+- First auction (Anon #1) starts immediately
+- 12 hours until first settlement
+- **AGENTS CAN NOW BID** 🚀
+
+**Benefit:** Deploy early, test frontend, prep outreach, launch when ready!
+
+---
+
 ## ✅ Pre-Deployment Verification
 
 ### Environment Variables
@@ -109,16 +127,23 @@ cast send $ANONS_TOKEN "acceptOwnership()" \
   --rpc-url https://mainnet.base.org
 ```
 
-### 6. Unpause Auction House
+### 6. Unpause Auction House (WAIT FOR SIGNAL)
+**⚠️ DO NOT RUN UNTIL READY TO START AUCTIONS**
+
 ```bash
+# When ready to start first auction:
 cast send $AUCTION_HOUSE "unpause()" \
   --private-key $PRIVATE_KEY \
   --rpc-url https://mainnet.base.org
+
+# This will automatically create and start Anon #1 auction
 ```
+
+**Wait for Jake's signal before unpausing!**
 
 ---
 
-## 🔍 Post-Deployment Verification
+## 🔍 Post-Deployment Verification (Before Launch)
 
 ### Contract Verification on Basescan
 - [ ] AnonsDescriptor verified
@@ -128,21 +153,76 @@ cast send $AUCTION_HOUSE "unpause()" \
 - [ ] AnonsDAO verified
 - [ ] TimelockController verified
 
+### Anon #0 Verification
+```bash
+# Verify Anon #0 owner
+cast call $ANONS_TOKEN "ownerOf(uint256)" 0 --rpc-url https://mainnet.base.org
+# Should return: 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
+
+# Verify Anon #0 seed
+cast call $ANONS_TOKEN "seeds(uint256)" 0 --rpc-url https://mainnet.base.org
+# Should return: (1, 48, 7, 3, 7, 69, true) for #d5e1e1 background
+
+# Verify pause status
+cast call $AUCTION_HOUSE "paused()" --rpc-url https://mainnet.base.org
+# Should return: true (paused, ready for launch)
+```
+
 ### Frontend Configuration
 - [ ] Update `web/.env.local` with mainnet contract addresses
 - [ ] Update `NEXT_PUBLIC_CHAIN_ID=8453`
 - [ ] Test frontend connects to mainnet
-- [ ] Verify auction displays correctly
+- [ ] Verify Anon #0 displays correctly
+- [ ] Verify "auctions paused" message shows (if applicable)
 
-### First Auction Check
+---
+
+## ⏸️ Pre-Launch Hold (Contracts Deployed, Auctions Paused)
+
+**Status after step 5:** Contracts live on mainnet, auctions NOT started
+
+**What's done:**
+- ✅ All contracts deployed and verified
+- ✅ Anon #0 minted to 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
+- ✅ Auction house is minter
+- ✅ Auction house owns AnonsToken
+- ⏸️ Auctions are PAUSED (no one can bid yet)
+
+**Waiting for:**
+- [ ] Final frontend testing on mainnet
+- [ ] Social media prep (tweets, casts ready)
+- [ ] Agent outreach messages drafted
+- [ ] Jake gives the green light
+
+**To check pause status:**
 ```bash
-# Get current auction info
-cast call $AUCTION_HOUSE "auction()" \
+cast call $AUCTION_HOUSE "paused()" --rpc-url https://mainnet.base.org
+# Returns: true (paused) or false (live)
+```
+
+---
+
+## 🚀 Launch Sequence (When Ready)
+
+### Step 1: Unpause Auction House
+```bash
+cast send $AUCTION_HOUSE "unpause()" \
+  --private-key $PRIVATE_KEY \
   --rpc-url https://mainnet.base.org
 
-# Returns: (anonId, amount, startTime, endTime, bidder, settled, isDusk)
-# Should show Anon #1 auction active
+# This automatically creates and starts Anon #1 auction
 ```
+
+### Step 2: Verify First Auction Started
+```bash
+cast call $AUCTION_HOUSE "auction()" --rpc-url https://mainnet.base.org
+# Should show Anon #1 with active auction
+```
+
+### Step 3: Launch Announcement (Simultaneous)
+- Tweet: "Anons DAO is LIVE 🤖 First auction ends in 12 hours... ◖▬◗ anons.lol"
+- Farcaster cast (same message)
+- DM Tier 1 agents with promo
 
 ---
 
@@ -196,14 +276,14 @@ cast send $AUCTION_HOUSE "pause()" \
 
 ---
 
-## ✅ Sign-Off
+## ✅ Deployment Sign-Off
 
+**Phase 1: Deployment (Paused)**
 - [ ] All contracts deployed successfully
 - [ ] All contracts verified on Basescan
 - [ ] Anon #0 owned by correct address with correct traits
-- [ ] First auction started
-- [ ] Frontend updated and working
-- [ ] Launch announcement sent
+- [ ] Auction house paused (verified)
+- [ ] Frontend updated and connected to mainnet
 
 **Deployed By:** _________________  
 **Date:** _________________  
@@ -211,4 +291,19 @@ cast send $AUCTION_HOUSE "pause()" \
 
 ---
 
-**Ready to deploy? Let's go! 🚀**
+**Phase 2: Launch (When Ready)**
+- [ ] Agent outreach messages sent (30 min before)
+- [ ] Social media posts drafted
+- [ ] Called `unpause()` on auction house
+- [ ] First auction (Anon #1) started
+- [ ] Launch announcement sent (Twitter + Farcaster)
+- [ ] Frontend shows live auction
+
+**Launched By:** _________________  
+**Date:** _________________  
+**First Auction End Time:** _________________  
+
+---
+
+**Ready to deploy? Let's go! 🚀**  
+**Ready to launch? You decide when! ⏸️**
