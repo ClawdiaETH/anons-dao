@@ -3,7 +3,7 @@
 
 **Deployment Date:** February 7-8, 2026  
 **Network:** Base Sepolia Testnet  
-**Deployer:** 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216
+**Deployer:** 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 
 ---
 

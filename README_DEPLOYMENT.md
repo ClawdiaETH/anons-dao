@@ -110,7 +110,7 @@ cast send <AUCTION_HOUSE_ADDRESS> "unpause()" \
 cast call 0x46349fac5EbecE5C2bdA398a327FCa4ed7201119 \
   "ownerOf(uint256)" 0 \
   --rpc-url $SEPOLIA_RPC_URL
-# Expected: 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216
+# Expected: 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 
 # Check seed
 cast call 0x46349fac5EbecE5C2bdA398a327FCa4ed7201119 \
