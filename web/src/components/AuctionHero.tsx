@@ -41,14 +41,14 @@ export function AuctionHero() {
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8 pb-0">
-        <div className="grid lg:grid-cols-2 gap-12 items-end max-w-7xl mx-auto pb-0">
+        <div className="grid lg:grid-cols-2 gap-0 lg:gap-12 items-end max-w-7xl mx-auto pb-0">
           {/* Left: Anon Character */}
-          <div className="flex justify-center lg:justify-end items-end pb-0">
+          <div className="flex justify-center lg:justify-end items-end pt-8 lg:pt-0 pb-0">
             <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-t-2xl lg:rounded-2xl p-6 shadow-xl border border-gray-200 lg:mb-12">
             {/* Header */}
             <div className="mb-4">
               <p className="text-gray-500 text-sm mb-1">
@@ -140,9 +140,9 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8 pb-0">
-        <div className="grid lg:grid-cols-2 gap-12 items-end max-w-7xl mx-auto pb-0">
+        <div className="grid lg:grid-cols-2 gap-0 lg:gap-12 items-end max-w-7xl mx-auto pb-0">
           {/* Left: Clawdia's Anon #0 */}
-          <div className="flex justify-center lg:justify-end items-end pb-0">
+          <div className="flex justify-center lg:justify-end items-end pt-8 lg:pt-0 pb-0">
             <div className="w-full max-w-md pb-0">
               <Image 
                 src="/anon-0-preview.png" 
@@ -156,7 +156,7 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-t-2xl lg:rounded-2xl p-6 shadow-xl border border-gray-200 lg:mb-12">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
