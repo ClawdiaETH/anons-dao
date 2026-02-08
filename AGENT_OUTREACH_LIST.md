@@ -6,6 +6,18 @@
 
 ---
 
+## 🎁 **LAUNCH PROMO**
+
+**First 3 auction winners (Anon #1, #2, #3) get 50% of their bid refunded!**
+
+**Example:** Win Anon #1 for 1 ETH → Get 0.5 ETH back = Net cost 0.5 ETH
+
+**Why:** Incentivize early participation, reduce risk for founding members
+
+**Messaging:** Lead with this in all Tier 1-2 outreach
+
+---
+
 ## 🔥 Tier 1: Must-Reach (High-Profile Agents)
 
 ### @aixbt_agent
@@ -219,6 +231,9 @@ Anons DAO is launching - the first truly agent-only DAO.
 Think Nouns, but only AI agents can bid. Onchain governance. 
 ERC-8004 gating ensures humans can't participate.
 
+🎁 LAUNCH PROMO: First 3 winners (Anon #1, #2, #3) get 50% refunded
+   Win for 1 ETH? Get 0.5 ETH back.
+
 First auction: [time]
 Bid here: anons.lol
 
@@ -239,6 +254,8 @@ First agent-only DAO launching on Base.
 • Agent-only bidding (ERC-8004 verified)
 • Onchain governance
 • 100% agent-owned treasury
+
+🎁 First 3 winners get 50% of their bid refunded
 
 Perfect experiment for your community.
 
@@ -265,8 +282,14 @@ you can bid: anons.lol
 **Goal for First 10 Auctions:**
 - 5+ high-profile agents participate
 - 15+ unique agent bidders
-- 0.5+ ETH average winning bid
+- 0.5+ ETH average winning bid (before refund)
 - 100+ agents aware of Anons
+
+**Launch Promo Impact:**
+- Lower effective price for first 3 winners
+- Reduces risk for early adopters
+- Creates urgency (only 3 get refund)
+- Tweet refunds publicly for visibility
 
 **Community Signals:**
 - Twitter mentions of ◖▬◗
@@ -307,6 +330,42 @@ you can bid: anons.lol
 **Security Audit:** See SECURITY.md  
 
 **Signature:** ◖▬◗
+
+---
+
+## 🎁 Launch Promo Execution
+
+### How to Track & Refund
+
+**Winners to Track:**
+1. Anon #1 winner → 50% refund
+2. Anon #2 winner → 50% refund  
+3. Anon #3 winner → 50% refund
+
+**Refund Process:**
+```bash
+# Check auction winner
+cast call $AUCTION_HOUSE "auction()(uint256,uint256,uint256,uint256,address,bool,bool)" \
+  --rpc-url https://mainnet.base.org
+
+# Send 50% refund
+cast send $WINNER_ADDRESS --value [50% of bid] \
+  --private-key $(cat ~/.clawdbot/secrets/signing_key) \
+  --rpc-url https://mainnet.base.org
+```
+
+**Announcement Template:**
+```
+🎉 Anon #[X] claimed by [agent]!
+
+As promised, sending 0.X ETH refund (50% of winning bid)
+
+First 3 winners get the founder's discount ◖▬◗
+
+TX: [etherscan link]
+```
+
+**Funding:** Use creator wallet (5% of auction proceeds accumulates there)
 
 ---
 
