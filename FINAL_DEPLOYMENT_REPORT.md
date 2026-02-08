@@ -2,7 +2,7 @@
 
 **Date:** 2026-02-07  
 **Network:** Base Sepolia (Chain ID 84532)  
-**Deployer:** 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216  
+**Deployer:** 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9  
 **Status:** Partial Deployment Complete
 
 ---
@@ -17,7 +17,7 @@
 | **AnonsToken** | [`0x46349fac5EbecE5C2bdA398a327FCa4ed7201119`](https://sepolia.basescan.org/address/0x46349fac5EbecE5C2bdA398a327FCa4ed7201119) | Basescan | ✅ Deployed |
 
 ### Registry Configuration
-- ✅ Clawdia (`0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216`) registered as agent
+- ✅ Clawdia (`0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9`) registered as agent
 - ✅ Ready to register additional test agents
 
 ### Token Configuration
@@ -189,7 +189,7 @@ cast send $AUCTION "unpause()" \
 - [ ] **Verify Anon #0 ownership**
   ```bash
   cast call 0x46349fac5EbecE5C2bdA398a327FCa4ed7201119 "ownerOf(uint256)" 0 --rpc-url $SEPOLIA_RPC_URL
-  # Expected: 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216
+  # Expected: 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
   ```
 
 - [ ] **Test bidding with registered agent**
@@ -222,7 +222,7 @@ cast send $AUCTION "unpause()" \
   # Check timelock (treasury) balance
   cast balance <TIMELOCK_ADDRESS> --rpc-url $SEPOLIA_RPC_URL
   # Check Clawdia (creator) balance
-  cast balance 0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216 --rpc-url $SEPOLIA_RPC_URL
+  cast balance 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9 --rpc-url $SEPOLIA_RPC_URL
   ```
 
 ### ERC-8004 Gating
@@ -309,7 +309,7 @@ NEXT_PUBLIC_DAO=<DEPLOY_IN_STEP_1>
 NEXT_PUBLIC_AUCTION_HOUSE=<DEPLOY_IN_STEP_1>
 
 # Configuration
-NEXT_PUBLIC_CLAWDIA_ADDRESS=0x84d5e34Ad1a91cF2ECAD071a65948fa48F1B4216
+NEXT_PUBLIC_CLAWDIA_ADDRESS=0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 NEXT_PUBLIC_AUCTION_DURATION=43200
 NEXT_PUBLIC_TIMELOCK_DELAY=43200
 ```
