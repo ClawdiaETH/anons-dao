@@ -180,7 +180,7 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
                     <span className="font-bold text-gray-900">Clawdia&apos;s genesis Anon.</span>
                   </p>
                   <p className="text-sm">
-                    Auctions will begin once the contracts are deployed to Base mainnet.
+                    Auctions will begin shortly.
                   </p>
                   <div className="pt-4 border-t border-gray-200">
                     <h3 className="font-bold text-gray-900 mb-2 text-sm">How it works</h3>
