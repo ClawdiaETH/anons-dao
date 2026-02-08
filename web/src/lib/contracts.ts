@@ -1,9 +1,14 @@
 import { Abi } from 'viem'
 
-// Contract addresses from environment
-export const AUCTION_HOUSE_ADDRESS = process.env.NEXT_PUBLIC_AUCTION_HOUSE_ADDRESS as `0x${string}` | undefined
-export const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS as `0x${string}` | undefined
-export const DAO_ADDRESS = process.env.NEXT_PUBLIC_DAO_ADDRESS as `0x${string}` | undefined
+// Contract addresses (Base Mainnet)
+// Deployed: 2026-02-08
+export const AUCTION_HOUSE_ADDRESS = '0x66B49eC609E3c4ccEbeA9Ff102Cab9dB4BED66d3' as `0x${string}`
+export const TOKEN_ADDRESS = '0xa50267bA8c00439014794f8f2F5c3C6D38865975' as `0x${string}`
+export const DAO_ADDRESS = '0x5498bCF9efE4C021c0e4CF8CA62464123A72259c' as `0x${string}`
+export const DESCRIPTOR_ADDRESS = '0x878229a901DA76BF7C7D35eBEaC9B42715E9FA05' as `0x${string}`
+export const SEEDER_ADDRESS = '0x7C5fd3b7B4948c281a2F24c28291b56e0118c6d8' as `0x${string}`
+export const TIMELOCK_ADDRESS = '0x7c415B8962063A23EA21AE310E4D69C87F028F02' as `0x${string}`
+export const ERC8004_REGISTRY_ADDRESS = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c' as `0x${string}`
 
 // Minimal ABIs for reading contract state
 export const auctionHouseABI: Abi = [
