@@ -8,6 +8,7 @@ import {AnonsSeeder} from "../src/AnonsSeeder.sol";
 import {AnonsAuctionHouse} from "../src/AnonsAuctionHouse.sol";
 import {AnonsDAO} from "../src/AnonsDAO.sol";
 import {MockERC8004Registry} from "../test/mocks/MockERC8004Registry.sol";
+import {MockWETH} from "../test/mocks/MockWETH.sol";
 import {IAnonsSeeder} from "../src/interfaces/IAnonsSeeder.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {TraitData} from "./TraitData.sol";
@@ -23,6 +24,7 @@ contract DeployLocal is Script {
     AnonsDAO public dao;
     AnonsAuctionHouse public auctionHouse;
     MockERC8004Registry public registry;
+    MockWETH public weth;
 
     // Configuration
     address public clawdia;
@@ -46,9 +48,11 @@ contract DeployLocal is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // 1. Deploy mock ERC-8004 registry
+        // 1. Deploy mock ERC-8004 registry and WETH
         registry = new MockERC8004Registry();
+        weth = new MockWETH();
         console.log("MockERC8004Registry deployed:", address(registry));
+        console.log("MockWETH deployed:", address(weth));
 
         // 2. Deploy AnonsDescriptor
         descriptor = new AnonsDescriptor();
@@ -79,7 +83,7 @@ contract DeployLocal is Script {
         console.log("AnonsDAO deployed:", address(dao));
 
         // 8. Deploy AnonsAuctionHouse
-        auctionHouse = new AnonsAuctionHouse(token, registry, address(timelock), clawdia);
+        auctionHouse = new AnonsAuctionHouse(token, registry, weth, address(timelock), clawdia);
         console.log("AnonsAuctionHouse deployed:", address(auctionHouse));
 
         // 9. Configure permissions

@@ -7,8 +7,12 @@ import {AnonsDAO} from "../src/AnonsDAO.sol";
 import {AnonsAuctionHouse} from "../src/AnonsAuctionHouse.sol";
 import {AnonsToken} from "../src/AnonsToken.sol";
 import {IERC8004Registry} from "../src/interfaces/IERC8004Registry.sol";
+import {IWETH} from "../src/interfaces/IWETH.sol";
 
 contract DeployRemaining is Script {
+    // Base Sepolia WETH address
+    address constant WETH = 0x4200000000000000000000000000000000000006;
+    
     function run() external {
         // Load from environment
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -50,6 +54,7 @@ contract DeployRemaining is Script {
         AnonsAuctionHouse auction = new AnonsAuctionHouse(
             token,
             registry,
+            IWETH(WETH),
             address(timelock),
             clawdia
         );

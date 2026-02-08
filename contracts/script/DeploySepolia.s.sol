@@ -9,6 +9,7 @@ import {AnonsAuctionHouse} from "../src/AnonsAuctionHouse.sol";
 import {AnonsDAO} from "../src/AnonsDAO.sol";
 import {IERC8004Registry} from "../src/interfaces/IERC8004Registry.sol";
 import {IAnonsSeeder} from "../src/interfaces/IAnonsSeeder.sol";
+import {IWETH} from "../src/interfaces/IWETH.sol";
 import {MockERC8004Registry} from "../test/mocks/MockERC8004Registry.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {TraitData} from "./TraitData.sol";
@@ -27,6 +28,7 @@ contract DeploySepolia is Script {
 
     // Configuration
     address public clawdia;
+    address public constant WETH = 0x4200000000000000000000000000000000000006; // Base Sepolia WETH
     uint256 public timelockDelay = 12 hours; // Shorter for testnet
     IAnonsSeeder.Seed public clawdiaSeed;
 
@@ -102,6 +104,7 @@ contract DeploySepolia is Script {
         auctionHouse = new AnonsAuctionHouse(
             token,
             IERC8004Registry(address(registry)),
+            IWETH(WETH),
             address(timelock), // Treasury
             clawdia // Creator
         );

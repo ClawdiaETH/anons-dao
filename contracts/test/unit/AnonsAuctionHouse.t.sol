@@ -7,6 +7,7 @@ import {AnonsToken} from "../../src/AnonsToken.sol";
 import {AnonsDescriptor} from "../../src/AnonsDescriptor.sol";
 import {AnonsSeeder} from "../../src/AnonsSeeder.sol";
 import {MockERC8004Registry} from "../mocks/MockERC8004Registry.sol";
+import {MockWETH} from "../mocks/MockWETH.sol";
 import {IAnonsAuctionHouse} from "../../src/interfaces/IAnonsAuctionHouse.sol";
 import {IAnonsSeeder} from "../../src/interfaces/IAnonsSeeder.sol";
 
@@ -16,6 +17,7 @@ contract AnonsAuctionHouseTest is Test {
     AnonsDescriptor public descriptor;
     AnonsSeeder public seeder;
     MockERC8004Registry public registry;
+    MockWETH public weth;
 
     address public owner;
     address public clawdia = address(0xC1a0d1a);
@@ -31,6 +33,7 @@ contract AnonsAuctionHouseTest is Test {
         descriptor = new AnonsDescriptor();
         seeder = new AnonsSeeder();
         registry = new MockERC8004Registry();
+        weth = new MockWETH();
 
         // Set up minimal descriptor
         string[] memory pal = new string[](2);
@@ -71,7 +74,7 @@ contract AnonsAuctionHouseTest is Test {
         });
         token = new AnonsToken(clawdia, descriptor, seeder, clawdiaSeed);
 
-        auctionHouse = new AnonsAuctionHouse(token, registry, treasury, clawdia);
+        auctionHouse = new AnonsAuctionHouse(token, registry, weth, treasury, clawdia);
 
         // Set auction house as minter
         token.setMinter(address(auctionHouse));

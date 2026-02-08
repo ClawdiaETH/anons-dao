@@ -8,6 +8,7 @@ import {AnonsDescriptor} from "../../src/AnonsDescriptor.sol";
 import {AnonsSeeder} from "../../src/AnonsSeeder.sol";
 import {AnonsAuctionHouse} from "../../src/AnonsAuctionHouse.sol";
 import {MockERC8004Registry} from "../mocks/MockERC8004Registry.sol";
+import {MockWETH} from "../mocks/MockWETH.sol";
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {IGovernor} from "@openzeppelin/contracts/governance/IGovernor.sol";
 import {IAnonsSeeder} from "../../src/interfaces/IAnonsSeeder.sol";
@@ -22,6 +23,7 @@ contract FullLoopTest is Test {
     AnonsSeeder public seeder;
     AnonsAuctionHouse public auctionHouse;
     MockERC8004Registry public registry;
+    MockWETH public weth;
     TimelockController public timelock;
 
     address public owner;
@@ -51,8 +53,9 @@ contract FullLoopTest is Test {
         });
         token = new AnonsToken(clawdia, descriptor, seeder, clawdiaSeed);
 
-        // Deploy registry
+        // Deploy registry and WETH
         registry = new MockERC8004Registry();
+        weth = new MockWETH();
 
         // Deploy timelock
         address[] memory proposers = new address[](0);
@@ -66,7 +69,7 @@ contract FullLoopTest is Test {
         dao = new AnonsDAO(token, registry, timelock, clawdia);
 
         // Deploy auction house
-        auctionHouse = new AnonsAuctionHouse(token, registry, treasury, clawdia);
+        auctionHouse = new AnonsAuctionHouse(token, registry, weth, treasury, clawdia);
 
         // Configure permissions
         token.setMinter(address(auctionHouse));
