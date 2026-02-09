@@ -12,7 +12,6 @@ import { useState } from 'react'
 
 export function AuctionHero() {
   const { auction, isLoading, error } = useAuction()
-  const { bids } = useBidHistory(auction?.anonId)
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
 
   // Placeholder state - show Clawdia's Anon #0
@@ -21,9 +20,23 @@ export function AuctionHero() {
     return <AuctionHeroPlaceholder isLoading={isLoading} error={error} />
   }
 
+  // Fetch bid history from events
+  const { bids: eventBids, isLoading: bidsLoading } = useBidHistory(auction.anonId)
+
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEther(auction.amount) : '0.01'
-  const hasBids = bids.length > 0
+  
+  // Fallback: if event fetching fails/is empty but we have a current bid, show it
+  const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
+  const currentBidData = hasBids ? [{
+    bidder: auction.bidder,
+    amount: auction.amount,
+    timestamp: Math.floor(Date.now() / 1000),
+    extended: false,
+  }] : []
+  
+  // Use event bids if available, otherwise fallback to current bid
+  const bids = eventBids.length > 0 ? eventBids : currentBidData
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
@@ -83,8 +96,11 @@ export function AuctionHero() {
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-gray-900 text-sm">Recent bids</h3>
+                {bidsLoading && eventBids.length === 0 && (
+                  <span className="text-xs text-gray-400">Loading history...</span>
+                )}
               </div>
-              {hasBids ? (
+              {bids.length > 0 ? (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
@@ -95,12 +111,14 @@ export function AuctionHero() {
                     </div>
                     <span className="font-bold">Ξ {formatEther(bids[0].amount)}</span>
                   </div>
-                  <button 
-                    onClick={() => setIsBidModalOpen(true)}
-                    className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
-                  >
-                    View all {bids.length} bid{bids.length !== 1 ? 's' : ''}
-                  </button>
+                  {bids.length > 1 && (
+                    <button 
+                      onClick={() => setIsBidModalOpen(true)}
+                      className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
+                    >
+                      View all {bids.length} bids
+                    </button>
+                  )}
                 </div>
               ) : (
                 <p className="text-gray-400 text-sm text-center py-4">
