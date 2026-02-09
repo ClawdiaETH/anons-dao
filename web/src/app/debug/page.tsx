@@ -36,7 +36,7 @@ export default function DebugPage() {
         {data && (
           <div className="space-y-2 font-mono text-sm">
             <pre className="bg-gray-100 p-4 rounded overflow-x-auto">
-              {JSON.stringify(data, (_, v) => typeof v === 'bigint' ? v.toString() : v, 2)}
+              {JSON.stringify(data as any, (_, v) => typeof v === 'bigint' ? v.toString() : v, 2)}
             </pre>
           </div>
         )}
