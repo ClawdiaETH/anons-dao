@@ -2,30 +2,47 @@ import { createConfig, http, fallback } from 'wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
 
 /**
- * RPC Configuration with fallbacks
- * Multiple endpoints ensure reliability if one fails
+ * RPC Configuration
+ * Uses multiple fallback RPCs for maximum reliability
  */
 
-// Base Mainnet RPCs (in priority order)
-const BASE_RPCS = [
-  process.env.NEXT_PUBLIC_BASE_RPC_URL, // Custom RPC (if set)
-  'https://mainnet.base.org',           // Base official RPC
-  'https://base.llamarpc.com',          // LlamaRPC
-  'https://base.blockpi.network/v1/rpc/public', // BlockPI
-].filter(Boolean) as string[]
-
-// Base Sepolia RPCs (in priority order)
-const BASE_SEPOLIA_RPCS = [
-  'https://sepolia.base.org',           // Base official RPC
-  'https://base-sepolia.blockpi.network/v1/rpc/public', // BlockPI
-]
+// Debug: Log RPC being used (only in browser)
+if (typeof window !== 'undefined') {
+  console.log('[wagmi] Using fallback RPC configuration with multiple endpoints')
+}
 
 export const config = createConfig({
   chains: [base, baseSepolia],
   transports: {
-    // Fallback: tries RPCs in order until one succeeds
-    [base.id]: fallback(BASE_RPCS.map(url => http(url))),
-    [baseSepolia.id]: fallback(BASE_SEPOLIA_RPCS.map(url => http(url))),
+    [base.id]: fallback([
+      http('https://mainnet.base.org', {
+        batch: false,
+        retryCount: 2,
+        timeout: 8_000,
+      }),
+      http('https://base.gateway.tenderly.co', {
+        batch: false,
+        retryCount: 2,
+        timeout: 8_000,
+      }),
+      http('https://base-rpc.publicnode.com', {
+        batch: false,
+        retryCount: 2,
+        timeout: 8_000,
+      }),
+      http('https://1rpc.io/base', {
+        batch: false,
+        retryCount: 2,
+        timeout: 8_000,
+      }),
+    ], {
+      rank: true, // Auto-rank RPCs by performance
+    }),
+    [baseSepolia.id]: http('https://sepolia.base.org', {
+      batch: false,
+      retryCount: 3,
+      timeout: 10_000,
+    }),
   },
   // Auto-detects injected wallet connectors (MetaMask, etc)
   ssr: true,
