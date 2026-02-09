@@ -12,7 +12,7 @@ export const DAO_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B' as `0x${
 export const ERC8004_REGISTRY_ADDRESS = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c' as `0x${string}`
 
 // Minimal ABIs for reading contract state
-export const auctionHouseABI: Abi = [
+export const auctionHouseABI = [
   {
     name: 'auction',
     type: 'function',
@@ -22,14 +22,15 @@ export const auctionHouseABI: Abi = [
       {
         name: '',
         type: 'tuple',
+        internalType: 'struct IAnonsAuctionHouse.Auction',
         components: [
-          { name: 'anonId', type: 'uint256' },
-          { name: 'amount', type: 'uint256' },
-          { name: 'startTime', type: 'uint256' },
-          { name: 'endTime', type: 'uint256' },
-          { name: 'bidder', type: 'address' },
-          { name: 'settled', type: 'bool' },
-          { name: 'isDusk', type: 'bool' },
+          { name: 'anonId', type: 'uint256', internalType: 'uint256' },
+          { name: 'amount', type: 'uint256', internalType: 'uint256' },
+          { name: 'startTime', type: 'uint256', internalType: 'uint256' },
+          { name: 'endTime', type: 'uint256', internalType: 'uint256' },
+          { name: 'bidder', type: 'address', internalType: 'address payable' },
+          { name: 'settled', type: 'bool', internalType: 'bool' },
+          { name: 'isDusk', type: 'bool', internalType: 'bool' },
         ],
       },
     ],
@@ -60,7 +61,7 @@ export const auctionHouseABI: Abi = [
   },
 ] as const
 
-export const tokenABI: Abi = [
+export const tokenABI = [
   {
     name: 'tokenURI',
     type: 'function',
