@@ -48,4 +48,5 @@ export const config = createConfig({
   ssr: true,
 })
 
-export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || base.id
+// HARDCODED TO BASE MAINNET (8453) - all contracts deployed here
+export const CHAIN_ID = base.id
