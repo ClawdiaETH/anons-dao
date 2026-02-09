@@ -32,10 +32,9 @@ contract Deploy is Script {
     IAnonsSeeder.Seed public clawdiaSeed;
 
     function run() external {
-        // Load environment variables
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        erc8004Registry = vm.envAddress("ERC8004_REGISTRY_ADDRESS");
-        clawdia = vm.envAddress("CLAWDIA_ADDRESS");
+        // Load environment variables (or use defaults)
+        erc8004Registry = vm.envOr("ERC8004_REGISTRY_ADDRESS", address(0x00256C0D814c455425A0699D5eEE2A7DB7A5519c));
+        clawdia = vm.envOr("CLAWDIA_ADDRESS", address(0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9));
 
         require(erc8004Registry != address(0), "ERC8004_REGISTRY_ADDRESS not set");
         require(clawdia != address(0), "CLAWDIA_ADDRESS not set");
@@ -43,13 +42,13 @@ contract Deploy is Script {
         // Load Clawdia's Anon #0 seed (trait indices)
         // These determine the appearance of Clawdia's founder NFT
         clawdiaSeed = IAnonsSeeder.Seed({
-            background: uint8(vm.envOr("CLAWDIA_BACKGROUND", uint256(0))),
-            head: uint8(vm.envOr("CLAWDIA_HEAD", uint256(0))),
-            visor: uint8(vm.envOr("CLAWDIA_VISOR", uint256(0))),
-            antenna: uint8(vm.envOr("CLAWDIA_ANTENNA", uint256(0))),
-            body: uint8(vm.envOr("CLAWDIA_BODY", uint256(0))),
-            accessory: uint8(vm.envOr("CLAWDIA_ACCESSORY", uint256(0))),
-            isDusk: vm.envOr("CLAWDIA_IS_DUSK", false)
+            background: uint8(vm.envOr("CLAWDIA_BACKGROUND", uint256(1))),
+            head: uint8(vm.envOr("CLAWDIA_HEAD", uint256(48))),
+            visor: uint8(vm.envOr("CLAWDIA_VISOR", uint256(7))),
+            antenna: uint8(vm.envOr("CLAWDIA_ANTENNA", uint256(3))),
+            body: uint8(vm.envOr("CLAWDIA_BODY", uint256(7))),
+            accessory: uint8(vm.envOr("CLAWDIA_ACCESSORY", uint256(69))),
+            isDusk: vm.envOr("CLAWDIA_IS_DUSK", true)
         });
 
         console.log("Deploying Anons DAO to Base mainnet");
@@ -64,7 +63,7 @@ contract Deploy is Script {
         console.log("  accessory:", clawdiaSeed.accessory);
         console.log("  isDusk:", clawdiaSeed.isDusk);
 
-        vm.startBroadcast(deployerPrivateKey);
+        vm.startBroadcast(); // Uses --private-key from command line
 
         // 1. Deploy AnonsDescriptor
         descriptor = new AnonsDescriptor();

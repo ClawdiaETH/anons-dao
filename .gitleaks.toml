@@ -1,0 +1,33 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist for test/example files"
+paths = [
+  '''\.example$''',
+  '''README\.md$''',
+]
+
+[[rules]]
+id = "alchemy-api-key"
+description = "Alchemy API Key"
+regex = '''alchemy\.com/v2/[A-Za-z0-9_-]{20,}'''
+tags = ["key", "API", "alchemy"]
+
+[[rules]]
+id = "basescan-api-key"
+description = "Basescan/Etherscan API Key"
+regex = '''[A-Z0-9]{34}'''
+tags = ["key", "API", "etherscan"]
+
+[[rules]]
+id = "private-key"
+description = "Ethereum Private Key"
+regex = '''0x[a-fA-F0-9]{64}'''
+tags = ["key", "secret", "private"]
+
+[[rules]]
+id = "partial-private-key"
+description = "Partial Private Key"
+regex = '''0x[a-fA-F0-9]{4,8}\.\.\.'''
+tags = ["key", "secret"]

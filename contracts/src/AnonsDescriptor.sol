@@ -36,6 +36,14 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
     address[] private _bodies;
     address[] private _accessories;
 
+    /// @notice Trait names (parallel arrays to trait data)
+    string[] private _headNames;
+    string[] private _specsNames;
+    string[] private _antennaNames;
+    string[] private _bodyNames;
+    string[] private _accessoryNames;
+    string[] private _backgroundNames;
+
     constructor() Ownable(msg.sender) {}
 
     modifier whenNotLocked() {
@@ -113,6 +121,66 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
     }
 
     /// @inheritdoc IAnonsDescriptor
+    function setBackgroundNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _backgroundNames;
+        for (uint256 i = 0; i < names.length;) {
+            _backgroundNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
+    function setHeadNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _headNames;
+        for (uint256 i = 0; i < names.length;) {
+            _headNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
+    function setSpecsNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _specsNames;
+        for (uint256 i = 0; i < names.length;) {
+            _specsNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
+    function setAntennaNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _antennaNames;
+        for (uint256 i = 0; i < names.length;) {
+            _antennaNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
+    function setBodyNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _bodyNames;
+        for (uint256 i = 0; i < names.length;) {
+            _bodyNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
+    function setAccessoryNames(string[] calldata names) external override onlyOwner whenNotLocked {
+        if (names.length == 0) revert EmptyData();
+        delete _accessoryNames;
+        for (uint256 i = 0; i < names.length;) {
+            _accessoryNames.push(names[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @inheritdoc IAnonsDescriptor
     function addManyHeads(bytes[] calldata traitsData) external override onlyOwner whenNotLocked {
         _addMany(_heads, traitsData);
     }
@@ -184,22 +252,31 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
 
         string memory image = generateSVGImage(seed);
 
+        // Get trait names, falling back to numbers if names not set
+        uint256 bgIndex = seed.background % (backgrounds.length / 2);
+        string memory backgroundName = _getTraitName(_backgroundNames, bgIndex, seed.background);
+        string memory headName = _getTraitName(_headNames, seed.head % _heads.length, seed.head);
+        string memory specsName = _getTraitName(_specsNames, seed.visor % _specs.length, seed.visor);
+        string memory antennaName = _getTraitName(_antennaNames, seed.antenna % _antenna.length, seed.antenna);
+        string memory bodyName = _getTraitName(_bodyNames, seed.body % _bodies.length, seed.body);
+        string memory accessoryName = _getTraitName(_accessoryNames, seed.accessory % _accessories.length, seed.accessory);
+
         string memory attributes = string(
             abi.encodePacked(
                 '[{"trait_type":"Cycle","value":"',
                 seed.isDusk ? "Dusk" : "Dawn",
                 '"},{"trait_type":"Background","value":"',
-                NFTDescriptor.toString(seed.background),
+                backgroundName,
                 '"},{"trait_type":"Head","value":"',
-                NFTDescriptor.toString(seed.head),
+                headName,
                 '"},{"trait_type":"Specs","value":"',
-                NFTDescriptor.toString(seed.visor),
+                specsName,
                 '"},{"trait_type":"Antenna","value":"',
-                NFTDescriptor.toString(seed.antenna),
+                antennaName,
                 '"},{"trait_type":"Body","value":"',
-                NFTDescriptor.toString(seed.body),
+                bodyName,
                 '"},{"trait_type":"Accessory","value":"',
-                NFTDescriptor.toString(seed.accessory),
+                accessoryName,
                 '"}]'
             )
         );
@@ -212,6 +289,17 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
     function _getPointer(address[] storage arr, uint8 id) internal view returns (address) {
         if (arr.length == 0) return address(0);
         return arr[id % arr.length];
+    }
+
+    /// @notice Gets the trait name for a given index, falling back to the number if no name is set
+    /// @param names The array of names
+    /// @param index The effective index (already modulo'd to array length)
+    /// @param rawValue The original seed value (used as fallback)
+    function _getTraitName(string[] storage names, uint256 index, uint256 rawValue) internal view returns (string memory) {
+        if (names.length > index && bytes(names[index]).length > 0) {
+            return names[index];
+        }
+        return NFTDescriptor.toString(rawValue);
     }
 
     /// @notice Decodes scan-line RLE data and generates SVG rects using the global palette
@@ -261,9 +349,8 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
         return string(result);
     }
 
-    /// @notice Decodes scan-line RLE specs data — all non-transparent pixels use the visor glow color
-    /// @dev Specs use the same RLE format but ignore palette colors, using a single glow color instead.
-    ///      The glow color is derived from the first non-transparent color in the trait data.
+    /// @notice Decodes scan-line RLE specs data using palette colors
+    /// @dev Specs now render with their actual palette colors for gradient effects
     function _generateSpecs(address pointer) internal view returns (string memory) {
         if (pointer == address(0)) return "";
 
@@ -275,21 +362,6 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
         // data[2] = bottom (unused — stream terminates naturally)
         uint256 left = uint256(uint8(data[3]));
 
-        // Find the first non-transparent color to use as the glow color
-        string memory glowColor = "";
-        {
-            uint256 scan = 4;
-            while (scan + 1 < data.length) {
-                uint256 ci = uint256(uint8(data[scan + 1]));
-                if (ci != 0 && ci <= palette.length) {
-                    glowColor = palette[ci - 1];
-                    break;
-                }
-                scan += 2;
-            }
-        }
-        if (bytes(glowColor).length == 0) return "";
-
         bytes memory result;
         uint256 cursor = 4;
         uint256 x = left;
@@ -300,7 +372,7 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
             uint256 colorIdx = uint256(uint8(data[cursor + 1]));
             cursor += 2;
 
-            if (colorIdx != 0) {
+            if (colorIdx != 0 && colorIdx <= palette.length) {
                 result = abi.encodePacked(
                     result,
                     NFTDescriptor.generateRect(
@@ -308,7 +380,7 @@ contract AnonsDescriptor is IAnonsDescriptor, Ownable2Step {
                         y * SCALE,
                         runLength * SCALE,
                         1 * SCALE,
-                        glowColor
+                        palette[colorIdx - 1]
                     )
                 );
             }

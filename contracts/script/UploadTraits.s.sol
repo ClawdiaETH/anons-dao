@@ -14,11 +14,12 @@ contract UploadTraits is Script {
     uint256 constant BATCH_SIZE_LARGE = 5;   // For heads, accessories
     
     function setUp() public {
-        descriptor = AnonsDescriptor(0x099cC999dd431DE6529Fbb516e8C59aB0CEcdDe8);
+        descriptor = AnonsDescriptor(0xd29F7491E2269Ba1f6f7B89ff3Bbe6A65301e9AF);
     }
     
     function run() public {
-        vm.startBroadcast();
+        uint256 pk = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(pk);
         
         // 1. Upload palette
         console2.log("1. Uploading palette...");
