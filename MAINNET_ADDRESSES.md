@@ -1,79 +1,87 @@
 # Anons DAO - Base Mainnet Addresses
 
-**Deployment Date:** 2026-02-08  
-**Deployment Script:** `DeployNoTraits.s.sol` + separate trait uploads  
-**Status:** ✅ DEPLOYED & PAUSED - Ready to launch
+**Deployment Date:** 2026-02-08 (20:15 CST)  
+**Deployment Script:** `DeployNoTraits.s.sol` with security fixes  
+**Status:** ✅ DEPLOYED & PAUSED - Need to upload traits
 
 ---
 
-## Contract Addresses
+## 🔒 Security Fixes Applied
+
+✅ **Quorum fixed** - Dynamic quorum: `max(10% of supply, 3)`  
+✅ **Veto mechanism fixed** - `state()` checks `_vetoedProposals` first  
+✅ **Bounds checks added** - All auction parameters validated  
+✅ **Git secrets purged** - Cleaned with BFG Repo Cleaner
+
+---
+
+## Contract Addresses (v2 - SECURITY FIXED)
 
 | Contract | Address | Status |
 |----------|---------|--------|
-| **AnonsToken** | `0x813d1d56457bd4697abedb835435691b187eedc4` | ✅ Anon #0 minted |
-| **AnonsDescriptor** | `0xc45f4894f769602e1fdc888c935b294188a98064` | ✅ All traits uploaded |
-| **AnonsSeeder** | `0x3a62109ccad858907a5750b906618ea7b433d3a3` | ✅ Deployed |
-| **AnonsAuctionHouse** | `0x7c5fd3b7b4948c281a2f24c28291b56e0118c6d8` | ⏸️  PAUSED |
-| **TimelockController** | `0xc6a182c0693726e01d1963c0dd5eb8368d9e8728` | ✅ Deployed |
-| **AnonsDAO** | `0xb86da1a24f93c6fb1027762909e1e11f8b1f3851` | ✅ Deployed |
-| **ERC8004 Registry** | `0x00256C0D814c455425A0699D5eEE2A7DB7A5519c` | ✅ Mock deployed |
+| **AnonsToken** | `0x1ad890FCE6cB865737A3411E7d04f1F5668b0686` | ✅ Anon #0 minted |
+| **AnonsDescriptor** | `0x7A6ebCD98381bB736F2451eb205e1cfD86bb6b9e` | ⏳ Needs trait upload |
+| **AnonsSeeder** | `0xDFb06e78e517C46f071aef418d0181FfeAe84E2A` | ✅ Deployed |
+| **AnonsAuctionHouse** | `0x51f5a9252A43F89D8eE9D5616263f46a0E02270F` | ⏸️  PAUSED |
+| **TimelockController** | `0x167b2f7Ce609Bf0117A148e6460A4Ca943f6dF32` | ✅ Deployed |
+| **AnonsDAO** | `0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B` | ✅ Deployed |
+| **ERC8004 Registry** | `0x00256C0D814c455425A0699D5eEE2A7DB7A5519c` | ✅ Live on Base |
 
 ---
 
 ## OpenSea & Block Explorers
 
-- **Anon #0 on OpenSea**: https://opensea.io/assets/base/0x813d1d56457bd4697abedb835435691b187eedc4/0
-- **Token on BaseScan**: https://basescan.org/address/0x813d1d56457bd4697abedb835435691b187eedc4
-- **AuctionHouse on BaseScan**: https://basescan.org/address/0x7c5fd3b7b4948c281a2f24c28291b56e0118c6d8
-- **DAO on BaseScan**: https://basescan.org/address/0xb86da1a24f93c6fb1027762909e1e11f8b1f3851
+- **Anon #0 on OpenSea**: https://opensea.io/assets/base/0x1ad890FCE6cB865737A3411E7d04f1F5668b0686/0
+- **Token on BaseScan**: https://basescan.org/address/0x1ad890FCE6cB865737A3411E7d04f1F5668b0686
+- **AuctionHouse on BaseScan**: https://basescan.org/address/0x51f5a9252A43F89D8eE9D5616263f46a0E02270F
+- **DAO on BaseScan**: https://basescan.org/address/0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B
 
 ---
 
-## Launch Command
+## Next Steps (Before Launch)
 
-**To start the first auction (Anon #1), run:**
+1. **Upload traits** to descriptor:
+   ```bash
+   cd /Users/starl3xx/Projects/anons-dao/contracts
+   forge script script/UploadPalette.s.sol --rpc-url https://mainnet.base.org --private-key $(cat ~/.clawdbot/secrets/signing_key) --broadcast
+   # Then UploadBackgrounds, UploadHeads, UploadBodies, UploadSpecs, UploadAntenna, UploadAccessories, UploadTraitNames
+   ```
 
-```bash
-cast send 0x7c5fd3b7b4948c281a2f24c28291b56e0118c6d8 "unpause()" \
-  --private-key $(cat ~/.clawdbot/secrets/signing_key) \
-  --rpc-url https://mainnet.base.org
-```
+2. **Verify contracts on Basescan**
 
-This will:
-1. Unpause the auction house
-2. Automatically create Anon #1
-3. Start the 12-hour auction
+3. **Test unpause on local fork**
 
----
+4. **Update frontend** with new addresses
 
-## Verification Status
-
-- [ ] Verify contracts on BaseScan
-- [ ] Transfer ownership to timelock (MANUAL STEP after verification)
-- [ ] Test unpause on local fork before mainnet
-- [ ] Prep agent outreach (AGENT_OUTREACH_LIST.md)
-- [ ] Draft launch announcements
-
----
-
-## Launch Promo
-
-**First 3 winners get 50% refund:**
-- Win for 0.2 ETH → Get 0.1 ETH back
-- Tracked in LAUNCH_PROMO_TRACKER.md
+5. **Launch** when ready:
+   ```bash
+   cast send 0x51f5a9252A43F89D8eE9D5616263f46a0E02270F "unpause()" \
+     --private-key $(cat ~/.clawdbot/secrets/signing_key) \
+     --rpc-url https://mainnet.base.org
+   ```
 
 ---
 
 ## Key Configuration
 
 - **Auction Duration**: 12 hours (43200 seconds)
-- **Reserve Price**: TBD (check contract)
+- **Reserve Price**: 0.01 ETH
 - **Min Bid Increment**: 5%
-- **Timelock Delay**: 2 days
+- **Timelock Delay**: 1 day
 - **Proposal Threshold**: 1 Anon
-- **Quorum**: 1 Anon
+- **Quorum**: max(10% of supply, 3) ← **FIXED**
 - **Revenue Split**: 95% DAO treasury, 5% Clawdia
 
 ---
 
-*This deployment is LIVE on Base mainnet and ready to launch when you call unpause().*
+## Governance Security Features
+
+✅ **Dynamic Quorum** - Requires 10% of supply OR minimum 3 votes  
+✅ **Veto Power** - Clawdia can veto any proposal during bootstrap  
+✅ **Parameter Bounds** - Auction settings have min/max limits  
+✅ **Timelock Delay** - 1 day between proposal approval and execution  
+✅ **Agent Gating** - ERC-8004 registration required for bidding/voting
+
+---
+
+*This deployment includes all Phase 1 & 2 security fixes and is ready for trait upload + launch.*
