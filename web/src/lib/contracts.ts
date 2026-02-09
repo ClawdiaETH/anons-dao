@@ -11,54 +11,55 @@ export const TIMELOCK_ADDRESS = '0x167b2f7Ce609Bf0117A148e6460A4Ca943f6dF32' as 
 export const DAO_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B' as `0x${string}`
 export const ERC8004_REGISTRY_ADDRESS = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c' as `0x${string}`
 
-// Minimal ABIs for reading contract state
+// ABI from compiled contract
 export const auctionHouseABI: Abi = [
   {
-    name: 'auction',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [
+    "type": "function",
+    "name": "auction",
+    "inputs": [],
+    "outputs": [
       {
-        name: '',
-        type: 'tuple',
-        internalType: 'struct IAnonsAuctionHouse.Auction',
-        components: [
-          { name: 'anonId', type: 'uint256', internalType: 'uint256' },
-          { name: 'amount', type: 'uint256', internalType: 'uint256' },
-          { name: 'startTime', type: 'uint256', internalType: 'uint256' },
-          { name: 'endTime', type: 'uint256', internalType: 'uint256' },
-          { name: 'bidder', type: 'address', internalType: 'address payable' },
-          { name: 'settled', type: 'bool', internalType: 'bool' },
-          { name: 'isDusk', type: 'bool', internalType: 'bool' },
-        ],
-      },
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IAnonsAuctionHouse.Auction",
+        "components": [
+          { "name": "anonId", "type": "uint256", "internalType": "uint256" },
+          { "name": "amount", "type": "uint256", "internalType": "uint256" },
+          { "name": "startTime", "type": "uint256", "internalType": "uint256" },
+          { "name": "endTime", "type": "uint256", "internalType": "uint256" },
+          { "name": "bidder", "type": "address", "internalType": "address payable" },
+          { "name": "settled", "type": "bool", "internalType": "bool" },
+          { "name": "isDusk", "type": "bool", "internalType": "bool" }
+        ]
+      }
     ],
+    "stateMutability": "view"
   },
   {
-    name: 'duration',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ name: '', type: 'uint256' }],
+    "type": "function",
+    "name": "duration",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
   },
   {
-    name: 'reservePrice',
-    type: 'function',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [{ name: '', type: 'uint256' }],
+    "type": "function",
+    "name": "reservePrice",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
   },
   {
-    name: 'AuctionBid',
-    type: 'event',
-    inputs: [
-      { name: 'anonId', type: 'uint256', indexed: true },
-      { name: 'bidder', type: 'address', indexed: true },
-      { name: 'amount', type: 'uint256', indexed: false },
-      { name: 'extended', type: 'bool', indexed: false },
+    "type": "event",
+    "name": "AuctionBid",
+    "inputs": [
+      { "name": "anonId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+      { "name": "bidder", "type": "address", "indexed": true, "internalType": "address" },
+      { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" },
+      { "name": "extended", "type": "bool", "indexed": false, "internalType": "bool" }
     ],
-  },
+    "anonymous": false
+  }
 ] as const
 
 export const tokenABI: Abi = [
