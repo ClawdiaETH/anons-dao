@@ -226,7 +226,7 @@ CLAWDIA_IS_DUSK=false
 
 ## Network Information
 
-- **RPC URL:** `https://base-sepolia.g.alchemy.com/v2/***REMOVED_ALCHEMY_KEY***`
+- **RPC URL:** `https://base-sepolia.g.alchemy.com/v2/[REDACTED_ALCHEMY_KEY]`
 - **Chain ID:** 84532
 - **Block Explorer:** https://sepolia.basescan.org/
 - **Faucet:** https://www.alchemy.com/faucets/base-sepolia

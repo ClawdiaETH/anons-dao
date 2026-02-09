@@ -17,7 +17,7 @@
 ### Configuration
 
 - **Network**: Base Sepolia
-- **RPC URL**: https://base-sepolia.g.alchemy.com/v2/***REMOVED_ALCHEMY_KEY***
+- **RPC URL**: https://base-sepolia.g.alchemy.com/v2/[REDACTED_ALCHEMY_KEY]
 - **Deployer**: 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 - **Clawdia (Founder)**: 0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9
 - **Timelock Delay**: 12 hours (43200 seconds)

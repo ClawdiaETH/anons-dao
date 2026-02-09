@@ -39,6 +39,30 @@ interface IAnonsDescriptor {
     /// @param colors Array of 6-char hex color strings
     function setBackgrounds(string[] calldata colors) external;
 
+    /// @notice Sets the background names
+    /// @param names Array of background names
+    function setBackgroundNames(string[] calldata names) external;
+
+    /// @notice Sets the head names
+    /// @param names Array of head names
+    function setHeadNames(string[] calldata names) external;
+
+    /// @notice Sets the specs names
+    /// @param names Array of specs names
+    function setSpecsNames(string[] calldata names) external;
+
+    /// @notice Sets the antenna names
+    /// @param names Array of antenna names
+    function setAntennaNames(string[] calldata names) external;
+
+    /// @notice Sets the body names
+    /// @param names Array of body names
+    function setBodyNames(string[] calldata names) external;
+
+    /// @notice Sets the accessory names
+    /// @param names Array of accessory names
+    function setAccessoryNames(string[] calldata names) external;
+
     /// @notice Batch add heads
     /// @param traitsData Array of RLE-encoded head data
     function addManyHeads(bytes[] calldata traitsData) external;

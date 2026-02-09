@@ -297,7 +297,7 @@ Update `/Users/starl3xx/Projects/anons-dao/web/.env.example`:
 ```env
 # Base Sepolia Testnet
 NEXT_PUBLIC_CHAIN_ID=84532
-NEXT_PUBLIC_RPC_URL=https://base-sepolia.g.alchemy.com/v2/***REMOVED_ALCHEMY_KEY***
+NEXT_PUBLIC_RPC_URL=https://base-sepolia.g.alchemy.com/v2/[REDACTED_ALCHEMY_KEY]
 
 # Deployed Contracts
 NEXT_PUBLIC_ERC8004_REGISTRY=0xbf1f1ACe08D8874a119DD70732D178b636f6E1F1

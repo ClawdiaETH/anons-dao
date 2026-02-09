@@ -18,8 +18,8 @@
 
 **Exposed Credentials:**
 - Private key: `0x7bec...1891` → `0x84d5...4216` (testnet only, 0.036 ETH)
-- Alchemy API: `***REMOVED_ALCHEMY_KEY***`
-- Etherscan API: `***REMOVED_BASESCAN_KEY***`
+- Alchemy API: `[REDACTED_ALCHEMY_KEY]`
+- Etherscan API: `[REDACTED_BASESCAN_KEY]`
 
 **Remaining Actions:**
 - [ ] Rotate Alchemy API key
