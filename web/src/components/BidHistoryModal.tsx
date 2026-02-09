@@ -74,7 +74,46 @@ export function BidHistoryModal({ isOpen, onClose, bids, anonId }: BidHistoryMod
                       : 'border-gray-200 bg-gray-50'
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-2">
+                  {/* Mobile: stacked layout */}
+                  <div className="flex flex-col gap-3 sm:hidden">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex-shrink-0" />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-mono text-sm font-medium">
+                            {bid.bidder.slice(0, 6)}...{bid.bidder.slice(-4)}
+                          </span>
+                          {index === 0 && (
+                            <span className="px-2 py-0.5 bg-green-500 text-white text-xs font-bold rounded whitespace-nowrap">
+                              WINNING
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(bid.timestamp * 1000).toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            second: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pl-[52px]">
+                      <p className="text-xl font-bold text-gray-900">
+                        {formatEth(bid.amount)} <span className="text-base">ETH</span>
+                      </p>
+                      {bid.extended && (
+                        <span className="inline-block px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded">
+                          +5min
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Desktop: horizontal layout */}
+                  <div className="hidden sm:flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex-shrink-0" />
                       <div>
