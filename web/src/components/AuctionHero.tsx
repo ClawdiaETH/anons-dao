@@ -33,10 +33,23 @@ export function AuctionHero() {
     amount: auction.amount,
     timestamp: Math.floor(Date.now() / 1000),
     extended: false,
+    blockNumber: 0n, // Fallback doesn't have block info
   }] : []
   
   // Use event bids if available, otherwise fallback to current bid
-  const bids = eventBids.length > 0 ? eventBids : currentBidData
+  const bids = (eventBids && eventBids.length > 0) ? eventBids : currentBidData
+  
+  // Debug logging
+  if (typeof window !== 'undefined') {
+    console.log('AuctionHero bid state:', {
+      auctionBidder: auction.bidder,
+      hasBids,
+      eventBidsLength: eventBids?.length ?? 0,
+      currentBidDataLength: currentBidData.length,
+      finalBidsLength: bids.length,
+      bidsLoading,
+    })
+  }
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
