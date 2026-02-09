@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuction } from '@/lib/hooks/useAuction'
+import { useBidHistory } from '@/lib/hooks/useBidHistory'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
@@ -11,6 +12,7 @@ import { useState } from 'react'
 
 export function AuctionHero() {
   const { auction, isLoading, error } = useAuction()
+  const { bids } = useBidHistory(auction?.anonId)
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
 
   // Placeholder state - show Clawdia's Anon #0
@@ -21,16 +23,7 @@ export function AuctionHero() {
 
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEther(auction.amount) : '0.01'
-  const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
-  
-  // Mock bid history from current auction state
-  // In production, this would come from event logs
-  const bids = hasBids ? [{
-    bidder: auction.bidder,
-    amount: auction.amount,
-    timestamp: Math.floor(Date.now() / 1000), // Approximate
-    extended: false
-  }] : []
+  const hasBids = bids.length > 0
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
@@ -97,16 +90,16 @@ export function AuctionHero() {
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400" />
                       <span className="font-mono text-sm">
-                        {auction.bidder.slice(0, 6)}...{auction.bidder.slice(-4)}
+                        {bids[0].bidder.slice(0, 6)}...{bids[0].bidder.slice(-4)}
                       </span>
                     </div>
-                    <span className="font-bold">Ξ {currentBid}</span>
+                    <span className="font-bold">Ξ {formatEther(bids[0].amount)}</span>
                   </div>
                   <button 
                     onClick={() => setIsBidModalOpen(true)}
                     className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
                   >
-                    View all bids
+                    View all {bids.length} bid{bids.length !== 1 ? 's' : ''}
                   </button>
                 </div>
               ) : (
