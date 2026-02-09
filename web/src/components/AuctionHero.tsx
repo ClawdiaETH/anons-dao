@@ -13,6 +13,9 @@ import { useState } from 'react'
 export function AuctionHero() {
   const { auction, isLoading, error } = useAuction()
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
+  
+  // Fetch bid history from events (MUST be before early return - React Hooks rule)
+  const { bids: eventBids } = useBidHistory(auction?.anonId ?? 0n)
 
   // Placeholder state - show Clawdia's Anon #0
   // Only show placeholder if loading, error, or auction hasn't started (startTime = 0)
@@ -20,12 +23,9 @@ export function AuctionHero() {
     return <AuctionHeroPlaceholder isLoading={isLoading} error={error} />
   }
 
-  // Fetch bid history from events
-  const { bids: eventBids, isLoading: bidsLoading } = useBidHistory(auction.anonId)
-  
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEth(auction.amount) : '0.01'
-  
+
   // Fallback: if event fetching fails/empty, show current bid at minimum
   const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
   const currentBidFallback = hasBids ? [{
@@ -35,16 +35,16 @@ export function AuctionHero() {
     extended: false,
     blockNumber: 0n,
   }] : []
-  
+
   // Use event bids if available (full history), otherwise fallback to current bid only
   const bids = (eventBids && eventBids.length > 0) ? eventBids : currentBidFallback
-  
+
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
   const bgColor = isDusk ? '#d5d7e1' : '#e1d7d5'
 
   return (
-    <div 
+    <div
       className="w-screen relative left-1/2 right-1/2 -mx-[50vw] min-h-[600px] flex items-end py-0"
       style={{ backgroundColor: bgColor }}
     >
@@ -60,10 +60,10 @@ export function AuctionHero() {
             {/* Header */}
             <div className="mb-4">
               <p className="text-gray-500 text-sm mb-1">
-                {new Date().toLocaleDateString('en-US', { 
-                  month: 'long', 
-                  day: 'numeric', 
-                  year: 'numeric' 
+                {new Date().toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
                 })}
               </p>
               <h1 className="text-4xl font-bold text-gray-900 mb-3">
@@ -86,8 +86,8 @@ export function AuctionHero() {
             </div>
 
             {/* Bid Form */}
-            <BidForm 
-              anonId={auction.anonId} 
+            <BidForm
+              anonId={auction.anonId}
               currentBid={auction.amount}
               endTime={auction.endTime}
               isDusk={isDusk}
@@ -109,7 +109,7 @@ export function AuctionHero() {
                     </div>
                     <span className="font-bold">{formatEth(bids[0].amount)} ETH</span>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setIsBidModalOpen(true)}
                     className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
                   >
@@ -127,7 +127,7 @@ export function AuctionHero() {
       </div>
 
       {/* Bid History Modal */}
-      <BidHistoryModal 
+      <BidHistoryModal
         isOpen={isBidModalOpen}
         onClose={() => setIsBidModalOpen(false)}
         bids={bids}
@@ -143,7 +143,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
   const bgColor = '#d5e1e1'
 
   return (
-    <div 
+    <div
       className="w-screen relative left-1/2 right-1/2 -mx-[50vw] min-h-[600px] flex items-end py-0"
       style={{ backgroundColor: bgColor }}
     >
@@ -152,8 +152,8 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           {/* Left: Clawdia's Anon #0 */}
           <div className="flex justify-center lg:justify-end items-end pt-8 lg:pt-0 pb-0">
             <div className="w-full max-w-md pb-0">
-              <Image 
-                src="/anon-0-preview.png" 
+              <Image
+                src="/anon-0-preview.png"
                 alt="Anon #0 - Clawdia"
                 width={500}
                 height={500}
@@ -174,10 +174,10 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
             ) : (
               <>
                 <p className="text-gray-500 text-sm mb-1">
-                  {new Date().toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
+                  {new Date().toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
                   })}
                 </p>
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">

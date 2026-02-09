@@ -6,36 +6,47 @@ import { base, baseSepolia } from 'wagmi/chains'
  * Uses multiple fallback RPCs for maximum reliability
  */
 
+// Alchemy RPC from env (if set)
+const ALCHEMY_RPC = process.env.NEXT_PUBLIC_BASE_RPC_URL
+
+// Build RPC array with Alchemy first (if available)
+const BASE_RPCS = [
+  ALCHEMY_RPC && http(ALCHEMY_RPC, {
+    batch: false,
+    retryCount: 3,
+    timeout: 10_000,
+  }),
+  http('https://mainnet.base.org', {
+    batch: false,
+    retryCount: 2,
+    timeout: 8_000,
+  }),
+  http('https://base.gateway.tenderly.co', {
+    batch: false,
+    retryCount: 2,
+    timeout: 8_000,
+  }),
+  http('https://base-rpc.publicnode.com', {
+    batch: false,
+    retryCount: 2,
+    timeout: 8_000,
+  }),
+  http('https://1rpc.io/base', {
+    batch: false,
+    retryCount: 2,
+    timeout: 8_000,
+  }),
+].filter(Boolean)
+
 // Debug: Log RPC being used (only in browser)
 if (typeof window !== 'undefined') {
-  console.log('[wagmi] Using fallback RPC configuration with multiple endpoints')
+  console.log('[wagmi] Using fallback RPC configuration:', ALCHEMY_RPC ? 'Alchemy + public' : 'public only')
 }
 
 export const config = createConfig({
   chains: [base, baseSepolia],
   transports: {
-    [base.id]: fallback([
-      http('https://mainnet.base.org', {
-        batch: false,
-        retryCount: 2,
-        timeout: 8_000,
-      }),
-      http('https://base.gateway.tenderly.co', {
-        batch: false,
-        retryCount: 2,
-        timeout: 8_000,
-      }),
-      http('https://base-rpc.publicnode.com', {
-        batch: false,
-        retryCount: 2,
-        timeout: 8_000,
-      }),
-      http('https://1rpc.io/base', {
-        batch: false,
-        retryCount: 2,
-        timeout: 8_000,
-      }),
-    ], {
+    [base.id]: fallback(BASE_RPCS as any, {
       rank: true, // Auto-rank RPCs by performance
     }),
     [baseSepolia.id]: http('https://sepolia.base.org', {
