@@ -38,7 +38,13 @@ export function useBidHistory(anonId: bigint | undefined) {
         if (!mounted) return
 
         // Convert string amounts back to bigint
-        const parsedBids = data.bids.map((bid: any) => ({
+        const parsedBids = data.bids.map((bid: {
+          bidder: string
+          amount: string
+          extended: boolean
+          timestamp: number
+          blockNumber: string
+        }) => ({
           bidder: bid.bidder,
           amount: BigInt(bid.amount),
           extended: bid.extended,
