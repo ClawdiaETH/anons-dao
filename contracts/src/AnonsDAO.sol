@@ -33,6 +33,9 @@ contract AnonsDAO is Governor, GovernorSettings, GovernorCountingSimple, Governo
     /// @notice The vetoer address (Clawdia during bootstrap)
     address public vetoer;
 
+    /// @notice Mapping of vetoed proposals
+    mapping(uint256 => bool) private _vetoedProposals;
+
     /// @notice Voting delay: 1 block
     uint48 private constant VOTING_DELAY = 1;
 
@@ -122,6 +125,7 @@ contract AnonsDAO is Governor, GovernorSettings, GovernorCountingSimple, Governo
     }
 
     /// @notice Veto a proposal (only during bootstrap period)
+    /// @dev Can veto Active, Pending, or Queued proposals
     function veto(uint256 proposalId) external {
         if (msg.sender != vetoer) revert VetoerOnly();
         if (vetoer == address(0)) revert VetoAlreadyBurned();
@@ -133,12 +137,18 @@ contract AnonsDAO is Governor, GovernorSettings, GovernorCountingSimple, Governo
             revert ProposalNotActive();
         }
 
-        _cancel(
-            _getProposalTargets(proposalId),
-            _getProposalValues(proposalId),
-            _getProposalCalldatas(proposalId),
-            keccak256(bytes(_getProposalDescription(proposalId)))
-        );
+        // Mark as vetoed - state() will return Canceled for vetoed proposals
+        _vetoedProposals[proposalId] = true;
+
+        // If proposal is already queued in timelock, also cancel it there
+        if (status == ProposalState.Queued) {
+            _cancel(
+                _getProposalTargets(proposalId),
+                _getProposalValues(proposalId),
+                _getProposalCalldatas(proposalId),
+                keccak256(bytes(_getProposalDescription(proposalId)))
+            );
+        }
 
         emit ProposalVetoed(proposalId);
     }
@@ -209,10 +219,13 @@ contract AnonsDAO is Governor, GovernorSettings, GovernorCountingSimple, Governo
         return super.votingPeriod();
     }
 
-    function quorum(uint256 blockNumber) public pure override returns (uint256) {
-        // Quorum is 1 Anon (simple majority of participating voters)
-        // This is low to allow governance to function with few participants initially
-        return 1;
+    function quorum(uint256 blockNumber) public view override returns (uint256) {
+        // Dynamic quorum: max(10% of supply, 3 votes) to balance early participation with security
+        uint256 totalSupply = IVotes(address(token())).getPastTotalSupply(blockNumber);
+        uint256 tenPercentQuorum = (totalSupply * 10) / 100;
+        
+        // Ensure minimum of 3 votes even with low supply, but use 10% when supply grows
+        return tenPercentQuorum > 3 ? tenPercentQuorum : 3;
     }
 
     function proposalThreshold() public view override(Governor, GovernorSettings) returns (uint256) {
@@ -225,6 +238,10 @@ contract AnonsDAO is Governor, GovernorSettings, GovernorCountingSimple, Governo
         override(Governor, GovernorTimelockControl)
         returns (ProposalState)
     {
+        // Check if proposal has been vetoed first
+        if (_vetoedProposals[proposalId]) {
+            return ProposalState.Canceled;
+        }
         return super.state(proposalId);
     }
 
