@@ -32,12 +32,17 @@ export function useBidHistory(anonId: bigint | undefined) {
       
       setIsLoading(true)
       
-      // Set a timeout for the entire operation
+      // Set a timeout for the entire operation (15s)
       const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout fetching bids')), 10000)
+        setTimeout(() => reject(new Error('Timeout fetching bids')), 15000)
       )
       
       try {
+        // Get current block to calculate a reasonable range
+        const currentBlock = await publicClient.getBlockNumber()
+        // Only fetch last 50,000 blocks (much faster than from deployment)
+        const fromBlock = currentBlock > 50000n ? currentBlock - 50000n : 0n
+        
         // Fetch logs with timeout
         const logs = await Promise.race([
           publicClient.getLogs({
@@ -46,7 +51,7 @@ export function useBidHistory(anonId: bigint | undefined) {
             args: {
               anonId: anonId,
             },
-            fromBlock: 41908459n,
+            fromBlock,
             toBlock: 'latest',
           }),
           timeoutPromise
