@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuction } from '@/lib/hooks/useAuction'
-import { useBidHistory } from '@/lib/hooks/useBidHistory'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
@@ -20,36 +19,18 @@ export function AuctionHero() {
     return <AuctionHeroPlaceholder isLoading={isLoading} error={error} />
   }
 
-  // Fetch bid history from events
-  const { bids: eventBids, isLoading: bidsLoading } = useBidHistory(auction.anonId)
-
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEther(auction.amount) : '0.01'
   
-  // Fallback: if event fetching fails/is empty but we have a current bid, show it
+  // SIMPLIFIED: Just show current bid from auction state
+  // Event history fetching was unreliable, this is immediate and always works
   const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
-  const currentBidData = hasBids ? [{
+  const bids = hasBids ? [{
     bidder: auction.bidder,
     amount: auction.amount,
     timestamp: Math.floor(Date.now() / 1000),
     extended: false,
-    blockNumber: 0n, // Fallback doesn't have block info
   }] : []
-  
-  // Use event bids if available, otherwise fallback to current bid
-  const bids = (eventBids && eventBids.length > 0) ? eventBids : currentBidData
-  
-  // Debug logging
-  if (typeof window !== 'undefined') {
-    console.log('AuctionHero bid state:', {
-      auctionBidder: auction.bidder,
-      hasBids,
-      eventBidsLength: eventBids?.length ?? 0,
-      currentBidDataLength: currentBidData.length,
-      finalBidsLength: bids.length,
-      bidsLoading,
-    })
-  }
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
@@ -109,9 +90,6 @@ export function AuctionHero() {
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-gray-900 text-sm">Recent bids</h3>
-                {bidsLoading && eventBids.length === 0 && (
-                  <span className="text-xs text-gray-400">Loading history...</span>
-                )}
               </div>
               {bids.length > 0 ? (
                 <div className="space-y-2">
