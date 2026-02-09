@@ -1,13 +1,14 @@
 import { Abi } from 'viem'
 
-// Contract addresses (Base Mainnet)
-// Deployed: 2026-02-08 via DeployNoTraits.s.sol
-export const TOKEN_ADDRESS = '0x813d1d56457bd4697abedb835435691b187eedc4' as `0x${string}`
-export const DESCRIPTOR_ADDRESS = '0xc45f4894f769602e1fdc888c935b294188a98064' as `0x${string}`
-export const SEEDER_ADDRESS = '0x3a62109ccad858907a5750b906618ea7b433d3a3' as `0x${string}`
-export const AUCTION_HOUSE_ADDRESS = '0x7c5fd3b7b4948c281a2f24c28291b56e0118c6d8' as `0x${string}`
-export const TIMELOCK_ADDRESS = '0xc6a182c0693726e01d1963c0dd5eb8368d9e8728' as `0x${string}`
-export const DAO_ADDRESS = '0xb86da1a24f93c6fb1027762909e1e11f8b1f3851' as `0x${string}`
+// Contract addresses (Base Mainnet - v2 SECURITY FIXED)
+// Deployed: 2026-02-08 20:15 CST via DeployNoTraits.s.sol
+// Security fixes: Dynamic quorum, veto mechanism, parameter bounds
+export const TOKEN_ADDRESS = '0x1ad890FCE6cB865737A3411E7d04f1F5668b0686' as `0x${string}`
+export const DESCRIPTOR_ADDRESS = '0x7A6ebCD98381bB736F2451eb205e1cfD86bb6b9e' as `0x${string}`
+export const SEEDER_ADDRESS = '0xDFb06e78e517C46f071aef418d0181FfeAe84E2A' as `0x${string}`
+export const AUCTION_HOUSE_ADDRESS = '0x51f5a9252A43F89D8eE9D5616263f46a0E02270F' as `0x${string}`
+export const TIMELOCK_ADDRESS = '0x167b2f7Ce609Bf0117A148e6460A4Ca943f6dF32' as `0x${string}`
+export const DAO_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B' as `0x${string}`
 export const ERC8004_REGISTRY_ADDRESS = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c' as `0x${string}`
 
 // Minimal ABIs for reading contract state

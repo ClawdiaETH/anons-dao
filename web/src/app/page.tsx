@@ -143,7 +143,7 @@ export default function Home() {
                 Twitter
               </a>
               <a
-                href="https://basescan.org/address/0x813d1d56457bd4697abedb835435691b187eedc4"
+                href="https://basescan.org/address/0x1ad890FCE6cB865737A3411E7d04f1F5668b0686"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-gray-900 transition-colors"
