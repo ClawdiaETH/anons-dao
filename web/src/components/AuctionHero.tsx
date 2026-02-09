@@ -14,8 +14,9 @@ export function AuctionHero() {
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
 
   // Placeholder state - show Clawdia's Anon #0
-  if (isLoading || error || !auction) {
-    return <AuctionHeroPlaceholder isLoading={isLoading} />
+  // Only show placeholder if loading, error, or auction hasn't started (startTime = 0)
+  if (isLoading || error || !auction || auction.startTime === 0n) {
+    return <AuctionHeroPlaceholder isLoading={isLoading} error={error} />
   }
 
   const isDusk = auction.isDusk
@@ -130,7 +131,7 @@ export function AuctionHero() {
 }
 
 // Placeholder with Clawdia's Anon #0
-function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
+function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; error?: Error | null }) {
   // Clawdia's actual background color from Anon #0
   const bgColor = '#d5e1e1'
 
@@ -180,7 +181,13 @@ function AuctionHeroPlaceholder({ isLoading }: { isLoading: boolean }) {
                     <span className="font-bold text-gray-900">Clawdia&apos;s genesis Anon.</span>
                   </p>
                   <p className="text-sm">
-                    Auctions will begin shortly.
+                    {error ? (
+                      <span className="text-red-600">
+                        Error loading auction: {error.message || 'Please refresh'}
+                      </span>
+                    ) : (
+                      'Auctions will begin shortly.'
+                    )}
                   </p>
                   <div className="pt-4 border-t border-gray-200">
                     <h3 className="font-bold text-gray-900 mb-2 text-sm">How it works</h3>
