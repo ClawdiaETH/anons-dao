@@ -34,6 +34,20 @@ export function useAuction() {
 
   const auction = data as Auction | undefined
 
+  // Debug logging
+  if (typeof window !== 'undefined' && !isLoading) {
+    console.log('useAuction:', { 
+      hasData: !!data, 
+      auction: auction ? {
+        anonId: auction.anonId?.toString(),
+        startTime: auction.startTime?.toString(),
+        endTime: auction.endTime?.toString(),
+      } : null,
+      error: error?.message,
+      address: AUCTION_HOUSE_ADDRESS 
+    })
+  }
+
   return {
     auction,
     isLoading,
