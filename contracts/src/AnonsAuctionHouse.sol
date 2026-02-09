@@ -120,7 +120,7 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
     }
 
     /// @inheritdoc IAnonsAuctionHouse
-    function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
+    function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused onlyRegisteredAgent {
         // CEI Pattern: Settle old auction (has external calls), then create new one
         // _settleAuction() sets _auction.settled = true before external calls,
         // preventing reentrancy attacks on the old auction
@@ -158,35 +158,41 @@ contract AnonsAuctionHouse is IAnonsAuctionHouse, Pausable, ReentrancyGuard, Own
 
     /// @inheritdoc IAnonsAuctionHouse
     function setTimeBuffer(uint256 _timeBuffer) external override onlyOwner {
+        require(_timeBuffer <= 1 hours, "Time buffer too high");
         timeBuffer = _timeBuffer;
         emit TimeBufferUpdated(_timeBuffer);
     }
 
     /// @inheritdoc IAnonsAuctionHouse
     function setReservePrice(uint256 _reservePrice) external override onlyOwner {
+        require(_reservePrice <= 1000 ether, "Reserve price too high");
         reservePrice = _reservePrice;
         emit ReservePriceUpdated(_reservePrice);
     }
 
     /// @inheritdoc IAnonsAuctionHouse
     function setMinBidIncrementPercentage(uint8 _minBidIncrementPercentage) external override onlyOwner {
+        require(_minBidIncrementPercentage >= 1 && _minBidIncrementPercentage <= 50, "Bid increment out of bounds");
         minBidIncrementPercentage = _minBidIncrementPercentage;
         emit MinBidIncrementPercentageUpdated(_minBidIncrementPercentage);
     }
 
     /// @inheritdoc IAnonsAuctionHouse
     function setDuration(uint256 _duration) external override onlyOwner {
+        require(_duration >= 1 hours && _duration <= 7 days, "Duration out of bounds");
         duration = _duration;
         emit DurationUpdated(_duration);
     }
 
     /// @notice Sets the treasury address
     function setTreasury(address _treasury) external onlyOwner {
+        require(_treasury != address(0), "Treasury cannot be zero address");
         treasury = _treasury;
     }
 
     /// @notice Sets the creator address
     function setCreator(address _creator) external onlyOwner {
+        require(_creator != address(0), "Creator cannot be zero address");
         creator = _creator;
     }
 
