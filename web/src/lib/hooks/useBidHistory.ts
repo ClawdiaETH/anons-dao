@@ -1,10 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { usePublicClient } from 'wagmi'
-import { AUCTION_HOUSE_ADDRESS } from '../contracts'
-import { CHAIN_ID } from '../wagmi'
-import { parseAbiItem } from 'viem'
 
 interface Bid {
   bidder: string
@@ -17,10 +13,9 @@ interface Bid {
 export function useBidHistory(anonId: bigint | undefined) {
   const [bids, setBids] = useState<Bid[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const publicClient = usePublicClient({ chainId: CHAIN_ID })
 
   useEffect(() => {
-    if (!publicClient || !anonId || anonId === 0n) {
+    if (!anonId || anonId === 0n) {
       setBids([])
       return
     }
@@ -28,60 +23,31 @@ export function useBidHistory(anonId: bigint | undefined) {
     let mounted = true
 
     async function fetchBids() {
-      if (!publicClient) return
-      
       setIsLoading(true)
       
-      // Set a timeout for the entire operation (15s)
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout fetching bids')), 15000)
-      )
-      
       try {
-        // Get current block to calculate a reasonable range
-        const currentBlock = await publicClient.getBlockNumber()
-        // Only fetch last 50,000 blocks (much faster than from deployment)
-        const fromBlock = currentBlock > 50000n ? currentBlock - 50000n : 0n
+        // Call our API route instead of querying RPC from browser (avoids CSP issues)
+        const response = await fetch(`/api/bids/${anonId}`)
         
-        // Fetch logs with timeout
-        const logs = await Promise.race([
-          publicClient.getLogs({
-            address: AUCTION_HOUSE_ADDRESS,
-            event: parseAbiItem('event AuctionBid(uint256 indexed anonId, address indexed bidder, uint256 amount, bool extended)'),
-            args: {
-              anonId: anonId,
-            },
-            fromBlock,
-            toBlock: 'latest',
-          }),
-          timeoutPromise
-        ])
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`)
+        }
+
+        const data = await response.json()
 
         if (!mounted) return
 
-        // Get block timestamps for each bid
-        const bidsWithTimestamps = await Promise.all(
-          logs.map(async (log) => {
-            const block = await publicClient.getBlock({ blockNumber: log.blockNumber })
-            return {
-              bidder: log.args.bidder as string,
-              amount: log.args.amount as bigint,
-              extended: log.args.extended as boolean,
-              timestamp: Number(block.timestamp),
-              blockNumber: log.blockNumber,
-            }
-          })
-        )
+        // Convert string amounts back to bigint
+        const parsedBids = data.bids.map((bid: any) => ({
+          bidder: bid.bidder,
+          amount: BigInt(bid.amount),
+          extended: bid.extended,
+          timestamp: bid.timestamp,
+          blockNumber: BigInt(bid.blockNumber),
+        }))
 
-        if (!mounted) return
-
-        // Sort by block number descending (newest first)
-        const sortedBids = bidsWithTimestamps.sort((a, b) => 
-          Number(b.blockNumber - a.blockNumber)
-        )
-
-        setBids(sortedBids)
-        console.log(`✅ Fetched ${sortedBids.length} bids for Anon #${anonId}`)
+        setBids(parsedBids)
+        console.log(`✅ Fetched ${parsedBids.length} bids for Anon #${anonId}`)
       } catch (error) {
         console.error('❌ Error fetching bid history:', error)
         setBids([])
@@ -97,7 +63,7 @@ export function useBidHistory(anonId: bigint | undefined) {
     return () => {
       mounted = false
     }
-  }, [publicClient, anonId])
+  }, [anonId])
 
   return { bids, isLoading }
 }
