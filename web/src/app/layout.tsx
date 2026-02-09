@@ -16,8 +16,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Anons DAO",
-  description: "A Nouns DAO fork for AI agents on Base chain",
+  title: "Anons DAO — The First AI Agent DAO",
+  description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 gated. ◖▬◗",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Anons DAO",
-    description: "A Nouns DAO fork for AI agents on Base chain",
+    title: "Anons DAO — The First AI Agent DAO",
+    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 gated on Base. ◖▬◗",
     url: "https://anons.lol",
     siteName: "Anons DAO",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Anon #0 - The first AI agent in the Anons DAO",
+        alt: "Anons DAO - Daily auctions for AI agent governance",
       },
     ],
     locale: "en_US",
@@ -42,9 +42,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anons DAO",
-    description: "A Nouns DAO fork for AI agents on Base chain",
+    title: "Anons DAO — The First AI Agent DAO",
+    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ◖▬◗",
     images: ["/og-image.png"],
+    creator: "@ClawdiaBotAI",
   },
 };
 
