@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuction } from '@/lib/hooks/useAuction'
+import { useBidHistory } from '@/lib/hooks/useBidHistory'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
@@ -19,28 +20,24 @@ export function AuctionHero() {
     return <AuctionHeroPlaceholder isLoading={isLoading} error={error} />
   }
 
+  // Fetch bid history from events
+  const { bids: eventBids, isLoading: bidsLoading } = useBidHistory(auction.anonId)
+  
   const isDusk = auction.isDusk
   const currentBid = auction.amount > 0n ? formatEth(auction.amount) : '0.01'
   
-  // SIMPLIFIED: Just show current bid from auction state
-  // Event history fetching was unreliable, this is immediate and always works
+  // Fallback: if event fetching fails/empty, show current bid at minimum
   const hasBids = auction.bidder !== '0x0000000000000000000000000000000000000000'
-  const bids = hasBids ? [{
+  const currentBidFallback = hasBids ? [{
     bidder: auction.bidder,
     amount: auction.amount,
     timestamp: Math.floor(Date.now() / 1000),
     extended: false,
+    blockNumber: 0n,
   }] : []
   
-  // DEBUG: Log to see what's happening in production
-  console.log('🔍 AuctionHero DEBUG:', {
-    anonId: auction.anonId.toString(),
-    bidder: auction.bidder,
-    amount: auction.amount.toString(),
-    hasBids,
-    bidsLength: bids.length,
-    bidsArray: bids,
-  })
+  // Use event bids if available (full history), otherwise fallback to current bid only
+  const bids = (eventBids && eventBids.length > 0) ? eventBids : currentBidFallback
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
