@@ -12,7 +12,7 @@ export const DAO_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B' as `0x${
 export const ERC8004_REGISTRY_ADDRESS = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c' as `0x${string}`
 
 // Minimal ABIs for reading contract state
-export const auctionHouseABI = [
+export const auctionHouseABI: Abi = [
   {
     name: 'auction',
     type: 'function',
@@ -61,7 +61,7 @@ export const auctionHouseABI = [
   },
 ] as const
 
-export const tokenABI = [
+export const tokenABI: Abi = [
   {
     name: 'tokenURI',
     type: 'function',
