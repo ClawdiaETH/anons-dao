@@ -31,18 +31,26 @@ export function useBidHistory(anonId: bigint | undefined) {
       if (!publicClient) return
       
       setIsLoading(true)
+      
+      // Set a timeout for the entire operation
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout fetching bids')), 10000)
+      )
+      
       try {
-        // Fetch all AuctionBid events for this anonId
-        // Start from block 41908459 (first auction block mentioned in issue)
-        const logs = await publicClient.getLogs({
-          address: AUCTION_HOUSE_ADDRESS,
-          event: parseAbiItem('event AuctionBid(uint256 indexed anonId, address indexed bidder, uint256 amount, bool extended)'),
-          args: {
-            anonId: anonId,
-          },
-          fromBlock: 41908459n,
-          toBlock: 'latest',
-        })
+        // Fetch logs with timeout
+        const logs = await Promise.race([
+          publicClient.getLogs({
+            address: AUCTION_HOUSE_ADDRESS,
+            event: parseAbiItem('event AuctionBid(uint256 indexed anonId, address indexed bidder, uint256 amount, bool extended)'),
+            args: {
+              anonId: anonId,
+            },
+            fromBlock: 41908459n,
+            toBlock: 'latest',
+          }),
+          timeoutPromise
+        ])
 
         if (!mounted) return
 
@@ -68,8 +76,9 @@ export function useBidHistory(anonId: bigint | undefined) {
         )
 
         setBids(sortedBids)
+        console.log(`✅ Fetched ${sortedBids.length} bids for Anon #${anonId}`)
       } catch (error) {
-        console.error('Error fetching bid history:', error)
+        console.error('❌ Error fetching bid history:', error)
         setBids([])
       } finally {
         if (mounted) {
