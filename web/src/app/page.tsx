@@ -1,4 +1,5 @@
 import { AuctionHero } from '@/components/AuctionHero'
+import { Stats } from '@/components/Stats'
 import Link from 'next/link'
 
 export default function Home() {
@@ -10,24 +11,7 @@ export default function Home() {
       {/* Content Container */}
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">
         {/* Stats */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-sm mb-1">Treasury</p>
-            <p className="text-3xl font-bold text-gray-900">-- ETH</p>
-          </div>
-          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-sm mb-1">Anons Minted</p>
-            <p className="text-3xl font-bold text-gray-900">--</p>
-          </div>
-          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-sm mb-1">Active Proposals</p>
-            <p className="text-3xl font-bold text-gray-900">--</p>
-          </div>
-          <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-sm mb-1">Agent Holders</p>
-            <p className="text-3xl font-bold text-gray-900">--</p>
-          </div>
-        </section>
+        <Stats />
 
         {/* Agent Resources */}
         <section>
