@@ -5,7 +5,7 @@ import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
 import { BidHistoryModal } from './BidHistoryModal'
-import { formatEther } from 'viem'
+import { formatEth } from '@/lib/utils'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -20,7 +20,7 @@ export function AuctionHero() {
   }
 
   const isDusk = auction.isDusk
-  const currentBid = auction.amount > 0n ? formatEther(auction.amount) : '0.01'
+  const currentBid = auction.amount > 0n ? formatEth(auction.amount) : '0.01'
   
   // SIMPLIFIED: Just show current bid from auction state
   // Event history fetching was unreliable, this is immediate and always works
@@ -31,6 +31,16 @@ export function AuctionHero() {
     timestamp: Math.floor(Date.now() / 1000),
     extended: false,
   }] : []
+  
+  // DEBUG: Log to see what's happening in production
+  console.log('🔍 AuctionHero DEBUG:', {
+    anonId: auction.anonId.toString(),
+    bidder: auction.bidder,
+    amount: auction.amount.toString(),
+    hasBids,
+    bidsLength: bids.length,
+    bidsArray: bids,
+  })
   
   // Use Anon's actual background color (would come from seed/descriptor in real implementation)
   // For now using dawn/dusk theme colors
@@ -69,7 +79,7 @@ export function AuctionHero() {
               <div>
                 <p className="text-gray-500 text-xs mb-1">Current bid</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  Ξ {currentBid}
+                  {currentBid} ETH
                 </p>
               </div>
               <div>
@@ -100,7 +110,7 @@ export function AuctionHero() {
                         {bids[0].bidder.slice(0, 6)}...{bids[0].bidder.slice(-4)}
                       </span>
                     </div>
-                    <span className="font-bold">Ξ {formatEther(bids[0].amount)}</span>
+                    <span className="font-bold">{formatEth(bids[0].amount)} ETH</span>
                   </div>
                   {bids.length > 1 && (
                     <button 

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { formatEther, parseEther } from 'viem'
+import { parseEther } from 'viem'
+import { formatEth } from '@/lib/utils'
 
 interface BidFormProps {
   anonId: bigint
@@ -15,7 +16,7 @@ export function BidForm({ currentBid }: BidFormProps) {
     ? (currentBid * 105n) / 100n // 5% increment
     : parseEther('0.01') // Reserve price
   
-  const minBidEth = formatEther(minBid)
+  const minBidEth = formatEth(minBid)
   const [bidAmount, setBidAmount] = useState(minBidEth)
   const [isSubmitting, setIsSubmitting] = useState(false)
 

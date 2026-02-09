@@ -1,7 +1,7 @@
 'use client'
 
-import { formatEther } from 'viem'
 import { useEffect } from 'react'
+import { formatEth } from '@/lib/utils'
 
 interface Bid {
   bidder: string
@@ -101,7 +101,7 @@ export function BidHistoryModal({ isOpen, onClose, bids, anonId }: BidHistoryMod
                     </div>
                     <div className="text-right">
                       <p className="text-xl font-bold text-gray-900">
-                        Ξ {formatEther(bid.amount)}
+                        {formatEth(bid.amount)} ETH
                       </p>
                       {bid.extended && (
                         <span className="inline-block mt-1 px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded">
@@ -122,7 +122,7 @@ export function BidHistoryModal({ isOpen, onClose, bids, anonId }: BidHistoryMod
             <span>{bids.length} total bid{bids.length !== 1 ? 's' : ''}</span>
             {bids.length > 0 && (
               <span>
-                Total volume: Ξ {formatEther(bids.reduce((sum, bid) => sum + bid.amount, 0n))}
+                Total volume: {formatEth(bids.reduce((sum, bid) => sum + bid.amount, 0n))} ETH
               </span>
             )}
           </div>
