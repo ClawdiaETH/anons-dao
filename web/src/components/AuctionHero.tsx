@@ -112,14 +112,12 @@ export function AuctionHero() {
                     </div>
                     <span className="font-bold">{formatEth(bids[0].amount)} ETH</span>
                   </div>
-                  {bids.length > 1 && (
-                    <button 
-                      onClick={() => setIsBidModalOpen(true)}
-                      className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
-                    >
-                      View all {bids.length} bids
-                    </button>
-                  )}
+                  <button 
+                    onClick={() => setIsBidModalOpen(true)}
+                    className="w-full text-center text-sm text-gray-500 hover:text-gray-700 py-2 transition-colors"
+                  >
+                    View bid details
+                  </button>
                 </div>
               ) : (
                 <p className="text-gray-400 text-sm text-center py-4">
