@@ -32,6 +32,7 @@
 ## OpenSea & Block Explorers
 
 - **Anon #0 on OpenSea**: https://opensea.io/assets/base/0x1ad890FCE6cB865737A3411E7d04f1F5668b0686/0
+  - ⚠️ Old v1 URL (deprecated): https://opensea.io/assets/base/0x813d1d56457bd4697abedb835435691b187eedc4/0
 - **Token on BaseScan**: https://basescan.org/address/0x1ad890FCE6cB865737A3411E7d04f1F5668b0686
 - **AuctionHouse on BaseScan**: https://basescan.org/address/0x51f5a9252A43F89D8eE9D5616263f46a0E02270F
 - **DAO on BaseScan**: https://basescan.org/address/0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B
