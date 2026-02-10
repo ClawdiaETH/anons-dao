@@ -2,11 +2,12 @@
 
 import { useAuction } from '@/lib/hooks/useAuction'
 import { useBidHistory } from '@/lib/hooks/useBidHistory'
+import { useSeed } from '@/lib/hooks/useSeed'
 import { AuctionTimer } from './AuctionTimer'
 import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
 import { BidHistoryModal } from './BidHistoryModal'
-import { formatEth } from '@/lib/utils'
+import { formatEth, getBackgroundColor } from '@/lib/utils'
 import { Auction } from '@/lib/contracts'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -21,6 +22,9 @@ export function AuctionHero({ initialAuction }: AuctionHeroProps) {
   
   // Use initial SSR data if available, then switch to live data when it loads
   const auction = liveAuction ?? initialAuction
+  
+  // Fetch seed for background color (MUST be before early return - React Hooks rule)
+  const { seed } = useSeed(auction?.anonId ?? 0n)
   
   // Fetch bid history from events (MUST be before early return - React Hooks rule)
   const { bids: eventBids } = useBidHistory(auction?.anonId ?? 0n)
@@ -47,9 +51,8 @@ export function AuctionHero({ initialAuction }: AuctionHeroProps) {
   // Use event bids if available (full history), otherwise fallback to current bid only
   const bids = (eventBids && eventBids.length > 0) ? eventBids : currentBidFallback
 
-  // Use Anon's actual background color (would come from seed/descriptor in real implementation)
-  // For now using dawn/dusk theme colors
-  const bgColor = isDusk ? '#d5d7e1' : '#e1d7d5'
+  // Use Anon's actual background color from seed
+  const bgColor = seed ? getBackgroundColor(seed) : (isDusk ? '#d5d7e1' : '#e1d7d5')
 
   return (
     <div
