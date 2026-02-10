@@ -1,52 +1,59 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db/client'
 import { bids } from '@/lib/db/schema'
+import { createPublicClient, http } from 'viem'
+import { base } from 'viem/chains'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'edge'
 export const revalidate = 0
 
+const TREASURY_ADDRESS = '0xc44e1FaF399f64a9af523076b8da917427b5bd0b'
+const WETH_ADDRESS = '0x4200000000000000000000000000000000000006'
+
 export async function GET() {
   try {
-    // Simple query - just get all bids like backfill does
+    // Query on-chain WETH balance for actual treasury value
+    const client = createPublicClient({
+      chain: base,
+      transport: http(process.env.NEXT_PUBLIC_BASE_RPC_URL),
+    })
+
+    const wethBalance = await client.readContract({
+      address: WETH_ADDRESS,
+      abi: [{
+        name: 'balanceOf',
+        type: 'function',
+        stateMutability: 'view',
+        inputs: [{ name: 'account', type: 'address' }],
+        outputs: [{ name: '', type: 'uint256' }],
+      }],
+      functionName: 'balanceOf',
+      args: [TREASURY_ADDRESS as `0x${string}`],
+    })
+
+    const treasuryEth = (Number(wethBalance) / 1e18).toFixed(4)
+
+    // Calculate unique holder count from database
     const allBids = await db.select().from(bids)
-
-    console.log(`[Stats API] Found ${allBids.length} bids`)
-
-    if (allBids.length === 0) {
-      return NextResponse.json({
-        treasury: '0.0000',
-        holders: 0,
-      })
-    }
-
-    // Group by anonId to find winning bid (latest timestamp for each anon)
-    const winningBids = new Map<number, { bidder: string; amount: string }>()
+    
+    const winningBids = new Map<number, { bidder: string }>()
     const sortedBids = [...allBids].sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
     
     for (const bid of sortedBids) {
       if (!winningBids.has(bid.anonId)) {
-        winningBids.set(bid.anonId, {
-          bidder: bid.bidder,
-          amount: bid.amount,
-        })
+        winningBids.set(bid.anonId, { bidder: bid.bidder })
       }
     }
 
-    // Calculate treasury and holders
     const uniqueHolders = new Set<string>()
-    let treasuryWei = BigInt(0)
-
-    for (const [, { bidder, amount }] of winningBids) {
+    for (const [, { bidder }] of winningBids) {
       if (bidder !== '0x0000000000000000000000000000000000000000') {
         uniqueHolders.add(bidder.toLowerCase())
-        treasuryWei += BigInt(amount)
       }
     }
 
-    const treasuryEth = (Number(treasuryWei) / 1e18).toFixed(4)
-
-    console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', uniqueHolders.size)
+    console.log('[Stats API] Treasury (WETH):', treasuryEth, 'Holders:', uniqueHolders.size)
 
     return NextResponse.json({
       treasury: treasuryEth,
