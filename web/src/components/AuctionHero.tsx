@@ -58,6 +58,11 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
   // Use Anon's actual background color from seed
   const bgColor = seed ? getBackgroundColor(seed) : (isDusk ? '#d5d7e1' : '#e1d7d5')
 
+  // Debug logging
+  if (typeof window !== 'undefined') {
+    console.log('[AuctionHero] Seed:', seed, 'bgColor:', bgColor, 'isDusk:', isDusk)
+  }
+
   return (
     <div
       className="w-screen relative left-1/2 right-1/2 -mx-[50vw] min-h-[600px] flex items-end py-0"
