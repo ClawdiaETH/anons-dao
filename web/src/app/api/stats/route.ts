@@ -8,6 +8,7 @@ export const revalidate = 0
 
 const TREASURY_ADDRESS = '0xc44e1FaF399f64a9af523076b8da917427b5bd0b'
 const WETH_ADDRESS = '0x4200000000000000000000000000000000000006'
+const AUCTION_HOUSE = '0x51f5a9252A43F89D8eE9D5616263f46a0E02270F'
 
 export async function GET() {
   try {
@@ -112,7 +113,10 @@ export async function GET() {
         const ownerData = await ownerResponse.json()
         if (ownerData.result) {
           const owner = '0x' + ownerData.result.slice(-40)
-          uniqueHolders.add(owner.toLowerCase())
+          // Exclude Auction House (holds unsold tokens)
+          if (owner.toLowerCase() !== AUCTION_HOUSE.toLowerCase()) {
+            uniqueHolders.add(owner.toLowerCase())
+          }
         }
       }
 
