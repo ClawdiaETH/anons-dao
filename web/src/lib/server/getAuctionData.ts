@@ -1,6 +1,6 @@
 import { createPublicClient, http } from 'viem'
 import { base } from 'viem/chains'
-import { AUCTION_HOUSE_ADDRESS, auctionHouseABI, Auction } from '../contracts'
+import { AUCTION_HOUSE_ADDRESS, auctionHouseABI, TOKEN_ADDRESS, tokenABI, Auction, Seed } from '../contracts'
 
 /**
  * Server-side auction data fetching
@@ -8,6 +8,7 @@ import { AUCTION_HOUSE_ADDRESS, auctionHouseABI, Auction } from '../contracts'
  */
 export async function getAuctionData(): Promise<{
   auction: Auction | null
+  seed: Seed | null
   error: string | null
 }> {
   try {
@@ -31,14 +32,42 @@ export async function getAuctionData(): Promise<{
 
     // Validate we got real data (not uninitialized auction)
     if (!auction || auction.startTime === 0n) {
-      return { auction: null, error: 'Auction not started' }
+      return { auction: null, seed: null, error: 'Auction not started' }
     }
 
-    return { auction, error: null }
+    // Fetch seed for the current Anon
+    let seed: Seed | null = null
+    try {
+      const seedData = await client.readContract({
+        address: TOKEN_ADDRESS,
+        abi: tokenABI,
+        functionName: 'seeds',
+        args: [auction.anonId],
+      })
+
+      // Contract returns tuple: [background, head, visor, antenna, body, accessory, isDusk]
+      if (seedData && Array.isArray(seedData)) {
+        seed = {
+          background: Number(seedData[0]),
+          head: Number(seedData[1]),
+          visor: Number(seedData[2]),
+          antenna: Number(seedData[3]),
+          body: Number(seedData[4]),
+          accessory: Number(seedData[5]),
+          isDusk: Boolean(seedData[6]),
+        }
+      }
+    } catch (seedError) {
+      console.error('[SSR] Failed to fetch seed:', seedError)
+      // Continue without seed - not critical
+    }
+
+    return { auction, seed, error: null }
   } catch (error) {
     console.error('[SSR] Failed to fetch auction:', error)
     return { 
-      auction: null, 
+      auction: null,
+      seed: null,
       error: error instanceof Error ? error.message : 'Unknown error' 
     }
   }
