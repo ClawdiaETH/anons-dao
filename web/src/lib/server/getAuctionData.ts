@@ -45,17 +45,18 @@ export async function getAuctionData(): Promise<{
         args: [auction.anonId],
       })
 
-      // Contract returns tuple: [background, head, visor, antenna, body, accessory, isDusk]
-      if (seedData && Array.isArray(seedData)) {
+      // viem returns tuple as object with named properties
+      if (seedData) {
         seed = {
-          background: Number(seedData[0]),
-          head: Number(seedData[1]),
-          visor: Number(seedData[2]),
-          antenna: Number(seedData[3]),
-          body: Number(seedData[4]),
-          accessory: Number(seedData[5]),
-          isDusk: Boolean(seedData[6]),
+          background: Number(seedData.background),
+          head: Number(seedData.head),
+          visor: Number(seedData.visor),
+          antenna: Number(seedData.antenna),
+          body: Number(seedData.body),
+          accessory: Number(seedData.accessory),
+          isDusk: Boolean(seedData.isDusk),
         }
+        console.log('[SSR] Fetched seed for Anon', auction.anonId.toString(), ':', seed)
       }
     } catch (seedError) {
       console.error('[SSR] Failed to fetch seed:', seedError)
