@@ -73,9 +73,9 @@ export async function GET(
       logs.map(async (log) => {
         const block = await client.getBlock({ blockNumber: log.blockNumber })
         return {
-          bidder: log.args.bidder!,
-          amount: log.args.amount?.toString()!,
-          extended: log.args.extended!,
+          bidder: log.args.bidder as string,
+          amount: (log.args.amount ?? 0n).toString(),
+          extended: log.args.extended ?? false,
           timestamp: Number(block.timestamp),
           blockNumber: log.blockNumber.toString(),
         }
