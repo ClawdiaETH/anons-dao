@@ -14,6 +14,8 @@ export async function GET() {
       .from(bids)
       .orderBy(desc(bids.timestamp))
 
+    console.log('[Stats API] Found bids:', allBids.length)
+
     // Group by anonId to find winning bid for each auction
     const winningBids = new Map<number, { bidder: string; amount: string }>()
     for (const bid of allBids) {
@@ -24,6 +26,8 @@ export async function GET() {
         })
       }
     }
+
+    console.log('[Stats API] Winning bids:', winningBids.size)
 
     // Count unique winning bidders (excluding zero address)
     const uniqueHolders = new Set<string>()
@@ -36,8 +40,9 @@ export async function GET() {
       }
     }
 
-    // Convert to ETH string with 4 decimals
     const treasuryEth = Number(treasuryWei) / 1e18
+
+    console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', uniqueHolders.size)
 
     return NextResponse.json({
       treasury: treasuryEth.toFixed(4),
@@ -46,7 +51,7 @@ export async function GET() {
   } catch (error) {
     console.error('[API] Stats fetch failed:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch stats' },
+      { error: 'Failed to fetch stats', details: error instanceof Error ? error.message : 'Unknown' },
       { status: 500 }
     )
   }
