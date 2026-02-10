@@ -9,15 +9,16 @@ export const revalidate = 10
 export default async function Home() {
   // Fetch initial auction data server-side for faster first paint
   // If this fails, client hooks will handle it
-  const { auction: initialAuction } = await getAuctionData().catch(() => ({ 
-    auction: null, 
+  const { auction: initialAuction, seed: initialSeed } = await getAuctionData().catch(() => ({ 
+    auction: null,
+    seed: null,
     error: 'Server fetch failed' 
   }))
 
   return (
     <div className="-mx-4 -my-8">
       {/* Full-width Hero Section - Nouns-style */}
-      <AuctionHero initialAuction={initialAuction} />
+      <AuctionHero initialAuction={initialAuction} initialSeed={initialSeed} />
 
       {/* Content Container */}
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">

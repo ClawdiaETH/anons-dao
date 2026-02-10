@@ -8,15 +8,16 @@ import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
 import { BidHistoryModal } from './BidHistoryModal'
 import { formatEth, getBackgroundColor } from '@/lib/utils'
-import { Auction } from '@/lib/contracts'
+import { Auction, Seed } from '@/lib/contracts'
 import Image from 'next/image'
 import { useState } from 'react'
 
 interface AuctionHeroProps {
   initialAuction?: Auction | null
+  initialSeed?: Seed | null
 }
 
-export function AuctionHero({ initialAuction }: AuctionHeroProps) {
+export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
   const { auction: liveAuction, isLoading, error } = useAuction()
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
   
@@ -24,7 +25,10 @@ export function AuctionHero({ initialAuction }: AuctionHeroProps) {
   const auction = liveAuction ?? initialAuction
   
   // Fetch seed for background color (MUST be before early return - React Hooks rule)
-  const { seed } = useSeed(auction?.anonId ?? 0n)
+  const { seed: liveSeed } = useSeed(auction?.anonId ?? 0n)
+  
+  // Use initial seed from SSR, fall back to live data
+  const seed = liveSeed ?? initialSeed
   
   // Fetch bid history from events (MUST be before early return - React Hooks rule)
   const { bids: eventBids } = useBidHistory(auction?.anonId ?? 0n)
