@@ -4,7 +4,7 @@ import { base } from 'viem/chains'
 import { db } from '@/lib/db/client'
 import { auctions, bids } from '@/lib/db/schema'
 import { eq, desc } from 'drizzle-orm'
-import { AUCTION_HOUSE_ADDRESS, auctionHouseABI } from '@/lib/contracts'
+import { AUCTION_HOUSE_ADDRESS, auctionHouseABI, Auction } from '@/lib/contracts'
 
 // Edge runtime for faster execution
 export const runtime = 'edge'
@@ -30,7 +30,7 @@ export async function POST() {
       functionName: 'auction',
     })
 
-    const auction = auctionData as any
+    const auction = auctionData as unknown as Auction
     
     // Skip if auction hasn't started
     if (!auction || auction.startTime === 0n) {
