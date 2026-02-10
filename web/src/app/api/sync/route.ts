@@ -65,9 +65,6 @@ export async function POST() {
       })
 
     // 3. Fetch bid events for this auction
-    const currentBlock = await client.getBlockNumber()
-    const fromBlock = currentBlock > 50000n ? currentBlock - 50000n : 0n
-
     // Check if we already have bids for this auction
     const existingBids = await db.select()
       .from(bids)
@@ -75,9 +72,12 @@ export async function POST() {
       .orderBy(desc(bids.blockNumber))
       .limit(1)
 
+    // If we have existing bids, only fetch new ones
+    // If this is first sync, fetch from deployment block (covers all auctions)
+    const DEPLOYMENT_BLOCK = 41908459n // Contract deployment block
     const startBlock = existingBids.length > 0 
       ? existingBids[0].blockNumber + 1n
-      : fromBlock
+      : DEPLOYMENT_BLOCK
 
     const logs = await client.getLogs({
       address: AUCTION_HOUSE_ADDRESS,
