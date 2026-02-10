@@ -1,24 +1,30 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db/client'
 import { bids } from '@/lib/db/schema'
-import { desc } from 'drizzle-orm'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'edge'
+export const revalidate = 0
 
 export async function GET() {
   try {
-    // Get all bids grouped by anonId, sorted by timestamp desc (winning bid = latest for each anon)
-    const allBids = await db
-      .select()
-      .from(bids)
-      .orderBy(desc(bids.timestamp))
+    // Simple query - just get all bids like backfill does
+    const allBids = await db.select().from(bids)
 
-    console.log('[Stats API] Found bids:', allBids.length)
+    console.log(`[Stats API] Found ${allBids.length} bids`)
 
-    // Group by anonId to find winning bid for each auction
+    if (allBids.length === 0) {
+      return NextResponse.json({
+        treasury: '0.0000',
+        holders: 0,
+      })
+    }
+
+    // Group by anonId to find winning bid (latest timestamp for each anon)
     const winningBids = new Map<number, { bidder: string; amount: string }>()
-    for (const bid of allBids) {
+    const sortedBids = [...allBids].sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
+    
+    for (const bid of sortedBids) {
       if (!winningBids.has(bid.anonId)) {
         winningBids.set(bid.anonId, {
           bidder: bid.bidder,
@@ -27,9 +33,7 @@ export async function GET() {
       }
     }
 
-    console.log('[Stats API] Winning bids:', winningBids.size)
-
-    // Count unique winning bidders (excluding zero address)
+    // Calculate treasury and holders
     const uniqueHolders = new Set<string>()
     let treasuryWei = BigInt(0)
 
@@ -40,13 +44,19 @@ export async function GET() {
       }
     }
 
-    const treasuryEth = Number(treasuryWei) / 1e18
+    const treasuryEth = (Number(treasuryWei) / 1e18).toFixed(4)
 
     console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', uniqueHolders.size)
 
     return NextResponse.json({
-      treasury: treasuryEth.toFixed(4),
+      treasury: treasuryEth,
       holders: uniqueHolders.size,
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, must-revalidate',
+        'CDN-Cache-Control': 'no-store',
+        'Vercel-CDN-Cache-Control': 'no-store',
+      }
     })
   } catch (error) {
     console.error('[API] Stats fetch failed:', error)
