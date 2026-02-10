@@ -46,15 +46,25 @@ export async function getAuctionData(): Promise<{
       })
 
       // viem returns tuple as object with named properties
+      // Type assertion needed because viem's return type is too generic
       if (seedData) {
+        const typedSeed = seedData as {
+          background: number | bigint
+          head: number | bigint
+          visor: number | bigint
+          antenna: number | bigint
+          body: number | bigint
+          accessory: number | bigint
+          isDusk: boolean
+        }
         seed = {
-          background: Number(seedData.background),
-          head: Number(seedData.head),
-          visor: Number(seedData.visor),
-          antenna: Number(seedData.antenna),
-          body: Number(seedData.body),
-          accessory: Number(seedData.accessory),
-          isDusk: Boolean(seedData.isDusk),
+          background: Number(typedSeed.background),
+          head: Number(typedSeed.head),
+          visor: Number(typedSeed.visor),
+          antenna: Number(typedSeed.antenna),
+          body: Number(typedSeed.body),
+          accessory: Number(typedSeed.accessory),
+          isDusk: Boolean(typedSeed.isDusk),
         }
         console.log('[SSR] Fetched seed for Anon', auction.anonId.toString(), ':', seed)
       }
