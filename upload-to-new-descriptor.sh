@@ -5,7 +5,7 @@ set -e
 # New descriptor: 0xd29F7491E2269Ba1f6f7B89ff3Bbe6A65301e9AF
 
 export DESCRIPTOR_ADDRESS=0xd29F7491E2269Ba1f6f7B89ff3Bbe6A65301e9AF
-export PRIVATE_KEY=$(cat ~/.clawdbot/secrets/signing_key)
+export PRIVATE_KEY=$(~/clawd/scripts/get-secret.sh signing_key)
 RPC_URL="https://mainnet.base.org"
 
 cd ~/Projects/anons-dao/contracts
