@@ -1,12 +1,23 @@
 import { AuctionHero } from '@/components/AuctionHero'
 import { Stats } from '@/components/Stats'
+import { getAuctionData } from '@/lib/server/getAuctionData'
 import Link from 'next/link'
 
-export default function Home() {
+// Enable ISR - revalidate every 10 seconds
+export const revalidate = 10
+
+export default async function Home() {
+  // Fetch initial auction data server-side for faster first paint
+  // If this fails, client hooks will handle it
+  const { auction: initialAuction } = await getAuctionData().catch(() => ({ 
+    auction: null, 
+    error: 'Server fetch failed' 
+  }))
+
   return (
     <div className="-mx-4 -my-8">
       {/* Full-width Hero Section - Nouns-style */}
-      <AuctionHero />
+      <AuctionHero initialAuction={initialAuction} />
 
       {/* Content Container */}
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">

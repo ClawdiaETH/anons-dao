@@ -7,12 +7,20 @@ import { AnonImage } from './AnonImage'
 import { BidForm } from './BidForm'
 import { BidHistoryModal } from './BidHistoryModal'
 import { formatEth } from '@/lib/utils'
+import { Auction } from '@/lib/contracts'
 import Image from 'next/image'
 import { useState } from 'react'
 
-export function AuctionHero() {
-  const { auction, isLoading, error } = useAuction()
+interface AuctionHeroProps {
+  initialAuction?: Auction | null
+}
+
+export function AuctionHero({ initialAuction }: AuctionHeroProps) {
+  const { auction: liveAuction, isLoading, error } = useAuction()
   const [isBidModalOpen, setIsBidModalOpen] = useState(false)
+  
+  // Use initial SSR data if available, then switch to live data when it loads
+  const auction = liveAuction ?? initialAuction
   
   // Fetch bid history from events (MUST be before early return - React Hooks rule)
   const { bids: eventBids } = useBidHistory(auction?.anonId ?? 0n)
