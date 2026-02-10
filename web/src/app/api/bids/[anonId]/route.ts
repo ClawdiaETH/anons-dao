@@ -4,6 +4,12 @@ import { base } from 'viem/chains'
 
 const AUCTION_HOUSE_ADDRESS = '0x51f5a9252A43F89D8eE9D5616263f46a0E02270F' as const
 
+// Enable Edge Runtime for faster cold starts
+export const runtime = 'edge'
+
+// Cache for 10 seconds, serve stale for 30 seconds while revalidating
+export const revalidate = 10
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { anonId: string } }
@@ -46,7 +52,11 @@ export async function GET(
     // Sort by block number descending
     bids.sort((a, b) => Number(BigInt(b.blockNumber) - BigInt(a.blockNumber)))
 
-    return NextResponse.json({ bids })
+    return NextResponse.json({ bids }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+      },
+    })
   } catch (error) {
     console.error('Error fetching bids:', error)
     return NextResponse.json({ error: 'Failed to fetch bids' }, { status: 500 })
