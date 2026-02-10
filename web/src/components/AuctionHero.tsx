@@ -25,10 +25,11 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
   const auction = liveAuction ?? initialAuction
   
   // Fetch seed for background color (MUST be before early return - React Hooks rule)
-  const { seed: liveSeed } = useSeed(auction?.anonId ?? 0n)
+  const { seed: liveSeed, error: seedError } = useSeed(auction?.anonId ?? 0n)
   
-  // Use initial seed from SSR, fall back to live data
-  const seed = liveSeed ?? initialSeed
+  // Use initial seed from SSR unless we have successfully loaded live data
+  // Don't let a failed client fetch override good SSR data
+  const seed = (liveSeed && !seedError) ? liveSeed : initialSeed
   
   // Fetch bid history from events (MUST be before early return - React Hooks rule)
   const { bids: eventBids } = useBidHistory(auction?.anonId ?? 0n)
@@ -60,7 +61,14 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
 
   // Debug logging
   if (typeof window !== 'undefined') {
-    console.log('[AuctionHero] Seed:', seed, 'bgColor:', bgColor, 'isDusk:', isDusk)
+    console.log('[AuctionHero]', {
+      initialSeed,
+      liveSeed,
+      seedError,
+      finalSeed: seed,
+      bgColor,
+      isDusk
+    })
   }
 
   return (
