@@ -62,30 +62,88 @@ export async function GET() {
       treasuryEth = (Number(treasuryWei) / 1e18).toFixed(4)
     }
 
-    // Calculate unique holder count from database
-    const allBids = await db.select().from(bids)
-    
-    const winningBids = new Map<number, { bidder: string }>()
-    const sortedBids = [...allBids].sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
-    
-    for (const bid of sortedBids) {
-      if (!winningBids.has(bid.anonId)) {
-        winningBids.set(bid.anonId, { bidder: bid.bidder })
+    // Query actual holder count from NFT contract
+    let holderCount = 0
+    try {
+      const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'
+      const nftContract = '0x1ad890FCE6cB865737A3411E7d04f1F5668b0686'
+      
+      // Get total supply first
+      const supplyResponse = await fetch(rpcUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 2,
+          method: 'eth_call',
+          params: [
+            {
+              to: nftContract,
+              data: '0x18160ddd', // totalSupply()
+            },
+            'latest',
+          ],
+        }),
+      })
+
+      const supplyData = await supplyResponse.json()
+      const totalSupply = supplyData.result ? parseInt(supplyData.result, 16) : 0
+
+      // Query owner of each token
+      const uniqueHolders = new Set<string>()
+      for (let tokenId = 0; tokenId < totalSupply; tokenId++) {
+        const ownerResponse = await fetch(rpcUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 3 + tokenId,
+            method: 'eth_call',
+            params: [
+              {
+                to: nftContract,
+                data: `0x6352211e${tokenId.toString(16).padStart(64, '0')}`, // ownerOf(tokenId)
+              },
+              'latest',
+            ],
+          }),
+        })
+
+        const ownerData = await ownerResponse.json()
+        if (ownerData.result) {
+          const owner = '0x' + ownerData.result.slice(-40)
+          uniqueHolders.add(owner.toLowerCase())
+        }
       }
+
+      holderCount = uniqueHolders.size
+    } catch (holderError) {
+      console.error('[Stats API] Holder count query failed:', holderError)
+      // Fallback to database count
+      const allBids = await db.select().from(bids)
+      const winningBids = new Map<number, { bidder: string }>()
+      const sortedBids = [...allBids].sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
+      
+      for (const bid of sortedBids) {
+        if (!winningBids.has(bid.anonId)) {
+          winningBids.set(bid.anonId, { bidder: bid.bidder })
+        }
+      }
+
+      const uniqueHolders = new Set<string>()
+      for (const [, { bidder }] of winningBids) {
+        if (bidder !== '0x0000000000000000000000000000000000000000') {
+          uniqueHolders.add(bidder.toLowerCase())
+        }
+      }
+      holderCount = uniqueHolders.size
     }
 
-    const uniqueHolders = new Set<string>()
-    for (const [, { bidder }] of winningBids) {
-      if (bidder !== '0x0000000000000000000000000000000000000000') {
-        uniqueHolders.add(bidder.toLowerCase())
-      }
-    }
-
-    console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', uniqueHolders.size)
+    console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', holderCount)
 
     return NextResponse.json({
       treasury: treasuryEth,
-      holders: uniqueHolders.size,
+      holders: holderCount,
     }, {
       headers: {
         'Cache-Control': 'no-store, must-revalidate',
