@@ -1,60 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPublicClient, http, parseAbiItem } from 'viem'
-import { base } from 'viem/chains'
-
-const AUCTION_HOUSE_ADDRESS = '0x51f5a9252A43F89D8eE9D5616263f46a0E02270F' as const
+import { db } from '@/lib/db/client'
+import { bids } from '@/lib/db/schema'
+import { eq, desc } from 'drizzle-orm'
 
 // Enable Edge Runtime for faster cold starts
 export const runtime = 'edge'
 
-// Cache for 10 seconds, serve stale for 30 seconds while revalidating
-export const revalidate = 10
+// Cache for 5 seconds (DB is updated every 30s via sync)
+export const revalidate = 5
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { anonId: string } }
 ) {
   try {
-    const anonId = BigInt(params.anonId)
+    const anonId = parseInt(params.anonId)
     
-    // Use Alchemy RPC from env or fallback to public
-    const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'
-    
-    const client = createPublicClient({
-      chain: base,
-      transport: http(rpcUrl),
+    // Query database instead of RPC (10-100x faster!)
+    const bidRecords = await db.select({
+      bidder: bids.bidder,
+      amount: bids.amount,
+      extended: bids.extended,
+      timestamp: bids.timestamp,
+      blockNumber: bids.blockNumber,
+      agentId: bids.agentId,
     })
+      .from(bids)
+      .where(eq(bids.anonId, anonId))
+      .orderBy(desc(bids.blockNumber))
 
-    const currentBlock = await client.getBlockNumber()
-    const fromBlock = currentBlock > 50000n ? currentBlock - 50000n : 0n
+    // Format for frontend compatibility
+    const formattedBids = bidRecords.map(bid => ({
+      bidder: bid.bidder,
+      amount: bid.amount,
+      extended: bid.extended,
+      timestamp: Number(bid.timestamp),
+      blockNumber: bid.blockNumber.toString(),
+      agentId: bid.agentId || undefined,
+    }))
 
-    const logs = await client.getLogs({
-      address: AUCTION_HOUSE_ADDRESS,
-      event: parseAbiItem('event AuctionBid(uint256 indexed anonId, address indexed bidder, uint256 amount, bool extended)'),
-      args: { anonId },
-      fromBlock,
-      toBlock: 'latest',
-    })
-
-    const bids = await Promise.all(
-      logs.map(async (log) => {
-        const block = await client.getBlock({ blockNumber: log.blockNumber })
-        return {
-          bidder: log.args.bidder,
-          amount: log.args.amount?.toString(),
-          extended: log.args.extended,
-          timestamp: Number(block.timestamp),
-          blockNumber: log.blockNumber.toString(),
-        }
-      })
-    )
-
-    // Sort by block number descending
-    bids.sort((a, b) => Number(BigInt(b.blockNumber) - BigInt(a.blockNumber)))
-
-    return NextResponse.json({ bids }, {
+    return NextResponse.json({ bids: formattedBids }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+        'Cache-Control': 'public, s-maxage=5, stale-while-revalidate=30',
       },
     })
   } catch (error) {
