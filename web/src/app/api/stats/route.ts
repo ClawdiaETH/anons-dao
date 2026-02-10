@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db/client'
 import { bids } from '@/lib/db/schema'
-import { createPublicClient, http } from 'viem'
-import { base } from 'viem/chains'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'edge'
@@ -13,26 +11,56 @@ const WETH_ADDRESS = '0x4200000000000000000000000000000000000006'
 
 export async function GET() {
   try {
-    // Query on-chain WETH balance for actual treasury value
-    const client = createPublicClient({
-      chain: base,
-      transport: http(process.env.NEXT_PUBLIC_BASE_RPC_URL),
-    })
+    let treasuryEth = '0.0000'
 
-    const wethBalance = await client.readContract({
-      address: WETH_ADDRESS,
-      abi: [{
-        name: 'balanceOf',
-        type: 'function',
-        stateMutability: 'view',
-        inputs: [{ name: 'account', type: 'address' }],
-        outputs: [{ name: '', type: 'uint256' }],
-      }],
-      functionName: 'balanceOf',
-      args: [TREASURY_ADDRESS as `0x${string}`],
-    })
+    // Try to query on-chain WETH balance
+    try {
+      const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'
+      
+      const response = await fetch(rpcUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'eth_call',
+          params: [
+            {
+              to: WETH_ADDRESS,
+              data: `0x70a08231000000000000000000000000${TREASURY_ADDRESS.slice(2)}`, // balanceOf(treasury)
+            },
+            'latest',
+          ],
+        }),
+      })
 
-    const treasuryEth = (Number(wethBalance) / 1e18).toFixed(4)
+      const data = await response.json()
+      if (data.result) {
+        const wethBalance = BigInt(data.result)
+        treasuryEth = (Number(wethBalance) / 1e18).toFixed(4)
+      }
+    } catch (rpcError) {
+      console.error('[Stats API] RPC call failed, using fallback:', rpcError)
+      // Fallback: calculate from database (95% of winning bids)
+      const allBids = await db.select().from(bids)
+      const winningBids = new Map<number, string>()
+      const sortedBids = [...allBids].sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
+      
+      for (const bid of sortedBids) {
+        if (!winningBids.has(bid.anonId)) {
+          winningBids.set(bid.anonId, bid.amount)
+        }
+      }
+
+      let totalWei = BigInt(0)
+      for (const amount of winningBids.values()) {
+        totalWei += BigInt(amount)
+      }
+      
+      // Apply 95% treasury split
+      const treasuryWei = (totalWei * BigInt(95)) / BigInt(100)
+      treasuryEth = (Number(treasuryWei) / 1e18).toFixed(4)
+    }
 
     // Calculate unique holder count from database
     const allBids = await db.select().from(bids)
@@ -53,7 +81,7 @@ export async function GET() {
       }
     }
 
-    console.log('[Stats API] Treasury (WETH):', treasuryEth, 'Holders:', uniqueHolders.size)
+    console.log('[Stats API] Treasury:', treasuryEth, 'Holders:', uniqueHolders.size)
 
     return NextResponse.json({
       treasury: treasuryEth,
@@ -68,8 +96,13 @@ export async function GET() {
   } catch (error) {
     console.error('[API] Stats fetch failed:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch stats', details: error instanceof Error ? error.message : 'Unknown' },
-      { status: 500 }
+      { treasury: '0.0000', holders: 0 },
+      { 
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, must-revalidate',
+        }
+      }
     )
   }
 }
