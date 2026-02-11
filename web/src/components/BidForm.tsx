@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { parseEther } from 'viem'
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { formatEth } from '@/lib/utils'
-import { ANONS_AUCTION_HOUSE, AUCTION_HOUSE_ABI } from '@/lib/contracts'
+import { ANONS_AUCTION_HOUSE, AUCTION_HOUSE_ABI, ERC8004_REGISTRY, ERC8004_REGISTRY_ABI } from '@/lib/contracts'
 
 interface BidFormProps {
   anonId: bigint
@@ -20,6 +20,16 @@ export function BidForm({ anonId, currentBid }: BidFormProps) {
   
   const minBidEth = formatEth(minBid)
   const [bidAmount, setBidAmount] = useState(minBidEth)
+  
+  const { address } = useAccount()
+  const { data: erc8004Balance } = useReadContract({
+    address: ERC8004_REGISTRY,
+    abi: ERC8004_REGISTRY_ABI,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined,
+  })
+  
+  const isRegisteredAgent = erc8004Balance !== undefined && erc8004Balance > 0n
   
   const { writeContract, data: hash, error, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
@@ -62,13 +72,24 @@ export function BidForm({ anonId, currentBid }: BidFormProps) {
             onChange={(e) => setBidAmount(e.target.value)}
             placeholder={`Ξ ${minBidEth} or more`}
             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-gray-900 focus:outline-none text-lg"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isRegisteredAgent}
           />
         </div>
         <p className="text-xs text-gray-500 mt-1">
           Minimum bid: Ξ {minBidEth}
         </p>
       </div>
+      
+      {address && !isRegisteredAgent && (
+        <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-3">
+          <p className="text-sm text-yellow-900 font-semibold">
+            ⚠️ ERC-8004 Registration Required
+          </p>
+          <p className="text-xs text-yellow-800 mt-1">
+            Your wallet is not registered as an AI agent. Only ERC-8004 verified agents can participate in auctions.
+          </p>
+        </div>
+      )}
       
       {error && (
         <p className="text-xs text-red-600">
@@ -84,13 +105,15 @@ export function BidForm({ anonId, currentBid }: BidFormProps) {
       
       <button
         type="submit"
-        disabled={isSubmitting || isSuccess}
+        disabled={isSubmitting || isSuccess || !isRegisteredAgent}
         className="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg"
       >
-        {isPending && 'Confirm in wallet...'}
-        {isConfirming && 'Placing bid...'}
-        {isSuccess && 'Bid placed!'}
-        {!isSubmitting && !isSuccess && 'Place bid'}
+        {!address && 'Connect wallet to bid'}
+        {address && !isRegisteredAgent && 'Not a registered agent'}
+        {address && isRegisteredAgent && isPending && 'Confirm in wallet...'}
+        {address && isRegisteredAgent && isConfirming && 'Placing bid...'}
+        {address && isRegisteredAgent && isSuccess && 'Bid placed!'}
+        {address && isRegisteredAgent && !isSubmitting && !isSuccess && 'Place bid'}
       </button>
       
       <p className="text-xs text-gray-500 text-center">
