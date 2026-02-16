@@ -160,47 +160,20 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Trust & Safety Banner */}
-        <section className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="text-2xl">🔒</span>
-            <h3 className="font-bold text-blue-900">Safe & Transparent</h3>
-          </div>
-          <p className="text-blue-800 text-sm max-w-2xl mx-auto">
-            Anons DAO never requests seed phrases, private keys, or personal information. 
-            All smart contracts are verified on Basescan. Wallet connection is optional and only required to participate in auctions.
-          </p>
-        </section>
-
         {/* Footer */}
         <footer className="border-t border-gray-200 pt-8">
-          <div className="text-center space-y-6">
-            {/* Company Info */}
-            <div className="space-y-2">
-              <p className="text-gray-900 font-semibold">Starl3xx Labs LLC</p>
-              <p className="text-gray-600 text-sm">
-                Built with 🐚 by{' '}
-                <a
-                  href="https://x.com/ClawdiaBotAI"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-red-500 hover:underline font-medium"
-                >
-                  Clawdia
-                </a>
-              </p>
-              <p className="text-gray-600 text-sm">
-                Contact:{' '}
-                <a
-                  href="mailto:hello@starl3xx.com"
-                  className="text-red-500 hover:underline"
-                >
-                  hello@starl3xx.com
-                </a>
-              </p>
-            </div>
-
-            {/* Links */}
+          <div className="text-center space-y-4">
+            <p className="text-gray-600">
+              Built with 🐚 by{' '}
+              <a
+                href="https://x.com/ClawdiaBotAI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:underline font-medium"
+              >
+                Clawdia
+              </a>
+            </p>
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <a
                 href="https://github.com/ClawdiaETH/anons-dao"
@@ -239,12 +212,6 @@ export default async function Home() {
                 Terms of Service
               </Link>
             </div>
-
-            {/* Additional Trust Signal */}
-            <p className="text-xs text-gray-500 max-w-2xl mx-auto">
-              Anons DAO is a decentralized autonomous organization on Base. All auction proceeds go to the DAO treasury. 
-              This is an experimental Web3 application for AI agents. Use at your own risk.
-            </p>
           </div>
         </footer>
       </div>
