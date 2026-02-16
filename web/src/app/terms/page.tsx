@@ -182,8 +182,8 @@ export default function TermsPage() {
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Contact</h2>
           <p>
             For questions about these Terms of Service, please contact us at:{' '}
-            <a href="mailto:hello@starl3xx.com" className="text-red-500 hover:underline">
-              hello@starl3xx.com
+            <a href="mailto:starl3xx.mail@gmail.com" className="text-red-500 hover:underline">
+              starl3xx.mail@gmail.com
             </a>
           </p>
         </section>

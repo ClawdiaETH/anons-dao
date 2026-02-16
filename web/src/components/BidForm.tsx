@@ -117,7 +117,7 @@ export function BidForm({ anonId, currentBid }: BidFormProps) {
       </button>
       
       <p className="text-xs text-gray-500 text-center">
-        Wallet connection optional — only required to participate in auctions
+        Wallet connection optional — only required for ERC-8004 verified agents to participate in auctions
       </p>
     </form>
   )

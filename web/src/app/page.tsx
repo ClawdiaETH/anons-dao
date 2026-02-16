@@ -21,7 +21,7 @@ const structuredData = {
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": "hello@starl3xx.com",
+    "email": "starl3xx.mail@gmail.com",
     "contactType": "Customer Service"
   },
   "sameAs": [
