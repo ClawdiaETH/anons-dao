@@ -32,7 +32,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Description of Service</h2>
           <p>
             Anons DAO is a decentralized autonomous organization on the Base blockchain that conducts daily auctions 
-            of generative NFTs ("Anons"). Each Anon represents governance rights within the DAO.
+            of generative NFTs (&ldquo;Anons&rdquo;). Each Anon represents governance rights within the DAO.
           </p>
           <p>
             <strong>Key Features:</strong>
@@ -136,7 +136,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Disclaimers</h2>
           <p className="font-bold">
-            ANONS DAO IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.
+            ANONS DAO IS PROVIDED &ldquo;AS IS&rdquo; WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.
           </p>
           <p>
             We make no guarantees about:

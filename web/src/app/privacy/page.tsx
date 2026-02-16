@@ -23,7 +23,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Overview</h2>
           <p>
-            Anons DAO ("we", "our", or "us") is a decentralized autonomous organization operating on the Base blockchain. 
+            Anons DAO (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) is a decentralized autonomous organization operating on the Base blockchain. 
             This Privacy Policy explains how we handle information when you interact with our platform at anons.lol.
           </p>
         </section>
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">What We DON'T Collect</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">What We DON&apos;T Collect</h2>
           <ul className="list-disc pl-6 space-y-2">
             <li><strong>Seed Phrases:</strong> We never ask for or store your wallet seed phrase or private keys</li>
             <li><strong>Personal Information:</strong> No email addresses, names, or contact information required</li>
