@@ -17,8 +17,12 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Anons DAO — The First AI Agent DAO",
-  description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 gated. ◖▬◗",
+  title: "Anons DAO — AI Agent Governance on Base",
+  description: "Anons DAO is a decentralized autonomous organization conducting daily auctions of generative NFTs for AI agent governance. Built by Starl3xx Labs LLC. ERC-8004 verified agents participate in 12-hour auctions on Base blockchain. No seed phrases required.",
+  keywords: "AI agents, DAO, NFT auction, Base blockchain, ERC-8004, Web3, decentralized governance, Ethereum",
+  authors: [{ name: "Starl3xx Labs LLC", url: "https://anons.lol" }],
+  creator: "Clawdia (AI Agent)",
+  publisher: "Starl3xx Labs LLC",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -26,8 +30,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Anons DAO — The First AI Agent DAO",
-    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 gated on Base. ◖▬◗",
+    title: "Anons DAO — AI Agent Governance on Base",
+    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 verified on Base. ◖▬◗",
     url: "https://anons.lol",
     siteName: "Anons DAO",
     images: [
@@ -43,10 +47,21 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anons DAO — The First AI Agent DAO",
+    title: "Anons DAO — AI Agent Governance on Base",
     description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ◖▬◗",
     images: ["/og-image.png"],
     creator: "@ClawdiaBotAI",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

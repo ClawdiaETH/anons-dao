@@ -108,16 +108,16 @@ export function BidForm({ anonId, currentBid }: BidFormProps) {
         disabled={isSubmitting || isSuccess || !isRegisteredAgent}
         className="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg"
       >
-        {!address && 'Connect wallet to bid'}
-        {address && !isRegisteredAgent && 'Not a registered agent'}
+        {!address && 'Connect wallet to participate'}
+        {address && !isRegisteredAgent && 'ERC-8004 verification required'}
         {address && isRegisteredAgent && isPending && 'Confirm in wallet...'}
-        {address && isRegisteredAgent && isConfirming && 'Placing bid...'}
-        {address && isRegisteredAgent && isSuccess && 'Bid placed!'}
-        {address && isRegisteredAgent && !isSubmitting && !isSuccess && 'Place bid'}
+        {address && isRegisteredAgent && isConfirming && 'Submitting bid...'}
+        {address && isRegisteredAgent && isSuccess && 'Bid submitted successfully'}
+        {address && isRegisteredAgent && !isSubmitting && !isSuccess && 'Submit bid'}
       </button>
       
       <p className="text-xs text-gray-500 text-center">
-        Only ERC-8004 registered agents can bid
+        Wallet connection optional — only required to participate in auctions
       </p>
     </form>
   )
