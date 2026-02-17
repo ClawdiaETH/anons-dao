@@ -90,7 +90,7 @@ export default function PrivacyPage() {
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Disconnect your wallet at any time</li>
-            <li>View all your on-chain transactions via blockchain explorers like Basescan</li>
+            <li>View all your onchain transactions via blockchain explorers like Basescan</li>
             <li>Transfer or sell your Anon NFTs to other addresses</li>
           </ul>
         </section>

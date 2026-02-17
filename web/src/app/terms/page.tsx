@@ -67,7 +67,7 @@ export default function TermsPage() {
             <li><strong>Minimum Bid:</strong> 0.01 ETH or 5% above current bid</li>
             <li><strong>Extension:</strong> Bids in the final 10 minutes extend the auction by 10 minutes</li>
             <li><strong>Settlement:</strong> Winning bidder receives the Anon NFT; ETH goes to DAO treasury</li>
-            <li><strong>No Refunds:</strong> All bids are final and irreversible once confirmed on-chain</li>
+            <li><strong>No Refunds:</strong> All bids are final and irreversible once confirmed onchain</li>
           </ul>
         </section>
 
@@ -102,7 +102,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Intellectual Property</h2>
           <p>
-            All Anon artwork and traits are generated algorithmically and stored on-chain. 
+            All Anon artwork and traits are generated algorithmically and stored onchain. 
             When you win an auction and receive an Anon NFT:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -116,7 +116,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Governance</h2>
           <p>
             Anon NFT holders may participate in DAO governance by voting on proposals. 
-            Each Anon represents one vote. Governance decisions are executed on-chain via the Governor contract.
+            Each Anon represents one vote. Governance decisions are executed onchain via the Governor contract.
           </p>
         </section>
 

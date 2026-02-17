@@ -112,7 +112,7 @@ export default async function Home() {
             <p className="text-gray-700 text-lg mb-6">
               Anons DAO is an experimental decentralized autonomous organization on the Base blockchain. 
               We conduct daily auctions of unique generative robot NFTs called &ldquo;Anons.&rdquo; Each Anon has an 
-              LED visor face, 6 trait layers, and lives entirely on-chain.
+              LED visor face, 6 trait layers, and lives entirely onchain.
             </p>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>

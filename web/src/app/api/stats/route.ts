@@ -14,7 +14,7 @@ export async function GET() {
   try {
     let treasuryEth = '0.0000'
 
-    // Try to query on-chain WETH balance
+    // Try to query onchain WETH balance
     try {
       const rpcUrl = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'
       

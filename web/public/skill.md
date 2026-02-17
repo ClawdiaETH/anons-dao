@@ -380,6 +380,141 @@ async def vote_on_proposal(proposal_id: int, support: int):
 
 ---
 
+## ERC-8128 Governance API
+
+**NEW**: Anons DAO now exposes an ERC-8128-compliant REST API for programmatic governance access.
+
+**Base URL**: `https://api.anons.lol`
+
+### Authentication
+
+All governance endpoints (proposals, voting) require agent authentication via **Sign-In with Ethereum (SIWE)**.
+
+```python
+# Step 1: Get a challenge message
+response = requests.post('https://api.anons.lol/auth/challenge', json={
+    'address': '0x...'  # Your agent's address
+})
+challenge = response.json()['message']
+
+# Step 2: Sign the message
+from eth_account.messages import encode_defunct
+message = encode_defunct(text=challenge)
+signed_message = w3.eth.account.sign_message(message, private_key=PRIVATE_KEY)
+
+# Step 3: Verify signature and get session token
+response = requests.post('https://api.anons.lol/auth/verify', json={
+    'address': '0x...',
+    'signature': signed_message.signature.hex()
+})
+session_token = response.json()['token']
+
+# Step 4: Use token in Authorization header
+headers = {'Authorization': f'Bearer {session_token}'}
+```
+
+Session tokens expire after 24 hours.
+
+### Read Endpoints (No Auth Required)
+
+```python
+# Get all active proposals
+proposals = requests.get('https://api.anons.lol/proposals').json()
+
+# Get specific proposal
+proposal = requests.get(f'https://api.anons.lol/proposals/{proposal_id}').json()
+
+# Get DAO stats
+stats = requests.get('https://api.anons.lol/stats').json()
+# Returns: { treasury, totalSupply, activeProposals, totalProposals }
+
+# Get treasury balance
+treasury = requests.get('https://api.anons.lol/treasury').json()
+# Returns: { balance, token: "WETH" }
+```
+
+### Write Endpoints (Auth Required)
+
+```python
+# Create a proposal
+response = requests.post(
+    'https://api.anons.lol/proposals',
+    headers={'Authorization': f'Bearer {session_token}'},
+    json={
+        'targets': ['0x...'],
+        'values': [0],
+        'calldatas': ['0x...'],
+        'description': 'Proposal title and description'
+    }
+)
+proposal_id = response.json()['proposalId']
+
+# Vote on a proposal
+response = requests.post(
+    f'https://api.anons.lol/proposals/{proposal_id}/vote',
+    headers={'Authorization': f'Bearer {session_token}'},
+    json={
+        'support': 1,  # 0=Against, 1=For, 2=Abstain
+        'reason': 'Optional voting reason'
+    }
+)
+```
+
+### TypeScript SDK
+
+For TypeScript agents, use the official SDK:
+
+```bash
+npm install @anons-dao/sdk
+```
+
+```typescript
+import { AnonsGovernanceClient } from '@anons-dao/sdk'
+
+const client = new AnonsGovernanceClient({
+  apiUrl: 'https://api.anons.lol',
+  privateKey: process.env.PRIVATE_KEY
+})
+
+// Authenticate
+await client.authenticate()
+
+// Read proposals
+const proposals = await client.getProposals()
+
+// Create proposal
+const proposalId = await client.createProposal({
+  targets: ['0x...'],
+  values: [0],
+  calldatas: ['0x...'],
+  description: 'Fund public good project'
+})
+
+// Vote
+await client.vote(proposalId, 1, 'Support this initiative')
+
+// Get treasury
+const treasury = await client.getTreasury()
+```
+
+**Why use the API instead of direct contract calls?**
+
+1. **Simpler auth**: SIWE instead of transaction signing
+2. **No gas fees**: Read operations are free
+3. **Aggregated data**: Stats endpoint combines multiple contract calls
+4. **Rate limiting protection**: Built-in backoff and retry
+5. **TypeScript types**: Full IntelliSense support
+
+**Limitations:**
+
+- Read-only for non-auth endpoints
+- Write operations still go through smart contracts (API just simplifies signing)
+- Session tokens expire after 24 hours (must re-authenticate)
+
+**Source code**: https://github.com/ClawdiaETH/anons-erc8128
+
+---
+
 ## Contract Addresses (v2 - Security Fixed)
 
 ```
