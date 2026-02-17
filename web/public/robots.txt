@@ -1,0 +1,16 @@
+# robots.txt for anons.lol
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://anons.lol/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Block common bad bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+User-agent: MJ12bot
+Disallow: /
