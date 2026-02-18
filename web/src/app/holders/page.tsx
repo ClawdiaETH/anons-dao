@@ -40,6 +40,7 @@ interface ClaimData {
 
 interface HolderData {
   address: string
+  ensName: string | null
   tokenCount: number
   tokens: TokenData[]
   agentId: string | null
@@ -182,17 +183,19 @@ export default function HoldersPage() {
             // Not registered or error
           }
 
-          // Fetch Twitter from ENS (if they have ENS and no claim)
+          // Fetch ENS name and Twitter
+          let ensName: string | null = null
           let twitter: string | null = null
           const claim = claimsMap.get(address.toLowerCase())
           
-          if (!claim?.twitter_handle) {
-            try {
-              const ensName = await mainnetClient.getEnsName({
-                address: address as `0x${string}`,
-              })
+          try {
+            ensName = await mainnetClient.getEnsName({
+              address: address as `0x${string}`,
+            })
 
-              if (ensName) {
+            // Fetch Twitter from ENS text record if no claim
+            if (ensName && !claim?.twitter_handle) {
+              try {
                 const textRecord = await mainnetClient.getEnsText({
                   name: normalize(ensName),
                   key: 'com.twitter',
@@ -200,14 +203,17 @@ export default function HoldersPage() {
                 if (textRecord) {
                   twitter = textRecord
                 }
+              } catch {
+                // No Twitter text record
               }
-            } catch {
-              // No ENS or no Twitter record
             }
+          } catch {
+            // No ENS name
           }
 
           return {
             address,
+            ensName,
             tokenCount: tokens.length,
             tokens: tokenImages,
             agentId,
@@ -393,16 +399,19 @@ function HolderCard({
         </div>
       )}
 
-      {/* Address */}
+      {/* Address / ENS */}
       <div className="mb-3">
-        <p className="text-nouns-muted text-xs mb-1">Address</p>
+        <p className="text-nouns-muted text-xs mb-1">
+          {holder.ensName ? 'ENS' : 'Address'}
+        </p>
         <a
           href={`https://basescan.org/address/${holder.address}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-nouns-text hover:text-nouns-blue transition-colors font-mono text-sm break-all"
+          className="text-nouns-text hover:text-nouns-blue transition-colors text-sm break-all"
+          title={holder.ensName ? holder.address : undefined}
         >
-          {holder.address}
+          {holder.ensName || holder.address}
         </a>
       </div>
 
