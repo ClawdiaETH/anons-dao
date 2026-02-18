@@ -19,6 +19,7 @@ const PROPOSAL_STATES = ['Pending', 'Active', 'Canceled', 'Defeated', 'Succeeded
 
 interface ProposalDetails {
   id: string
+  fullId: string
   proposer: string
   description: string
   voteStart: bigint
@@ -71,11 +72,16 @@ export default function ProposalDetailPage() {
           allLogs = [...allLogs, ...chunkLogs]
         }
 
-        // Convert proposalId to hex for comparison
-        const proposalIdHex = proposalId.startsWith('0x') ? proposalId : `0x${proposalId}`
+        // Find proposal by short ID (prefix match) or full ID
+        const searchId = proposalId.toLowerCase()
         const log = allLogs.find(l => {
-          const logIdHex = `0x${l.args.proposalId?.toString(16)}`
-          return logIdHex === proposalIdHex || l.args.proposalId?.toString() === proposalId
+          const fullHex = `0x${l.args.proposalId?.toString(16)}`
+          const decimal = l.args.proposalId?.toString()
+          
+          // Support short hex (0x46dc649e), full hex, or decimal
+          return fullHex.toLowerCase().startsWith(searchId) || 
+                 fullHex.toLowerCase() === searchId ||
+                 decimal === proposalId
         })
 
         if (!log) {
@@ -84,28 +90,30 @@ export default function ProposalDetailPage() {
           return
         }
 
-        const { proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
+        const { proposalId: fullProposalId, proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
 
-        // Convert proposalId to BigInt (handles both hex and decimal)
-        const proposalIdBigInt = BigInt(proposalId)
+        // Get both full and short IDs
+        const fullHex = `0x${fullProposalId?.toString(16)}`
+        const shortId = fullHex.slice(0, 10)
 
-        // Fetch current state and votes
+        // Fetch current state and votes using full proposal ID
         const state = await client.readContract({
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'state',
-          args: [proposalIdBigInt],
+          args: [fullProposalId!],
         })
 
         const votes = await client.readContract({
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'proposalVotes',
-          args: [proposalIdBigInt],
+          args: [fullProposalId!],
         })
 
         setProposal({
-          id: proposalId,
+          id: shortId,
+          fullId: fullHex,
           proposer: proposer!,
           description: description!,
           voteStart: voteStart!,
@@ -315,7 +323,7 @@ export default function ProposalDetailPage() {
       </div>
 
       {/* Voting */}
-      <VoteButtons proposalId={proposal.id} proposalState={proposal.state} />
+      <VoteButtons proposalId={proposal.fullId} proposalState={proposal.state} />
     </div>
   )
 }

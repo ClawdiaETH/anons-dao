@@ -17,6 +17,7 @@ const PROPOSAL_STATES = ['Pending', 'Active', 'Canceled', 'Defeated', 'Succeeded
 
 interface Proposal {
   id: string
+  fullId: string
   proposer: string
   description: string
   voteStart: bigint
@@ -106,8 +107,13 @@ export default function GovernancePage() {
                   args: [proposalId],
                 })
 
+                // Use short hex ID for URLs (first 8 hex chars for readability)
+                const fullHex = `0x${proposalId.toString(16)}`
+                const shortId = fullHex.slice(0, 10) // 0x + 8 chars
+
                 return {
-                  id: `0x${proposalId.toString(16)}`,
+                  id: shortId,
+                  fullId: fullHex,
                   proposer: proposer,
                   description: description,
                   voteStart: voteStart,
