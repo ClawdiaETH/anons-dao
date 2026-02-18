@@ -22,6 +22,9 @@ export function Header() {
             <Link href="/governance" className="text-nouns-muted hover:text-nouns-text transition-colors">
               Governance
             </Link>
+            <Link href="/holders" className="text-nouns-muted hover:text-nouns-text transition-colors">
+              Holders
+            </Link>
             <Link href="/wtf" className="text-nouns-muted hover:text-nouns-text transition-colors">
               WTF?
             </Link>
@@ -71,6 +74,13 @@ export function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Governance
+            </Link>
+            <Link 
+              href="/holders" 
+              className="block text-nouns-muted hover:text-nouns-text transition-colors py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Holders
             </Link>
             <Link 
               href="/wtf" 

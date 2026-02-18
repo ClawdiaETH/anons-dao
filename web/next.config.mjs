@@ -26,7 +26,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://base-mainnet.g.alchemy.com https://mainnet.base.org https://base.gateway.tenderly.co https://base-rpc.publicnode.com https://1rpc.io",
+              "connect-src 'self' https://base-mainnet.g.alchemy.com https://mainnet.base.org https://base.gateway.tenderly.co https://base-rpc.publicnode.com https://1rpc.io https://eth.merkle.io https://cloudflare-eth.com https://ethereum.publicnode.com",
               "frame-src 'self'"
             ].join('; ')
           }
