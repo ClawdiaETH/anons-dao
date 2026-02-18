@@ -32,7 +32,7 @@ export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
   }
 
   return (
-    <div className={`${sizeClasses[size]} ${size !== 'xl' ? 'rounded-lg border border-nouns-border' : ''} overflow-hidden bg-nouns-surface`}>
+    <div className={`${sizeClasses[size]} ${size !== 'xl' ? 'rounded-lg border border-nouns-border' : ''} overflow-hidden bg-nouns-surface block`}>
       {/* SVG is embedded in the image data URI - render at native 320x320 for crisp pixels */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -40,7 +40,7 @@ export function AnonImage({ tokenId, size = 'md' }: AnonImageProps) {
         alt={metadata.name}
         width={320}
         height={320}
-        className="w-full h-full block"
+        className="w-full h-auto block"
         style={{ imageRendering: 'pixelated' }}
       />
     </div>

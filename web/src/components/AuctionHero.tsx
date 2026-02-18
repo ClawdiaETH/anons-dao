@@ -181,7 +181,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-end max-w-7xl mx-auto">
           {/* Left: Clawdia's Anon #0 */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-md block">
               <Image
                 src="/anon-0-preview.png"
                 alt="Anon #0 - Clawdia"
