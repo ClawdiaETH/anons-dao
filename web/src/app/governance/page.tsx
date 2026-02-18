@@ -39,41 +39,50 @@ export default function GovernancePage() {
           process.env.NEXT_PUBLIC_BASE_RPC_URL,
           'https://mainnet.base.org',
           'https://base-rpc.publicnode.com',
-        ].filter(Boolean)
+        ].filter(Boolean) as string[]
 
-        type ProposalLog = Awaited<ReturnType<ReturnType<typeof createPublicClient>['getLogs']>>
-        let logs: ProposalLog = []
-        let client: ReturnType<typeof createPublicClient> | null = null
+        let logs: Array<{
+          args: {
+            proposalId: bigint
+            proposer: string
+            description: string
+            voteStart: bigint
+            voteEnd: bigint
+          }
+        }> = []
         let lastError: Error | null = null
+        let workingClient: ReturnType<typeof createPublicClient> | null = null
 
+        // Try each RPC endpoint
         for (const rpcUrl of rpcUrls) {
           try {
-            client = createPublicClient({
+            const tempClient = createPublicClient({
               chain: base,
               transport: http(rpcUrl),
             })
 
             // Fetch ProposalCreated events (from first proposal block)
             // First proposal submitted at block 42291206
-            logs = await client.getLogs({
+            const result = await tempClient.getLogs({
               address: GOVERNOR_ADDRESS,
               event: GOVERNOR_ABI[0],
               fromBlock: BigInt(42290000),
               toBlock: 'latest',
             })
 
+            logs = result as typeof logs
+            workingClient = tempClient
             console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
             break // Success, exit loop
           } catch (error) {
             const err = error as Error
             console.warn(`RPC ${rpcUrl} failed:`, err.message)
             lastError = err
-            client = null
             continue // Try next RPC
           }
         }
 
-        if (!client || (logs.length === 0 && lastError)) {
+        if (!workingClient || (logs.length === 0 && lastError)) {
           throw lastError || new Error('All RPC endpoints failed')
         }
 
@@ -82,14 +91,14 @@ export default function GovernancePage() {
           logs.map(async (log) => {
             const { proposalId, proposer, description, voteStart, voteEnd } = log.args
 
-            const state = await client!.readContract({
+            const state = await workingClient!.readContract({
               address: GOVERNOR_ADDRESS,
               abi: GOVERNOR_ABI,
               functionName: 'state',
-              args: [proposalId!],
+              args: [proposalId],
             })
 
-            const votes = await client!.readContract({
+            const votes = await workingClient!.readContract({
               address: GOVERNOR_ADDRESS,
               abi: GOVERNOR_ABI,
               functionName: 'proposalVotes',
