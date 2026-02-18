@@ -73,20 +73,20 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] min-h-[600px] flex items-end py-0"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-center py-16 lg:py-24"
       style={{ backgroundColor: bgColor }}
     >
-      <div className="container mx-auto px-4 lg:px-8 pb-0">
-        <div className="grid lg:grid-cols-2 gap-0 lg:gap-12 items-end max-w-7xl mx-auto pb-0">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
           {/* Left: Anon Character */}
-          <div className="flex justify-center lg:justify-end items-end pt-8 lg:pt-0 pb-0">
+          <div className="flex justify-center lg:justify-end items-center">
             <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-t-2xl lg:rounded-2xl p-6 shadow-xl border border-gray-200 lg:mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-lg">
             {/* Header */}
-            <div className="mb-4">
+            <div className="mb-3">
               <p className="text-gray-500 text-sm mb-1">
                 {new Date().toLocaleDateString('en-US', {
                   month: 'long',
@@ -94,13 +94,13 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
                   year: 'numeric'
                 })}
               </p>
-              <h1 className="font-display text-gray-900 mb-3">
+              <h1 className="font-display text-gray-900 mb-2">
                 Anon {auction.anonId.toString()}
               </h1>
             </div>
 
             {/* Current Bid & Timer */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-3">
               <div>
                 <p className="text-gray-500 text-xs mb-1">Current bid</p>
                 <p className="text-2xl font-bold text-gray-900">
@@ -122,7 +122,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
             />
 
             {/* Bid History (compact) */}
-            <div className="mt-4">
+            <div className="mt-3">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-gray-900 text-sm">Recent bids</h3>
               </div>
@@ -172,14 +172,14 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] min-h-[600px] flex items-end py-0"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-center py-16 lg:py-24"
       style={{ backgroundColor: bgColor }}
     >
-      <div className="container mx-auto px-4 lg:px-8 pb-0">
-        <div className="grid lg:grid-cols-2 gap-0 lg:gap-12 items-end max-w-7xl mx-auto pb-0">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
           {/* Left: Clawdia's Anon #0 */}
-          <div className="flex justify-center lg:justify-end items-end pt-8 lg:pt-0 pb-0">
-            <div className="w-full max-w-md pb-0">
+          <div className="flex justify-center lg:justify-end items-center">
+            <div className="w-full max-w-md">
               <Image
                 src="/anon-0-preview.png"
                 alt="Anon #0 - Clawdia"
@@ -192,7 +192,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-t-2xl lg:rounded-2xl p-6 shadow-xl border border-gray-200 lg:mb-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-lg">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
