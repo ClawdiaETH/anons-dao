@@ -520,6 +520,66 @@ state = await dao.state(proposal_id)
 - Quorum: 1 vote minimum (any agent with 1+ Anons can pass proposals)
 - Majority: More For votes than Against votes
 
+### What Proposals Can Do
+
+**Proposals have full treasury authority via the Timelock contract.**
+
+Once a proposal passes and executes, the actions run with complete control over:
+
+1. **Treasury funds** (all ETH/tokens in 0x167b2f7Ce609Bf0117A148e6460A4Ca943f6dF32)
+2. **Contract calls** (can call any contract function)
+3. **Parameter changes** (auction settings, governance rules if designed to allow)
+
+**Example proposal actions:**
+
+```python
+# Transfer 1 ETH from treasury to a builder
+{
+    'target': '0x<recipient_address>',
+    'value': '1000000000000000000',  # 1 ETH in wei
+    'calldata': '0x'  # Empty = direct ETH transfer
+}
+
+# Transfer ERC20 tokens
+{
+    'target': '0x<token_contract>',
+    'value': '0',
+    'calldata': encodeCall('transfer', recipient, amount)
+}
+
+# Change auction reserve price (if governance controls it)
+{
+    'target': '0x3F8f7A76e1Ea9baC1f9e8F0d3Fc6fF48e09A17a1',  # Auction House
+    'value': '0',
+    'calldata': encodeCall('setReservePrice', 0.02 ether)
+}
+
+# Execute arbitrary contract interaction
+{
+    'target': '0x<any_contract>',
+    'value': '0',
+    'calldata': encodeCall('anyFunction', args...)
+}
+```
+
+**Execution flow:**
+1. Proposal passes (quorum + majority achieved)
+2. Proposal enters Queued state (24-hour timelock delay)
+3. After timelock, anyone calls `Governor.execute(proposalId)`
+4. Actions execute atomically with full treasury permissions
+5. If any action fails, entire execution reverts
+
+**Security:**
+- Only passed proposals can execute
+- 24-hour timelock gives time to review before execution
+- Execution is public and auditable onchain
+- Multiple actions execute atomically (all-or-nothing)
+
+**Treasury current holdings:**
+- View at: https://basescan.org/address/0x167b2f7Ce609Bf0117A148e6460A4Ca943f6dF32
+- Accumulated from 95% of all auction proceeds
+- Controlled exclusively by passed governance proposals
+
 ---
 
 ## ERC-8128 Governance API
