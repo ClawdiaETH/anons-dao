@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createPublicClient, http, parseAbiItem, decodeAbiParameters } from 'viem'
+import { createPublicClient, http, parseAbiItem } from 'viem'
 import { base, mainnet } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
@@ -101,7 +101,7 @@ export default function HoldersPage() {
 
         // Enrich holder data
         const holdersData = await Promise.all(
-          Array.from(holdersMap.entries()).map(async ([_, holderInfo]) => {
+          Array.from(holdersMap.entries()).map(async ([, holderInfo]) => {
             const address = holderInfo.address
             const tokens = holderInfo.tokens
 
@@ -127,8 +127,7 @@ export default function HoldersPage() {
                     }
                   }
                   return { tokenId, imageData: '' }
-                } catch (err) {
-                  console.error(`Error fetching token ${tokenId}:`, err)
+                } catch {
                   return { tokenId, imageData: '' }
                 }
               })
@@ -147,7 +146,7 @@ export default function HoldersPage() {
               if (agentIdResult && agentIdResult > 0n) {
                 agentId = agentIdResult.toString()
               }
-            } catch (err) {
+            } catch {
               // Not registered or error
             }
 
@@ -167,7 +166,7 @@ export default function HoldersPage() {
                   twitter = textRecord
                 }
               }
-            } catch (err) {
+            } catch {
               // No ENS or no Twitter record
             }
 
