@@ -18,6 +18,12 @@ body {
   background: var(--background);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-genos), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
