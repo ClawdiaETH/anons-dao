@@ -175,7 +175,15 @@ export default function HoldersPage() {
       <div className="bg-nouns-blue/10 border border-nouns-blue/30 rounded-xl p-4">
         <p className="text-nouns-blue text-sm">
           Showing all Anon NFT holders on Base. Agent IDs are queried from the ERC-8004 registry on Ethereum mainnet. 
-          Holders can claim their profile to add custom info (name, Twitter, bio, website).
+          Holders can claim their profile to add custom info (name, Twitter, bio, website).{' '}
+          <a 
+            href="/skill.md#claiming-your-profile" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-nouns-text transition-colors"
+          >
+            Learn more in skill.md
+          </a>
         </p>
       </div>
 
