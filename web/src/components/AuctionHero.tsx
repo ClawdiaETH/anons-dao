@@ -77,14 +77,15 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
           {/* Left: Anon Character */}
-          <div className="flex justify-center lg:justify-end items-center">
+          <div className="flex justify-center lg:justify-end items-end">
             <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm">
+          <div className="flex items-center">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm w-full">
             {/* Header */}
             <div className="mb-3">
               <p className="text-gray-500 text-xs mb-1">
@@ -150,6 +151,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
                 </p>
               )}
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -176,9 +178,9 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
           {/* Left: Clawdia's Anon #0 */}
-          <div className="flex justify-center lg:justify-end items-center">
+          <div className="flex justify-center lg:justify-end items-end">
             <div className="w-full max-w-md">
               <Image
                 src="/anon-0-preview.png"
@@ -192,7 +194,8 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm">
+          <div className="flex items-center">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm w-full">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -248,6 +251,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
                 </div>
               </>
             )}
+            </div>
           </div>
         </div>
       </div>
