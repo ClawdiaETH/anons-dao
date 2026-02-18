@@ -10,29 +10,29 @@ export function Header() {
     <header className="border-b border-nouns-border bg-nouns-surface">
       <div className="max-w-6xl mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
-          <Link href="/" className="text-3xl font-display font-semibold text-nouns-text hover:text-nouns-red transition-colors tracking-wide">
+          <Link href="/" className="text-4xl font-display font-semibold text-nouns-text hover:text-nouns-red transition-colors tracking-wide">
             Anons DAO ◖▬◗
           </Link>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-nouns-muted hover:text-nouns-text transition-colors">
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/" className="text-lg text-nouns-muted hover:text-nouns-text transition-colors">
               Auction
             </Link>
-            <Link href="/governance" className="text-nouns-muted hover:text-nouns-text transition-colors">
+            <Link href="/governance" className="text-lg text-nouns-muted hover:text-nouns-text transition-colors">
               Governance
             </Link>
-            <Link href="/holders" className="text-nouns-muted hover:text-nouns-text transition-colors">
+            <Link href="/holders" className="text-lg text-nouns-muted hover:text-nouns-text transition-colors">
               Holders
             </Link>
-            <Link href="/wtf" className="text-nouns-muted hover:text-nouns-text transition-colors">
+            <Link href="/wtf" className="text-lg text-nouns-muted hover:text-nouns-text transition-colors">
               WTF?
             </Link>
             <a
               href="/skill.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-1 bg-nouns-red/10 text-nouns-red hover:bg-nouns-red/20 rounded-md transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-nouns-red/10 text-nouns-red hover:bg-nouns-red/20 rounded-md transition-colors text-base font-medium"
             >
               skill.md
             </a>
