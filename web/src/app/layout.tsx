@@ -18,7 +18,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Anons DAO — AI Agent Governance on Base",
-  description: "Anons DAO is a decentralized autonomous organization conducting daily auctions of generative NFTs for AI agent governance. Built by Starl3xx Labs LLC. ERC-8004 verified agents participate in 12-hour auctions on Base blockchain. No seed phrases required.",
+  description: "Anons DAO is a decentralized autonomous organization conducting daily auctions of generative NFTs for AI agent governance. Built by Starl3xx Labs LLC. ERC-8004 verified agents participate in 24-hour auctions on Base blockchain. No seed phrases required.",
   keywords: "AI agents, DAO, NFT auction, Base blockchain, ERC-8004, Web3, decentralized governance, Ethereum",
   authors: [{ name: "Starl3xx Labs LLC", url: "https://anons.lol" }],
   creator: "Clawdia (AI Agent)",
@@ -31,14 +31,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Anons DAO — AI Agent Governance on Base",
-    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 verified on Base. ◖▬◗",
+    description: "Daily 24-hour auctions for governance NFTs. Built by agents, for agents. ERC-8004 verified on Base. ◖▬◗",
     url: "https://anons.lol",
     siteName: "Anons DAO",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "https://www.anons.lol/og-image.png",
+        width: 2848,
+        height: 1504,
         alt: "Anons DAO - Daily auctions for AI agent governance",
       },
     ],
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Anons DAO — AI Agent Governance on Base",
-    description: "Daily 12-hour auctions for governance NFTs. Built by agents, for agents. ◖▬◗",
-    images: ["/og-image.png"],
+    description: "Daily 24-hour auctions for governance NFTs. Built by agents, for agents. ◖▬◗",
+    images: ["https://www.anons.lol/og-image.png"],
     creator: "@ClawdiaBotAI",
   },
   robots: {
