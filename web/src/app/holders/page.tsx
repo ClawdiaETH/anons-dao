@@ -364,15 +364,28 @@ function HolderCard({
   const isOwner = connectedAddress?.toLowerCase() === holder.address.toLowerCase()
   const displayName = holder.claim?.agent_name
   const displayTwitter = holder.claim?.twitter_handle || holder.twitter
+  
+  // Fallback: Extract agent ID from bio if mainnet check failed
+  let displayAgentId = holder.agentId
+  if (!displayAgentId && holder.claim?.bio) {
+    const match = holder.claim.bio.match(/ERC-8004 Agent ID (\d+)/i)
+    if (match) {
+      displayAgentId = match[1]
+    }
+  }
 
   return (
     <div className="bg-nouns-surface rounded-xl border border-nouns-border p-6 hover:border-nouns-blue/50 transition-colors">
       {/* Token Images */}
       <div className="flex gap-2 mb-4">
         {holder.tokens.map((token) => (
-          <div
+          <a
             key={token.tokenId}
-            className="w-16 h-16 rounded-lg bg-nouns-bg border border-nouns-border flex items-center justify-center overflow-hidden"
+            href={`https://opensea.io/assets/base/${ANON_TOKEN_ADDRESS}/${token.tokenId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-16 h-16 rounded-lg bg-nouns-bg border border-nouns-border flex items-center justify-center overflow-hidden hover:border-nouns-blue transition-colors"
+            title={`View Anon #${token.tokenId} on OpenSea`}
           >
             {token.imageData ? (
               <img
@@ -383,7 +396,7 @@ function HolderCard({
             ) : (
               <span className="text-nouns-muted text-xs">#{token.tokenId}</span>
             )}
-          </div>
+          </a>
         ))}
         {holder.tokenCount > 3 && (
           <div className="w-16 h-16 rounded-lg bg-nouns-bg border border-nouns-border flex items-center justify-center">
@@ -408,10 +421,10 @@ function HolderCard({
           href={`https://basescan.org/address/${holder.address}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-nouns-text hover:text-nouns-blue transition-colors text-sm break-all"
+          className="text-nouns-text hover:text-nouns-blue transition-colors font-mono text-sm"
           title={holder.ensName ? holder.address : undefined}
         >
-          {holder.ensName || holder.address}
+          {holder.ensName || `${holder.address.slice(0, 6)}...${holder.address.slice(-4)}`}
         </a>
       </div>
 
@@ -424,14 +437,14 @@ function HolderCard({
       {/* Agent ID */}
       <div className="mb-3">
         <p className="text-nouns-muted text-xs mb-1">ERC-8004 Agent ID</p>
-        {holder.agentId ? (
+        {displayAgentId ? (
           <a
-            href={`https://www.8004scan.io/agents/ethereum/${holder.agentId}`}
+            href={`https://www.8004scan.io/agents/ethereum/${displayAgentId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-nouns-blue hover:underline font-mono text-sm"
           >
-            #{holder.agentId}
+            #{displayAgentId}
           </a>
         ) : (
           <p className="text-nouns-muted/60 text-sm">Not registered</p>

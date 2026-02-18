@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
           address: ERC8004_REGISTRY,
           abi: ERC721_ABI,
           functionName: 'tokenOfOwnerByIndex',
-          args: [address as `0x${string}`], 0n],
+          args: [address as `0x${string}`, 0n],
         })
         agentId = tokenId.toString()
       }
