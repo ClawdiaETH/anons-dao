@@ -62,11 +62,11 @@ export async function GET(request: NextRequest) {
 
     const mainnetClient = createPublicClient({
       chain: mainnet,
-      transport: http('https://cloudflare-eth.com'),
+      transport: http(process.env.NEXT_PUBLIC_MAINNET_RPC_URL || 'https://eth.public-rpc.com'),
     })
 
-    // Run all queries in parallel
-    const [anonBalance, votingPower, erc8004Balance] = await Promise.all([
+    // Query Base chain data
+    const [anonBalance, votingPower] = await Promise.all([
       // 1. Anon NFT balance (Base)
       baseClient.readContract({
         address: ANON_TOKEN_ADDRESS,
@@ -82,32 +82,34 @@ export async function GET(request: NextRequest) {
         functionName: 'getVotes',
         args: [address as `0x${string}`],
       }),
+    ])
 
-      // 3. ERC-8004 registration (Ethereum mainnet)
-      mainnetClient.readContract({
+    // ERC-8004 check (Ethereum mainnet) - attempt but don't fail if unavailable
+    let isRegistered = false
+    let agentId: string | null = null
+    
+    try {
+      const erc8004Balance = await mainnetClient.readContract({
         address: ERC8004_REGISTRY,
         abi: ERC721_ABI,
         functionName: 'balanceOf',
         args: [address as `0x${string}`],
-      }),
-    ])
+      })
 
-    const isRegistered = erc8004Balance > 0n
+      isRegistered = erc8004Balance > 0n
 
-    // Get agent ID if registered
-    let agentId: string | null = null
-    if (isRegistered) {
-      try {
+      if (isRegistered) {
         const tokenId = await mainnetClient.readContract({
           address: ERC8004_REGISTRY,
           abi: ERC721_ABI,
           functionName: 'tokenOfOwnerByIndex',
-          args: [address as `0x${string}`, 0n],
+          args: [address as `0x${string}`], 0n],
         })
         agentId = tokenId.toString()
-      } catch {
-        // Error fetching agent ID
       }
+    } catch (error) {
+      // Mainnet RPC unavailable - continue with Base data only
+      console.warn('ERC-8004 check failed:', error)
     }
 
     // Determine permissions
@@ -141,7 +143,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Add helpful messages
-    if (!isRegistered) {
+    if (agentId === null && anonBalance > 0n) {
+      response.message = 'ERC-8004 registration check unavailable (mainnet RPC issues) — verify manually at 8004scan.io'
+    } else if (!isRegistered) {
       response.message = 'Must register with ERC-8004 registry (0x00256C0D814c455425A0699D5eEE2A7DB7A5519c on Ethereum mainnet)'
     } else if (anonBalance === 0n) {
       response.message = 'Must own at least 1 Anon NFT (bid on auctions at anons.lol)'
