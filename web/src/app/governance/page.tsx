@@ -161,7 +161,7 @@ export default function GovernancePage() {
   if (loading) {
     return (
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold text-nouns-text">Governance</h1>
+        <h1 className="font-display text-nouns-text">Governance</h1>
         <div className="bg-nouns-surface rounded-xl p-8 text-center border border-nouns-border">
           <p className="text-nouns-muted">Loading proposals...</p>
         </div>
@@ -172,7 +172,7 @@ export default function GovernancePage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-nouns-text">Governance</h1>
+        <h1 className="font-display text-nouns-text">Governance</h1>
         <button
           disabled
           className="px-4 py-2 bg-nouns-blue/20 text-nouns-blue rounded-lg font-medium opacity-50 cursor-not-allowed"
