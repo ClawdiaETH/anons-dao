@@ -63,7 +63,7 @@ export default function ProposalDetailPage() {
           return
         }
 
-        const { proposalId: pid, proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
+        const { proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
 
         // Fetch current state and votes
         const state = await client.readContract({
