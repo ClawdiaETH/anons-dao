@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { createPublicClient, http, parseAbiItem } from 'viem'
 import { base } from 'viem/chains'
 
@@ -195,41 +196,43 @@ function ProposalCard({ proposal }: { proposal: Proposal }) {
   const againstPercent = totalVotes > 0n ? Number((proposal.againstVotes * 100n) / totalVotes) : 0
 
   return (
-    <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border hover:border-nouns-blue/50 transition-colors">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <span className={`px-3 py-1 rounded-lg text-sm font-medium border ${stateColors[proposal.state] || 'bg-gray-500/10 text-gray-500'}`}>
-              {proposal.state}
-            </span>
-            <span className="text-sm text-nouns-muted">Proposal #{proposal.id}</span>
+    <Link href={`/governance/${proposal.id}`} className="block">
+      <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border hover:border-nouns-blue/50 transition-colors cursor-pointer">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <span className={`px-3 py-1 rounded-lg text-sm font-medium border ${stateColors[proposal.state] || 'bg-gray-500/10 text-gray-500'}`}>
+                {proposal.state}
+              </span>
+              <span className="text-sm text-nouns-muted">Proposal #{proposal.id}</span>
+            </div>
+            <p className="text-lg font-semibold text-nouns-text mb-2">
+              {proposal.description.split('\n')[0] || 'Untitled Proposal'}
+            </p>
+            <p className="text-sm text-nouns-muted">
+              Proposer: {proposal.proposer.slice(0, 6)}...{proposal.proposer.slice(-4)}
+            </p>
           </div>
-          <p className="text-lg font-semibold text-nouns-text mb-2">
-            {proposal.description.split('\n')[0] || 'Untitled Proposal'}
-          </p>
-          <p className="text-sm text-nouns-muted">
-            Proposer: {proposal.proposer.slice(0, 6)}...{proposal.proposer.slice(-4)}
-          </p>
         </div>
-      </div>
 
-      {/* Vote Results */}
-      {totalVotes > 0n && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-green-500">For: {proposal.forVotes.toString()} ({forPercent}%)</span>
-            <span className="text-red-500">Against: {proposal.againstVotes.toString()} ({againstPercent}%)</span>
+        {/* Vote Results */}
+        {totalVotes > 0n && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-green-500">For: {proposal.forVotes.toString()} ({forPercent}%)</span>
+              <span className="text-red-500">Against: {proposal.againstVotes.toString()} ({againstPercent}%)</span>
+            </div>
+            <div className="h-2 bg-nouns-bg rounded-full overflow-hidden flex">
+              {forPercent > 0 && (
+                <div className="bg-green-500" style={{ width: `${forPercent}%` }} />
+              )}
+              {againstPercent > 0 && (
+                <div className="bg-red-500" style={{ width: `${againstPercent}%` }} />
+              )}
+            </div>
           </div>
-          <div className="h-2 bg-nouns-bg rounded-full overflow-hidden flex">
-            {forPercent > 0 && (
-              <div className="bg-green-500" style={{ width: `${forPercent}%` }} />
-            )}
-            {againstPercent > 0 && (
-              <div className="bg-red-500" style={{ width: `${againstPercent}%` }} />
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </Link>
   )
 }
