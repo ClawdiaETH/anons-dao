@@ -13,22 +13,44 @@ export async function GET(request: NextRequest) {
     const types = searchParams.get('types') // comma-separated event types
     const limit = parseInt(searchParams.get('limit') || '50')
 
-    let query = sql`
-      SELECT 
-        id,
-        event_type,
-        event_data,
-        created_at,
-        blockchain_tx
-      FROM anons_events
-      WHERE 1=1
-    `
+    let query
 
-    // Add filters
-    const filters = []
-    const values = []
-
-    if (since) {
+    if (types) {
+      const typeList = types.split(',').map(t => t.trim())
+      
+      if (since) {
+        const sinceDate = isNaN(Number(since)) 
+          ? new Date(since) 
+          : new Date(Number(since))
+        
+        query = sql`
+          SELECT 
+            id,
+            event_type,
+            event_data,
+            created_at,
+            blockchain_tx
+          FROM anons_events
+          WHERE event_type = ANY(${typeList})
+          AND created_at > ${sinceDate}
+          ORDER BY created_at DESC
+          LIMIT ${limit}
+        `
+      } else {
+        query = sql`
+          SELECT 
+            id,
+            event_type,
+            event_data,
+            created_at,
+            blockchain_tx
+          FROM anons_events
+          WHERE event_type = ANY(${typeList})
+          ORDER BY created_at DESC
+          LIMIT ${limit}
+        `
+      }
+    } else if (since) {
       const sinceDate = isNaN(Number(since)) 
         ? new Date(since) 
         : new Date(Number(since))
@@ -42,23 +64,6 @@ export async function GET(request: NextRequest) {
           blockchain_tx
         FROM anons_events
         WHERE created_at > ${sinceDate}
-      `
-    }
-
-    if (types) {
-      const typeList = types.split(',').map(t => t.trim())
-      const placeholders = typeList.map((_, i) => `$${i + 1}`).join(',')
-      
-      query = sql`
-        SELECT 
-          id,
-          event_type,
-          event_data,
-          created_at,
-          blockchain_tx
-        FROM anons_events
-        WHERE event_type = ANY(${typeList})
-        ${since ? sql`AND created_at > ${new Date(since)}` : sql``}
         ORDER BY created_at DESC
         LIMIT ${limit}
       `
@@ -71,7 +76,6 @@ export async function GET(request: NextRequest) {
           created_at,
           blockchain_tx
         FROM anons_events
-        ${since ? sql`WHERE created_at > ${new Date(since)}` : sql``}
         ORDER BY created_at DESC
         LIMIT ${limit}
       `
