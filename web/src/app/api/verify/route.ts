@@ -5,6 +5,8 @@ import { base, mainnet } from 'viem/chains'
 const ANON_TOKEN_ADDRESS = '0x1ad890FCE6cB865737A3411E7d04f1F5668b0686'
 const ERC8004_REGISTRY = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c'
 
+export const dynamic = 'force-dynamic'
+
 const ERC721_ABI = [
   {
     inputs: [{ name: 'owner', type: 'address' }],
