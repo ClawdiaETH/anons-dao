@@ -70,20 +70,26 @@ export default function ProposalDetailPage() {
           }
         }
         
-        let allLogs: ProposalLog[] = []
-
+        // Build chunk ranges
+        const chunks: Array<{ start: bigint; end: bigint }> = []
         for (let startBlock = fromBlock; startBlock <= currentBlock; startBlock += chunkSize) {
           const endBlock = startBlock + chunkSize > currentBlock ? currentBlock : startBlock + chunkSize - BigInt(1)
-          
-          const chunkLogs = await client.getLogs({
-            address: GOVERNOR_ADDRESS,
-            event: GOVERNOR_ABI[0],
-            fromBlock: startBlock,
-            toBlock: endBlock,
-          })
-          
-          allLogs = [...allLogs, ...(chunkLogs as ProposalLog[])]
+          chunks.push({ start: startBlock, end: endBlock })
         }
+        
+        // Query all chunks in parallel for speed
+        const chunkResults = await Promise.all(
+          chunks.map(chunk => 
+            client.getLogs({
+              address: GOVERNOR_ADDRESS,
+              event: GOVERNOR_ABI[0],
+              fromBlock: chunk.start,
+              toBlock: chunk.end,
+            })
+          )
+        )
+        
+        const allLogs = chunkResults.flat() as ProposalLog[]
 
         // Find proposal by short ID (prefix match) or full ID
         const searchId = proposalId.toLowerCase()

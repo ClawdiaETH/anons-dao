@@ -70,22 +70,28 @@ export default function GovernancePage() {
             // First proposal submitted at block 42291206
             const fromBlock = BigInt(42290000)
             const chunkSize = BigInt(10000)
-            let allLogs: ProposalLog[] = []
-
+            
+            // Build chunk ranges
+            const chunks: Array<{ start: bigint; end: bigint }> = []
             for (let startBlock = fromBlock; startBlock <= currentBlock; startBlock += chunkSize) {
               const endBlock = startBlock + chunkSize > currentBlock ? currentBlock : startBlock + chunkSize - BigInt(1)
-              
-              const chunkLogs = await client.getLogs({
-                address: GOVERNOR_ADDRESS,
-                event: GOVERNOR_ABI[0],
-                fromBlock: startBlock,
-                toBlock: endBlock,
-              })
-              
-              allLogs = [...allLogs, ...(chunkLogs as ProposalLog[])]
+              chunks.push({ start: startBlock, end: endBlock })
             }
-
-            logs = allLogs
+            
+            // Query all chunks in parallel for speed
+            const chunkResults = await Promise.all(
+              chunks.map(chunk => 
+                client.getLogs({
+                  address: GOVERNOR_ADDRESS,
+                  event: GOVERNOR_ABI[0],
+                  fromBlock: chunk.start,
+                  toBlock: chunk.end,
+                })
+              )
+            )
+            
+            // Flatten results
+            logs = chunkResults.flat() as ProposalLog[]
             console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
 
             // Fetch state and votes for each proposal using the same client
