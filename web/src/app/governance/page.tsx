@@ -38,11 +38,12 @@ export default function GovernancePage() {
           transport: http(),
         })
 
-        // Fetch ProposalCreated events
+        // Fetch ProposalCreated events (from Governor deployment block)
+        // Governor was deployed around block 42000000 on Base
         const logs = await client.getLogs({
           address: GOVERNOR_ADDRESS,
           event: GOVERNOR_ABI[0],
-          fromBlock: 'earliest',
+          fromBlock: BigInt(42000000),
           toBlock: 'latest',
         })
 
