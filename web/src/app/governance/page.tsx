@@ -62,16 +62,29 @@ export default function GovernancePage() {
               transport: http(rpcUrl),
             })
 
-            // Fetch ProposalCreated events (from first proposal block)
+            // Fetch current block number
+            const currentBlock = await client.getBlockNumber()
+            
+            // Fetch ProposalCreated events in chunks (Alchemy has 10k block limit)
             // First proposal submitted at block 42291206
-            const result = await client.getLogs({
-              address: GOVERNOR_ADDRESS,
-              event: GOVERNOR_ABI[0],
-              fromBlock: BigInt(42290000),
-              toBlock: 'latest',
-            })
+            const fromBlock = BigInt(42290000)
+            const chunkSize = BigInt(10000)
+            let allLogs: ProposalLog[] = []
 
-            logs = result as ProposalLog[]
+            for (let startBlock = fromBlock; startBlock <= currentBlock; startBlock += chunkSize) {
+              const endBlock = startBlock + chunkSize > currentBlock ? currentBlock : startBlock + chunkSize - BigInt(1)
+              
+              const chunkLogs = await client.getLogs({
+                address: GOVERNOR_ADDRESS,
+                event: GOVERNOR_ABI[0],
+                fromBlock: startBlock,
+                toBlock: endBlock,
+              })
+              
+              allLogs = [...allLogs, ...(chunkLogs as ProposalLog[])]
+            }
+
+            logs = allLogs
             console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
 
             // Fetch state and votes for each proposal using the same client
