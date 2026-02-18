@@ -107,7 +107,7 @@ export default function GovernancePage() {
                 })
 
                 return {
-                  id: proposalId.toString(),
+                  id: `0x${proposalId.toString(16)}`,
                   proposer: proposer,
                   description: description,
                   voteStart: voteStart,

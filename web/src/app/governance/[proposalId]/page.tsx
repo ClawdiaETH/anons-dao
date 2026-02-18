@@ -49,15 +49,34 @@ export default function ProposalDetailPage() {
           transport: http(process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'),
         })
 
-        // Fetch ProposalCreated event for this specific proposal
-        const logs = await client.getLogs({
-          address: GOVERNOR_ADDRESS,
-          event: GOVERNOR_ABI[0],
-          fromBlock: BigInt(42000000),
-          toBlock: 'latest',
-        })
+        // Fetch current block number
+        const currentBlock = await client.getBlockNumber()
+        
+        // Fetch ProposalCreated events in chunks (Alchemy has 10k block limit)
+        const fromBlock = BigInt(42290000)
+        const chunkSize = BigInt(10000)
+        type ProposalLog = Awaited<ReturnType<typeof client.getLogs>>
+        let allLogs: ProposalLog = []
 
-        const log = logs.find(l => l.args.proposalId?.toString() === proposalId)
+        for (let startBlock = fromBlock; startBlock <= currentBlock; startBlock += chunkSize) {
+          const endBlock = startBlock + chunkSize > currentBlock ? currentBlock : startBlock + chunkSize - BigInt(1)
+          
+          const chunkLogs = await client.getLogs({
+            address: GOVERNOR_ADDRESS,
+            event: GOVERNOR_ABI[0],
+            fromBlock: startBlock,
+            toBlock: endBlock,
+          })
+          
+          allLogs = [...allLogs, ...chunkLogs]
+        }
+
+        // Convert proposalId to hex for comparison
+        const proposalIdHex = proposalId.startsWith('0x') ? proposalId : `0x${proposalId}`
+        const log = allLogs.find(l => {
+          const logIdHex = `0x${l.args.proposalId?.toString(16)}`
+          return logIdHex === proposalIdHex || l.args.proposalId?.toString() === proposalId
+        })
 
         if (!log) {
           setError('Proposal not found')
@@ -67,19 +86,22 @@ export default function ProposalDetailPage() {
 
         const { proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
 
+        // Convert proposalId to BigInt (handles both hex and decimal)
+        const proposalIdBigInt = BigInt(proposalId)
+
         // Fetch current state and votes
         const state = await client.readContract({
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'state',
-          args: [BigInt(proposalId)],
+          args: [proposalIdBigInt],
         })
 
         const votes = await client.readContract({
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'proposalVotes',
-          args: [BigInt(proposalId)],
+          args: [proposalIdBigInt],
         })
 
         setProposal({
