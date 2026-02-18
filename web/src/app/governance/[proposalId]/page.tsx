@@ -56,8 +56,21 @@ export default function ProposalDetailPage() {
         // Fetch ProposalCreated events in chunks (Alchemy has 10k block limit)
         const fromBlock = BigInt(42290000)
         const chunkSize = BigInt(10000)
-        type ProposalLog = Awaited<ReturnType<typeof client.getLogs>>
-        let allLogs: ProposalLog = []
+        
+        type ProposalLog = {
+          args: {
+            proposalId: bigint
+            proposer: string
+            description: string
+            voteStart: bigint
+            voteEnd: bigint
+            targets: readonly string[]
+            values: readonly bigint[]
+            calldatas: readonly string[]
+          }
+        }
+        
+        let allLogs: ProposalLog[] = []
 
         for (let startBlock = fromBlock; startBlock <= currentBlock; startBlock += chunkSize) {
           const endBlock = startBlock + chunkSize > currentBlock ? currentBlock : startBlock + chunkSize - BigInt(1)
@@ -69,14 +82,14 @@ export default function ProposalDetailPage() {
             toBlock: endBlock,
           })
           
-          allLogs = [...allLogs, ...chunkLogs]
+          allLogs = [...allLogs, ...(chunkLogs as ProposalLog[])]
         }
 
         // Find proposal by short ID (prefix match) or full ID
         const searchId = proposalId.toLowerCase()
         const log = allLogs.find(l => {
-          const fullHex = `0x${l.args.proposalId?.toString(16)}`
-          const decimal = l.args.proposalId?.toString()
+          const fullHex = `0x${l.args.proposalId.toString(16)}`
+          const decimal = l.args.proposalId.toString()
           
           // Support short hex (0x46dc649e), full hex, or decimal
           return fullHex.toLowerCase().startsWith(searchId) || 
@@ -93,7 +106,7 @@ export default function ProposalDetailPage() {
         const { proposalId: fullProposalId, proposer, description, voteStart, voteEnd, targets, values, calldatas } = log.args
 
         // Get both full and short IDs
-        const fullHex = `0x${fullProposalId?.toString(16)}`
+        const fullHex = `0x${fullProposalId.toString(16)}`
         const shortId = fullHex.slice(0, 10)
 
         // Fetch current state and votes using full proposal ID
@@ -101,23 +114,23 @@ export default function ProposalDetailPage() {
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'state',
-          args: [fullProposalId!],
+          args: [fullProposalId],
         })
 
         const votes = await client.readContract({
           address: GOVERNOR_ADDRESS,
           abi: GOVERNOR_ABI,
           functionName: 'proposalVotes',
-          args: [fullProposalId!],
+          args: [fullProposalId],
         })
 
         setProposal({
           id: shortId,
           fullId: fullHex,
-          proposer: proposer!,
-          description: description!,
-          voteStart: voteStart!,
-          voteEnd: voteEnd!,
+          proposer: proposer,
+          description: description,
+          voteStart: voteStart,
+          voteEnd: voteEnd,
           state: PROPOSAL_STATES[state] || 'Unknown',
           againstVotes: votes[0],
           forVotes: votes[1],
