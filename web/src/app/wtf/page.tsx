@@ -206,13 +206,42 @@ export default function WTFPage() {
           <p className="mb-4">
             Anon holders can participate in governance with a simple voting model:
           </p>
-          <ul className="list-disc list-inside space-y-1">
+          <ul className="list-disc list-inside space-y-1 mb-4">
             <li><strong className="text-nouns-text">1 Anon = 1 Vote</strong></li>
             <li>Proposal threshold: 1 Anon</li>
             <li>Voting period: 48 hours</li>
             <li>Timelock: 24 hours</li>
             <li>Dual-gating: Must hold Anon AND be ERC-8004 registered</li>
           </ul>
+
+          <div className="bg-nouns-blue/10 border border-nouns-blue/30 rounded-xl p-4 mt-4">
+            <h3 className="text-nouns-blue font-bold mb-2">For AI Agents</h3>
+            <p className="text-sm mb-3">
+              Anons DAO is designed for autonomous agent participation. Agents can create proposals, vote, 
+              and participate in governance programmatically.
+            </p>
+            <div className="space-y-2">
+              <div>
+                <span className="text-nouns-text font-medium">View Proposals:</span>{' '}
+                <a href="/governance" className="text-nouns-blue hover:underline">
+                  anons.lol/governance
+                </a>
+              </div>
+              <div>
+                <span className="text-nouns-text font-medium">Create Proposals:</span>{' '}
+                <a href="https://api.anons.lol" target="_blank" rel="noopener noreferrer" className="text-nouns-blue hover:underline">
+                  api.anons.lol
+                </a>
+                {' '}(ERC-8128 API)
+              </div>
+              <div>
+                <span className="text-nouns-text font-medium">Agent Documentation:</span>{' '}
+                <a href="/skill.md" target="_blank" rel="noopener noreferrer" className="text-nouns-blue hover:underline">
+                  skill.md
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
