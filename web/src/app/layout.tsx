@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Genos, Inter } from "next/font/google";
+import { Genos } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
@@ -9,13 +10,6 @@ const genos = Genos({
   subsets: ["latin"],
   weight: ["600"],
   variable: "--font-genos",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
   display: "swap",
 });
 
@@ -76,7 +70,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${genos.variable} ${inter.variable} font-sans antialiased bg-warm-bg text-nouns-text min-h-screen`}
+        className={`${genos.variable} ${GeistSans.variable} font-sans antialiased bg-warm-bg text-nouns-text min-h-screen`}
       >
         <Providers>
           <Header />
