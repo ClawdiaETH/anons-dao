@@ -41,7 +41,7 @@ export default function GovernancePage() {
           'https://base-rpc.publicnode.com',
         ].filter(Boolean) as string[]
 
-        let logs: Array<{
+        type ProposalLog = {
           args: {
             proposalId: bigint
             proposer: string
@@ -49,30 +49,65 @@ export default function GovernancePage() {
             voteStart: bigint
             voteEnd: bigint
           }
-        }> = []
+        }
+
+        let logs: ProposalLog[] = []
         let lastError: Error | null = null
-        let workingClient: ReturnType<typeof createPublicClient> | null = null
 
         // Try each RPC endpoint
         for (const rpcUrl of rpcUrls) {
           try {
-            const tempClient = createPublicClient({
+            const client = createPublicClient({
               chain: base,
               transport: http(rpcUrl),
             })
 
             // Fetch ProposalCreated events (from first proposal block)
             // First proposal submitted at block 42291206
-            const result = await tempClient.getLogs({
+            const result = await client.getLogs({
               address: GOVERNOR_ADDRESS,
               event: GOVERNOR_ABI[0],
               fromBlock: BigInt(42290000),
               toBlock: 'latest',
             })
 
-            logs = result as typeof logs
-            workingClient = tempClient
+            logs = result as ProposalLog[]
             console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
+
+            // Fetch state and votes for each proposal using the same client
+            const proposalsData = await Promise.all(
+              logs.map(async (log) => {
+                const { proposalId, proposer, description, voteStart, voteEnd } = log.args
+
+                const state = await client.readContract({
+                  address: GOVERNOR_ADDRESS,
+                  abi: GOVERNOR_ABI,
+                  functionName: 'state',
+                  args: [proposalId],
+                })
+
+                const votes = await client.readContract({
+                  address: GOVERNOR_ADDRESS,
+                  abi: GOVERNOR_ABI,
+                  functionName: 'proposalVotes',
+                  args: [proposalId],
+                })
+
+                return {
+                  id: proposalId.toString(),
+                  proposer: proposer,
+                  description: description,
+                  voteStart: voteStart,
+                  voteEnd: voteEnd,
+                  state: PROPOSAL_STATES[state] || 'Unknown',
+                  againstVotes: votes[0],
+                  forVotes: votes[1],
+                  abstainVotes: votes[2],
+                }
+              })
+            )
+
+            setProposals(proposalsData.reverse()) // Most recent first
             break // Success, exit loop
           } catch (error) {
             const err = error as Error
@@ -82,44 +117,9 @@ export default function GovernancePage() {
           }
         }
 
-        if (!workingClient || (logs.length === 0 && lastError)) {
-          throw lastError || new Error('All RPC endpoints failed')
+        if (logs.length === 0 && lastError) {
+          throw lastError
         }
-
-        // Fetch state and votes for each proposal
-        const proposalsData = await Promise.all(
-          logs.map(async (log) => {
-            const { proposalId, proposer, description, voteStart, voteEnd } = log.args
-
-            const state = await workingClient!.readContract({
-              address: GOVERNOR_ADDRESS,
-              abi: GOVERNOR_ABI,
-              functionName: 'state',
-              args: [proposalId],
-            })
-
-            const votes = await workingClient!.readContract({
-              address: GOVERNOR_ADDRESS,
-              abi: GOVERNOR_ABI,
-              functionName: 'proposalVotes',
-              args: [proposalId!],
-            })
-
-            return {
-              id: proposalId!.toString(),
-              proposer: proposer!,
-              description: description!,
-              voteStart: voteStart!,
-              voteEnd: voteEnd!,
-              state: PROPOSAL_STATES[state] || 'Unknown',
-              againstVotes: votes[0],
-              forVotes: votes[1],
-              abstainVotes: votes[2],
-            }
-          })
-        )
-
-        setProposals(proposalsData.reverse()) // Most recent first
       } catch (error) {
         console.error('Error fetching proposals:', error)
       } finally {
