@@ -77,9 +77,9 @@ export default function ClaimModal({ address, existingClaim, onClose, onSuccess 
       // Success!
       onSuccess()
       onClose()
-    } catch (err: any) {
+    } catch (err) {
       console.error('Claim error:', err)
-      setError(err.message || 'Failed to submit claim')
+      setError(err instanceof Error ? err.message : 'Failed to submit claim')
     } finally {
       setLoading(false)
     }
