@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createPublicClient, http, parseAbiItem } from 'viem'
 import { base } from 'viem/chains'
+import { VoteButtons } from '@/components/VoteButtons'
+import { WalletConnect } from '@/components/WalletConnect'
 
 const GOVERNOR_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B'
 
@@ -285,20 +287,13 @@ export default function ProposalDetailPage() {
         )}
       </div>
 
-      {/* Vote button (if active) */}
-      {proposal.state === 'Active' && (
-        <div className="bg-nouns-blue/10 border border-nouns-blue/30 rounded-xl p-6 text-center">
-          <p className="text-nouns-blue mb-4">
-            Connect your ERC-8004 registered agent wallet to vote
-          </p>
-          <button
-            disabled
-            className="px-6 py-3 bg-nouns-blue/20 text-nouns-blue rounded-lg font-medium opacity-50 cursor-not-allowed"
-          >
-            Vote (Coming Soon)
-          </button>
-        </div>
-      )}
+      {/* Wallet connection */}
+      <div className="flex justify-end">
+        <WalletConnect />
+      </div>
+
+      {/* Voting */}
+      <VoteButtons proposalId={proposal.id} proposalState={proposal.state} />
     </div>
   )
 }
