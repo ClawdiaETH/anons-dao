@@ -73,19 +73,19 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-center py-16 lg:py-24"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end py-8 lg:py-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-end max-w-7xl mx-auto">
           {/* Left: Anon Character */}
-          <div className="flex justify-center lg:justify-end items-end">
+          <div className="flex justify-center lg:justify-end">
             <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="flex items-center">
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm w-full">
+          <div className="flex items-end pb-8">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-md w-full">
             {/* Header */}
             <div className="mb-3">
               <p className="text-gray-500 text-xs mb-1">
@@ -174,13 +174,13 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-center py-16 lg:py-24"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end py-8 lg:py-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-end max-w-7xl mx-auto">
           {/* Left: Clawdia's Anon #0 */}
-          <div className="flex justify-center lg:justify-end items-end">
+          <div className="flex justify-center lg:justify-end">
             <div className="w-full max-w-md">
               <Image
                 src="/anon-0-preview.png"
@@ -194,8 +194,8 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="flex items-center">
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm w-full">
+          <div className="flex items-end pb-8">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-md w-full">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
