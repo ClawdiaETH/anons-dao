@@ -57,83 +57,25 @@ export default function HoldersPage() {
 
   const fetchData = async () => {
     try {
-      // Create clients
+      // Fetch from cached API endpoint
+      const response = await fetch('/api/holders')
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch holders')
+      }
+
+      // Fetch token images for display (only for first 3 tokens per holder)
       const baseClient = createPublicClient({
         chain: base,
         transport: http(process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'),
       })
 
-      const mainnetClient = createPublicClient({
-        chain: mainnet,
-        transport: http('https://cloudflare-eth.com'),
-      })
-
-      // Fetch claims from API
-      const claimsResponse = await fetch('/api/holders/claims')
-      const claimsData = await claimsResponse.json()
-      const claimsMap = new Map<string, ClaimData>()
-      
-      if (claimsData.success && claimsData.claims) {
-        claimsData.claims.forEach((claim: ClaimData) => {
-          claimsMap.set(claim.address.toLowerCase(), claim)
-        })
-      }
-
-      // Get total supply
-      const totalSupply = await baseClient.readContract({
-        address: ANON_TOKEN_ADDRESS,
-        abi: ERC721_ABI,
-        functionName: 'totalSupply',
-      })
-
-      console.log(`Total Anon supply: ${totalSupply}`)
-
-      // Build holders map by querying each token
-      const holdersMap = new Map<string, { tokens: string[], address: string }>()
-
-      // Fetch owners for all tokens (batched for efficiency)
-      const batchSize = 50
-      for (let i = 0; i < Number(totalSupply); i += batchSize) {
-        const batch = []
-        const end = Math.min(i + batchSize, Number(totalSupply))
-        
-        for (let tokenId = i; tokenId < end; tokenId++) {
-          batch.push(
-            baseClient.readContract({
-              address: ANON_TOKEN_ADDRESS,
-              abi: ERC721_ABI,
-              functionName: 'ownerOf',
-              args: [BigInt(tokenId)],
-            }).catch(() => null) // Handle burned tokens
-          )
-        }
-
-        const owners = await Promise.all(batch)
-        
-        owners.forEach((owner, idx) => {
-          if (owner) {
-            const tokenId = (i + idx).toString()
-            const ownerLower = owner.toLowerCase()
-            
-            if (!holdersMap.has(ownerLower)) {
-              holdersMap.set(ownerLower, { tokens: [], address: owner })
-            }
-            holdersMap.get(ownerLower)!.tokens.push(tokenId)
-          }
-        })
-      }
-
-      console.log(`Found ${holdersMap.size} unique holders`)
-
-      // Enrich holder data
-      const holdersData = await Promise.all(
-        Array.from(holdersMap.entries()).map(async ([, holderInfo]) => {
-          const address = holderInfo.address
-          const tokens = holderInfo.tokens
-
-          // Fetch token images (limit to first 3 for performance)
+      const enrichedHolders = await Promise.all(
+        data.holders.map(async (holder: any) => {
+          // Fetch images for first 3 tokens
           const tokenImages = await Promise.all(
-            tokens.slice(0, 3).map(async (tokenId) => {
+            (holder.tokenIds || []).slice(0, 3).map(async (tokenId: string) => {
               try {
                 const tokenURI = await baseClient.readContract({
                   address: ANON_TOKEN_ADDRESS,
@@ -142,15 +84,11 @@ export default function HoldersPage() {
                   args: [BigInt(tokenId)],
                 })
 
-                // Parse data URI
                 if (tokenURI.startsWith('data:application/json;base64,')) {
                   const json = JSON.parse(
                     Buffer.from(tokenURI.slice(29), 'base64').toString()
                   )
-                  return {
-                    tokenId,
-                    imageData: json.image || '',
-                  }
+                  return { tokenId, imageData: json.image || '' }
                 }
                 return { tokenId, imageData: '' }
               } catch {
@@ -159,74 +97,19 @@ export default function HoldersPage() {
             })
           )
 
-          // Check ERC-8004 registration (it's an ERC-721)
-          let agentId: string | null = null
-          try {
-            const balance = await mainnetClient.readContract({
-              address: ERC8004_REGISTRY,
-              abi: ERC8004_ABI,
-              functionName: 'balanceOf',
-              args: [address as `0x${string}`],
-            })
-            
-            if (balance > 0n) {
-              // Get the agent token ID
-              const tokenId = await mainnetClient.readContract({
-                address: ERC8004_REGISTRY,
-                abi: ERC8004_ABI,
-                functionName: 'tokenOfOwnerByIndex',
-                args: [address as `0x${string}`, 0n],
-              })
-              agentId = tokenId.toString()
-            }
-          } catch {
-            // Not registered or error
-          }
-
-          // Fetch ENS name and Twitter
-          let ensName: string | null = null
-          let twitter: string | null = null
-          const claim = claimsMap.get(address.toLowerCase())
-          
-          try {
-            ensName = await mainnetClient.getEnsName({
-              address: address as `0x${string}`,
-            })
-
-            // Fetch Twitter from ENS text record if no claim
-            if (ensName && !claim?.twitter_handle) {
-              try {
-                const textRecord = await mainnetClient.getEnsText({
-                  name: normalize(ensName),
-                  key: 'com.twitter',
-                })
-                if (textRecord) {
-                  twitter = textRecord
-                }
-              } catch {
-                // No Twitter text record
-              }
-            }
-          } catch {
-            // No ENS name
-          }
-
           return {
-            address,
-            ensName,
-            tokenCount: tokens.length,
+            address: holder.address,
+            ensName: holder.ensName,
+            tokenCount: holder.tokenCount,
             tokens: tokenImages,
-            agentId,
-            twitter,
-            claim,
+            agentId: holder.agentId,
+            twitter: holder.twitter,
+            claim: holder.claim,
           }
         })
       )
 
-      // Sort by token count descending
-      holdersData.sort((a, b) => b.tokenCount - a.tokenCount)
-      
-      setHolders(holdersData)
+      setHolders(enrichedHolders)
     } catch (err) {
       console.error('Error fetching holders:', err)
       setError(err instanceof Error ? err.message : 'Failed to load holders')
