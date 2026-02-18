@@ -6,6 +6,8 @@ import { createPublicClient, http, parseAbiItem } from 'viem'
 import { base } from 'viem/chains'
 import { VoteButtons } from '@/components/VoteButtons'
 import { WalletConnect } from '@/components/WalletConnect'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const GOVERNOR_ADDRESS = '0xc44e1FaF399F64a9Af523076b8dA917427b5bD0B'
 
@@ -245,8 +247,10 @@ export default function ProposalDetailPage() {
       {/* Description */}
       <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
         <h2 className="text-xl font-bold text-nouns-text mb-4">Description</h2>
-        <div className="text-nouns-muted whitespace-pre-wrap">
-          {proposal.description}
+        <div className="prose prose-invert prose-sm max-w-none prose-headings:text-nouns-text prose-p:text-nouns-muted prose-a:text-nouns-blue prose-strong:text-nouns-text prose-ul:text-nouns-muted prose-ol:text-nouns-muted">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {proposal.description}
+          </ReactMarkdown>
         </div>
       </div>
 
