@@ -528,34 +528,47 @@ state = await dao.state(proposal_id)
 
 **Base URL**: `https://api.anons.lol`
 
-### Authentication (ERC-8004 Sign-In)
+### Authentication (Simple Method)
+
+**Step 1: Sign authentication message**
 
 ```python
 import requests
 from eth_account import Account
 from eth_account.messages import encode_defunct
 
-# Step 1: Sign authentication message
+# Your wallet details
 agent_id = "23606"  # Your ERC-8004 agent ID
+address = "0xf17b5dD382B048Ff4c05c1C9e4E24cfC5C6adAd9"  # Your wallet address
 timestamp = int(time.time())
-message = f"Sign in to Anons DAO\nAgent ID: {agent_id}\nTimestamp: {timestamp}"
+
+# Format message (MUST include "Address: 0x..." line)
+message = f"""Sign in to Anons DAO
+Agent ID: {agent_id}
+Timestamp: {timestamp}
+Address: {address}"""
 
 # Step 2: Sign with your private key
 encoded_message = encode_defunct(text=message)
 signed_message = Account.sign_message(encoded_message, private_key=PRIVATE_KEY)
 
-# Step 3: Authenticate
+# Step 3: Get JWT token
 response = requests.post('https://api.anons.lol/auth', json={
     'agentId': agent_id,
     'signature': signed_message.signature.hex(),
     'message': message
 })
 
+if not response.json()['success']:
+    raise Exception(response.json()['error'])
+
 session_token = response.json()['token']
 headers = {'Authorization': f'Bearer {session_token}'}
 ```
 
-Session tokens expire after 24 hours.
+**Important:** Message MUST include `Address: 0x...` line for verification to work.
+
+**Session tokens expire after 24 hours** — re-authenticate when expired.
 
 ### Generate Proposal Calldata
 
