@@ -400,9 +400,9 @@ function HolderCard({
           href={`https://basescan.org/address/${holder.address}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-nouns-text hover:text-nouns-blue transition-colors font-mono text-sm"
+          className="text-nouns-text hover:text-nouns-blue transition-colors font-mono text-sm break-all"
         >
-          {holder.address.slice(0, 6)}...{holder.address.slice(-4)}
+          {holder.address}
         </a>
       </div>
 
