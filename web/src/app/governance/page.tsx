@@ -34,33 +34,60 @@ export default function GovernancePage() {
   useEffect(() => {
     async function fetchProposals() {
       try {
-        const client = createPublicClient({
-          chain: base,
-          transport: http(process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://mainnet.base.org'),
-        })
+        // Try multiple RPC endpoints with fallback
+        const rpcUrls = [
+          process.env.NEXT_PUBLIC_BASE_RPC_URL,
+          'https://mainnet.base.org',
+          'https://base-rpc.publicnode.com',
+        ].filter(Boolean)
 
-        // Fetch ProposalCreated events (from Governor deployment block)
-        // Governor was deployed around block 42000000 on Base
-        const logs = await client.getLogs({
-          address: GOVERNOR_ADDRESS,
-          event: GOVERNOR_ABI[0],
-          fromBlock: BigInt(42000000),
-          toBlock: 'latest',
-        })
+        let logs: any[] = []
+        let client: any = null
+        let lastError: Error | null = null
+
+        for (const rpcUrl of rpcUrls) {
+          try {
+            client = createPublicClient({
+              chain: base,
+              transport: http(rpcUrl),
+            })
+
+            // Fetch ProposalCreated events (from first proposal block)
+            // First proposal submitted at block 42291206
+            logs = await client.getLogs({
+              address: GOVERNOR_ADDRESS,
+              event: GOVERNOR_ABI[0],
+              fromBlock: BigInt(42290000),
+              toBlock: 'latest',
+            })
+
+            console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
+            break // Success, exit loop
+          } catch (error: any) {
+            console.warn(`RPC ${rpcUrl} failed:`, error.message)
+            lastError = error
+            client = null
+            continue // Try next RPC
+          }
+        }
+
+        if (!client || (logs.length === 0 && lastError)) {
+          throw lastError || new Error('All RPC endpoints failed')
+        }
 
         // Fetch state and votes for each proposal
         const proposalsData = await Promise.all(
           logs.map(async (log) => {
             const { proposalId, proposer, description, voteStart, voteEnd } = log.args
 
-            const state = await client.readContract({
+            const state = await client!.readContract({
               address: GOVERNOR_ADDRESS,
               abi: GOVERNOR_ABI,
               functionName: 'state',
               args: [proposalId!],
             })
 
-            const votes = await client.readContract({
+            const votes = await client!.readContract({
               address: GOVERNOR_ADDRESS,
               abi: GOVERNOR_ABI,
               functionName: 'proposalVotes',
