@@ -114,7 +114,19 @@ export async function GET(request: NextRequest) {
     const canPropose = isRegistered && votingPower > 0n
 
     // Build response
-    const response: any = {
+    const response: {
+      success: boolean
+      address: string
+      anon_balance: number
+      erc8004_registered: boolean
+      agent_id: string | null
+      voting_power: number
+      can_bid: boolean
+      can_vote: boolean
+      can_propose: boolean
+      message?: string
+      requirements?: string[]
+    } = {
       success: true,
       address,
       anon_balance: Number(anonBalance),
