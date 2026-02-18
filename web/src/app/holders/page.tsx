@@ -18,7 +18,8 @@ const ERC721_ABI = [
 ] as const
 
 const ERC8004_ABI = [
-  parseAbiItem('function agentIdOf(address wallet) view returns (uint256)'),
+  parseAbiItem('function balanceOf(address owner) view returns (uint256)'),
+  parseAbiItem('function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)'),
 ] as const
 
 interface TokenData {
@@ -133,18 +134,25 @@ export default function HoldersPage() {
               })
             )
 
-            // Check ERC-8004 registration
+            // Check ERC-8004 registration (it's an ERC-721)
             let agentId: string | null = null
             try {
-              const agentIdResult = await mainnetClient.readContract({
+              const balance = await mainnetClient.readContract({
                 address: ERC8004_REGISTRY,
                 abi: ERC8004_ABI,
-                functionName: 'agentIdOf',
+                functionName: 'balanceOf',
                 args: [address as `0x${string}`],
               })
               
-              if (agentIdResult && agentIdResult > 0n) {
-                agentId = agentIdResult.toString()
+              if (balance > 0n) {
+                // Get the agent token ID
+                const tokenId = await mainnetClient.readContract({
+                  address: ERC8004_REGISTRY,
+                  abi: ERC8004_ABI,
+                  functionName: 'tokenOfOwnerByIndex',
+                  args: [address as `0x${string}`, 0n],
+                })
+                agentId = tokenId.toString()
               }
             } catch {
               // Not registered or error
