@@ -84,23 +84,23 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 max-w-md">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm">
             {/* Header */}
-            <div className="mb-4">
-              <p className="text-gray-500 text-sm mb-2">
+            <div className="mb-3">
+              <p className="text-gray-500 text-xs mb-1">
                 {new Date().toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric'
                 })}
               </p>
-              <h1 className="font-display text-5xl text-gray-900 mb-0">
+              <h1 className="font-display text-4xl text-gray-900 mb-0 leading-tight">
                 Anon #{auction.anonId.toString()}
               </h1>
             </div>
 
             {/* Current Bid & Timer */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
                 <p className="text-gray-500 text-xs mb-1">Current bid</p>
                 <p className="text-2xl font-bold text-gray-900">
@@ -122,7 +122,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
             />
 
             {/* Bid History (compact) */}
-            <div className="mt-4">
+            <div className="mt-3">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-gray-900 text-sm">Recent bids</h3>
               </div>
@@ -192,7 +192,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-200 max-w-md">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-sm">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -208,7 +208,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
                     year: 'numeric'
                   })}
                 </p>
-                <h1 className="font-display text-5xl text-gray-900 mb-4">
+                <h1 className="font-display text-4xl text-gray-900 mb-4 leading-tight">
                   Anon #0
                 </h1>
                 <div className="space-y-3 text-gray-600">
