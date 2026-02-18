@@ -61,7 +61,15 @@ export default function HoldersPage() {
       })
 
       const enrichedHolders = await Promise.all(
-        data.holders.map(async (holder) => {
+        data.holders.map(async (holder: {
+          address: string
+          ensName: string | null
+          tokenCount: number
+          tokenIds: string[]
+          agentId: string | null
+          twitter: string | null
+          claim?: ClaimData
+        }) => {
           // Fetch images for first 3 tokens
           const tokenImages = await Promise.all(
             (holder.tokenIds || []).slice(0, 3).map(async (tokenId: string) => {
