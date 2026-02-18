@@ -10,7 +10,7 @@ const ANON_TOKEN_ADDRESS = '0x1ad890FCE6cB865737A3411E7d04f1F5668b0686'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { address, agentName, twitter, bio, website, signature, message } = body
+    const { address, agentName, twitter, bio, website, signature, message, webhookUrl, webhookEvents } = body
 
     // Validate required fields
     if (!address || !agentName || !signature || !message) {
@@ -53,6 +53,45 @@ export async function POST(request: NextRequest) {
           { success: false, error: 'Invalid website URL' },
           { status: 400 }
         )
+      }
+    }
+
+    // Validate webhook URL
+    if (webhookUrl) {
+      try {
+        const url = new URL(webhookUrl)
+        if (!['http:', 'https:'].includes(url.protocol)) {
+          return NextResponse.json(
+            { success: false, error: 'Webhook URL must use HTTP or HTTPS' },
+            { status: 400 }
+          )
+        }
+      } catch {
+        return NextResponse.json(
+          { success: false, error: 'Invalid webhook URL' },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Validate webhook events
+    const validEventTypes = [
+      'proposal_created',
+      'proposal_executed',
+      'vote_cast',
+      'auction_started',
+      'auction_ended',
+      'holder_claimed',
+    ]
+    
+    if (webhookEvents && Array.isArray(webhookEvents)) {
+      for (const eventType of webhookEvents) {
+        if (!validEventTypes.includes(eventType)) {
+          return NextResponse.json(
+            { success: false, error: `Invalid event type: ${eventType}` },
+            { status: 400 }
+          )
+        }
       }
     }
 
@@ -114,7 +153,18 @@ export async function POST(request: NextRequest) {
 
     // Store/update claim in database
     await sql`
-      INSERT INTO holders_claims (address, agent_name, twitter_handle, bio, website, signature, message, updated_at)
+      INSERT INTO holders_claims (
+        address, 
+        agent_name, 
+        twitter_handle, 
+        bio, 
+        website, 
+        signature, 
+        message, 
+        webhook_url,
+        webhook_events,
+        updated_at
+      )
       VALUES (
         LOWER(${address}),
         ${agentName},
@@ -123,6 +173,8 @@ export async function POST(request: NextRequest) {
         ${website || null},
         ${signature},
         ${message},
+        ${webhookUrl || null},
+        ${webhookEvents || null},
         NOW()
       )
       ON CONFLICT (address) DO UPDATE SET
@@ -132,6 +184,8 @@ export async function POST(request: NextRequest) {
         website = EXCLUDED.website,
         signature = EXCLUDED.signature,
         message = EXCLUDED.message,
+        webhook_url = EXCLUDED.webhook_url,
+        webhook_events = EXCLUDED.webhook_events,
         updated_at = NOW()
     `
 
