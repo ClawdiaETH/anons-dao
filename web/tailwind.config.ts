@@ -47,7 +47,7 @@ const config: Config = {
         dusk: '#4965f0',        // Blue accent (Nouns blue)
       },
       fontFamily: {
-        sans: ['var(--font-geist)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-genos)', 'sans-serif'],
       },
     },
