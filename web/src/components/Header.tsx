@@ -10,7 +10,7 @@ export function Header() {
     <header className="border-b border-nouns-border bg-nouns-surface">
       <div className="max-w-6xl mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-nouns-text hover:text-nouns-red transition-colors">
+          <Link href="/" className="text-3xl font-display font-semibold text-nouns-text hover:text-nouns-red transition-colors tracking-wide">
             Anons DAO ◖▬◗
           </Link>
           
