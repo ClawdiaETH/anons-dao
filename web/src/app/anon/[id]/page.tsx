@@ -65,7 +65,7 @@ export default function AnonPage() {
 
         {/* Name & Cycle */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-nouns-text mb-2">{metadata.name}</h1>
+          <h1 className="font-display text-nouns-text mb-2">{metadata.name}</h1>
           <span className={`px-3 py-1 rounded-full text-sm font-medium ${badgeBg}`}>
             {isDusk ? 'Dusk Cycle' : 'Dawn Cycle'}
           </span>
@@ -76,7 +76,7 @@ export default function AnonPage() {
 
         {/* Traits */}
         <div>
-          <h2 className="text-lg font-bold text-nouns-text mb-4">Traits</h2>
+          <h2 className="font-bold text-nouns-text mb-4">Traits</h2>
           <div className="grid grid-cols-2 gap-3">
             {metadata.attributes.map((attr) => (
               <div key={attr.trait_type} className="bg-warm-bg rounded-lg p-3 border border-nouns-border">

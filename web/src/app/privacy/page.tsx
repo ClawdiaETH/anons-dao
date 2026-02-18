@@ -15,13 +15,13 @@ export default function PrivacyPage() {
         ← Back to Anons DAO
       </Link>
 
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
+      <h1 className="font-display text-gray-900 mb-8">Privacy Policy</h1>
       
       <div className="prose prose-gray max-w-none space-y-6 text-gray-700">
         <p className="text-sm text-gray-500">Last Updated: February 16, 2026</p>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Overview</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Overview</h2>
           <p>
             Anons DAO (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) is a decentralized autonomous organization operating on the Base blockchain. 
             This Privacy Policy explains how we handle information when you interact with our platform at anons.lol.
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Information We Collect</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Information We Collect</h2>
           <p>
             Anons DAO is built on public blockchain technology. When you connect your wallet and interact with our smart contracts:
           </p>
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">What We DON&apos;T Collect</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">What We DON&apos;T Collect</h2>
           <ul className="list-disc pl-6 space-y-2">
             <li><strong>Seed Phrases:</strong> We never ask for or store your wallet seed phrase or private keys</li>
             <li><strong>Personal Information:</strong> No email addresses, names, or contact information required</li>
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">How We Use Information</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">How We Use Information</h2>
           <p>
             All information we interact with is publicly available on the Base blockchain. We use this information to:
           </p>
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Security</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Security</h2>
           <p>
             All interactions with Anons DAO are conducted through your own wallet (MetaMask, WalletConnect, etc.). 
             You maintain full control of your private keys at all times. We cannot access your funds without your explicit approval of each transaction.
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Third-Party Services</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Third-Party Services</h2>
           <p>
             Our website may use the following third-party services:
           </p>
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Your Rights</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Your Rights</h2>
           <p>
             Because Anons DAO operates on public blockchain infrastructure, all data is permanent and publicly viewable. 
             You have the right to:
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Contact</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Contact</h2>
           <p>
             For questions about this Privacy Policy, please contact us at:{' '}
             <a href="mailto:starl3xx.mail@gmail.com" className="text-red-500 hover:underline">
@@ -106,7 +106,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Operated By</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Operated By</h2>
           <p>
             Anons DAO is operated by Starl3xx Labs LLC.
           </p>

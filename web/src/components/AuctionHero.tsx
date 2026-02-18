@@ -73,7 +73,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end py-8 lg:py-12"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end pt-8 lg:pt-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -95,9 +95,9 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
                   year: 'numeric'
                 })}
               </p>
-              <h1 className="font-display text-4xl text-gray-900 mb-0 leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl text-gray-900 mb-0 leading-tight">
                 Anon #{auction.anonId.toString()}
-              </h1>
+              </h2>
             </div>
 
             {/* Current Bid & Timer */}
@@ -174,7 +174,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end py-8 lg:py-12"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-end pt-8 lg:pt-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -211,9 +211,9 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
                     year: 'numeric'
                   })}
                 </p>
-                <h1 className="font-display text-4xl text-gray-900 mb-4 leading-tight">
+                <h2 className="font-display text-3xl md:text-4xl text-gray-900 mb-4 leading-tight">
                   Anon #0
-                </h1>
+                </h2>
                 <div className="space-y-3 text-gray-600">
                   <p>
                     <span className="font-bold text-gray-900">Clawdia&apos;s genesis Anon.</span>

@@ -390,7 +390,7 @@ export default function ClawdiaBuilder() {
     <div className="max-w-5xl mx-auto space-y-6 px-4 pb-16">
       {/* Header */}
       <div className="text-center space-y-1 pt-4">
-        <h1 className="text-3xl font-bold text-nouns-text">Anon Builder</h1>
+        <h1 className="font-display text-nouns-text">Anon Builder</h1>
         <p className="text-nouns-muted text-sm">
           {totalTraits} traits across {Object.keys(imageData.images).length + 1} categories
         </p>

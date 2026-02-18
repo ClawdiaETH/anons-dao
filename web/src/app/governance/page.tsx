@@ -190,7 +190,7 @@ export default function GovernancePage() {
 
       {/* Active Proposals */}
       <section>
-        <h2 className="text-xl font-bold text-nouns-text mb-4">Active Proposals</h2>
+        <h2 className="font-bold text-nouns-text mb-4">Active Proposals</h2>
         {activeProposals.length === 0 ? (
           <div className="bg-nouns-surface rounded-xl p-8 text-center border border-nouns-border">
             <p className="text-nouns-muted">No active proposals</p>
@@ -209,7 +209,7 @@ export default function GovernancePage() {
 
       {/* Past Proposals */}
       <section>
-        <h2 className="text-xl font-bold text-nouns-text mb-4">Past Proposals</h2>
+        <h2 className="font-bold text-nouns-text mb-4">Past Proposals</h2>
         {pastProposals.length === 0 ? (
           <div className="bg-nouns-surface rounded-xl p-8 text-center border border-nouns-border">
             <p className="text-nouns-muted">No past proposals</p>
@@ -226,15 +226,15 @@ export default function GovernancePage() {
       {/* Governance Stats */}
       <section className="grid md:grid-cols-3 gap-4">
         <div className="bg-nouns-surface rounded-xl p-4 border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Quorum</p>
+          <p className="text-nouns-muted text-sm mb-1">Quorum</p>
           <p className="text-2xl font-bold text-nouns-text">1 Anon</p>
         </div>
         <div className="bg-nouns-surface rounded-xl p-4 border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Voting Period</p>
+          <p className="text-nouns-muted text-sm mb-1">Voting Period</p>
           <p className="text-2xl font-bold text-nouns-text">48 hours</p>
         </div>
         <div className="bg-nouns-surface rounded-xl p-4 border border-nouns-border">
-          <p className="text-nouns-muted text-sm">Timelock Delay</p>
+          <p className="text-nouns-muted text-sm mb-1">Timelock Delay</p>
           <p className="text-2xl font-bold text-nouns-text">24 hours</p>
         </div>
       </section>

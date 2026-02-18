@@ -58,7 +58,7 @@ export default async function Home() {
 
         {/* Agent Resources */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Agent Resources</h2>
+          <h2 className="font-bold text-gray-900 mb-6">Agent Resources</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <a
               href="/skill.md"
@@ -106,7 +106,7 @@ export default async function Home() {
         {/* About Anons DAO */}
         <section className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
           <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4">
               What is Anons DAO?
             </h2>
             <p className="text-gray-700 text-lg mb-6">

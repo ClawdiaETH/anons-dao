@@ -15,13 +15,13 @@ export default function TermsPage() {
         ← Back to Anons DAO
       </Link>
 
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">Terms of Service</h1>
+      <h1 className="font-display text-gray-900 mb-8">Terms of Service</h1>
       
       <div className="prose prose-gray max-w-none space-y-6 text-gray-700">
         <p className="text-sm text-gray-500">Last Updated: February 16, 2026</p>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Acceptance of Terms</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Acceptance of Terms</h2>
           <p>
             By accessing or using Anons DAO (anons.lol), you agree to be bound by these Terms of Service. 
             If you do not agree to these terms, do not use this platform.
@@ -29,7 +29,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Description of Service</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Description of Service</h2>
           <p>
             Anons DAO is a decentralized autonomous organization on the Base blockchain that conducts daily auctions 
             of generative NFTs (&ldquo;Anons&rdquo;). Each Anon represents governance rights within the DAO.
@@ -46,7 +46,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Eligibility</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Eligibility</h2>
           <p>
             To participate in Anons DAO auctions, you must:
           </p>
@@ -58,7 +58,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Auction Rules</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Auction Rules</h2>
           <p>
             All auctions are conducted via immutable smart contracts on the Base blockchain:
           </p>
@@ -72,7 +72,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Wallet Connection & Security</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Wallet Connection & Security</h2>
           <p>
             <strong>Important Security Information:</strong>
           </p>
@@ -86,7 +86,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Smart Contract Risks</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Smart Contract Risks</h2>
           <p>
             <strong>USE AT YOUR OWN RISK.</strong> By using Anons DAO, you acknowledge and accept the following risks:
           </p>
@@ -100,7 +100,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Intellectual Property</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Intellectual Property</h2>
           <p>
             All Anon artwork and traits are generated algorithmically and stored onchain. 
             When you win an auction and receive an Anon NFT:
@@ -113,7 +113,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Governance</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Governance</h2>
           <p>
             Anon NFT holders may participate in DAO governance by voting on proposals. 
             Each Anon represents one vote. Governance decisions are executed onchain via the Governor contract.
@@ -121,7 +121,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Prohibited Conduct</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Prohibited Conduct</h2>
           <p>
             You agree not to:
           </p>
@@ -134,7 +134,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Disclaimers</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Disclaimers</h2>
           <p className="font-bold">
             ANONS DAO IS PROVIDED &ldquo;AS IS&rdquo; WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.
           </p>
@@ -150,7 +150,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Limitation of Liability</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Limitation of Liability</h2>
           <p>
             To the maximum extent permitted by law, Starl3xx Labs LLC and the Anons DAO contributors shall not be liable 
             for any damages arising from your use of the platform, including but not limited to:
@@ -164,7 +164,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Changes to Terms</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Changes to Terms</h2>
           <p>
             We reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting. 
             Your continued use of the platform constitutes acceptance of the updated terms.
@@ -172,14 +172,14 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Governing Law</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Governing Law</h2>
           <p>
             These Terms are governed by the laws of the State of Iowa, United States, without regard to conflict of law principles.
           </p>
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Contact</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Contact</h2>
           <p>
             For questions about these Terms of Service, please contact us at:{' '}
             <a href="mailto:starl3xx.mail@gmail.com" className="text-red-500 hover:underline">
@@ -189,7 +189,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Operated By</h2>
+          <h2 className="font-bold text-gray-900 mt-8 mb-4">Operated By</h2>
           <p>
             Anons DAO is operated by Starl3xx Labs LLC.
           </p>

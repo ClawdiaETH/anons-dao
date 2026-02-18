@@ -227,7 +227,7 @@ export default function ProposalDetailPage() {
           <span className="text-nouns-muted">Proposal #{proposal.id}</span>
         </div>
 
-        <h1 className="text-3xl font-bold text-nouns-text">
+        <h1 className="font-display text-nouns-text">
           {proposal.description.split('\n')[0] || 'Untitled Proposal'}
         </h1>
 
@@ -246,7 +246,7 @@ export default function ProposalDetailPage() {
 
       {/* Description */}
       <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
-        <h2 className="text-xl font-bold text-nouns-text mb-4">Description</h2>
+        <h2 className="font-bold text-nouns-text mb-4">Description</h2>
         <div className="prose prose-invert prose-sm max-w-none prose-headings:text-nouns-text prose-p:text-nouns-muted prose-a:text-nouns-blue prose-strong:text-nouns-text prose-ul:text-nouns-muted prose-ol:text-nouns-muted">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {proposal.description}
@@ -256,7 +256,7 @@ export default function ProposalDetailPage() {
 
       {/* Actions */}
       <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
-        <h2 className="text-xl font-bold text-nouns-text mb-4">Actions</h2>
+        <h2 className="font-bold text-nouns-text mb-4">Actions</h2>
         <div className="space-y-4">
           {proposal.targets.map((target, idx) => (
             <div key={idx} className="bg-nouns-bg rounded-lg p-4 border border-nouns-border">
@@ -290,7 +290,7 @@ export default function ProposalDetailPage() {
 
       {/* Voting Results */}
       <div className="bg-nouns-surface rounded-xl p-6 border border-nouns-border">
-        <h2 className="text-xl font-bold text-nouns-text mb-4">Votes</h2>
+        <h2 className="font-bold text-nouns-text mb-4">Votes</h2>
         
         {totalVotes === 0n ? (
           <p className="text-nouns-muted text-center py-4">No votes cast yet</p>

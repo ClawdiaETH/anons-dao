@@ -136,7 +136,7 @@ export default function HoldersPage() {
   if (loading) {
     return (
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold text-nouns-text">Anon Holders</h1>
+        <h1 className="font-display text-nouns-text">Anon Holders</h1>
         <div className="bg-nouns-surface rounded-xl p-8 text-center border border-nouns-border">
           <p className="text-nouns-muted">Loading holders...</p>
           <p className="text-nouns-muted/60 text-sm mt-2">
@@ -150,7 +150,7 @@ export default function HoldersPage() {
   if (error) {
     return (
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold text-nouns-text">Anon Holders</h1>
+        <h1 className="font-display text-nouns-text">Anon Holders</h1>
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-8 text-center">
           <p className="text-red-500 font-medium">Error loading holders</p>
           <p className="text-red-500/80 text-sm mt-2">{error}</p>
@@ -164,7 +164,7 @@ export default function HoldersPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-nouns-text">Anon Holders</h1>
+        <h1 className="font-display text-nouns-text">Anon Holders</h1>
         <div className="text-right">
           <p className="text-nouns-muted text-sm">Total Holders</p>
           <p className="text-2xl font-bold text-nouns-text">{holders.length}</p>
@@ -296,7 +296,7 @@ function HolderCard({
       {/* Name (if claimed) */}
       {displayName && (
         <div className="mb-3">
-          <h3 className="text-nouns-text font-bold text-xl">{displayName}</h3>
+          <h3 className="text-nouns-text font-bold">{displayName}</h3>
         </div>
       )}
 
