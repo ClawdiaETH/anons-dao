@@ -41,8 +41,9 @@ export default function GovernancePage() {
           'https://base-rpc.publicnode.com',
         ].filter(Boolean)
 
-        let logs: any[] = []
-        let client: any = null
+        type ProposalLog = Awaited<ReturnType<ReturnType<typeof createPublicClient>['getLogs']>>
+        let logs: ProposalLog = []
+        let client: ReturnType<typeof createPublicClient> | null = null
         let lastError: Error | null = null
 
         for (const rpcUrl of rpcUrls) {
@@ -63,9 +64,10 @@ export default function GovernancePage() {
 
             console.log(`Successfully fetched ${logs.length} proposals from ${rpcUrl}`)
             break // Success, exit loop
-          } catch (error: any) {
-            console.warn(`RPC ${rpcUrl} failed:`, error.message)
-            lastError = error
+          } catch (error) {
+            const err = error as Error
+            console.warn(`RPC ${rpcUrl} failed:`, err.message)
+            lastError = err
             client = null
             continue // Try next RPC
           }
