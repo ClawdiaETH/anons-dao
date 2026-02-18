@@ -41,25 +41,25 @@ export function Stats() {
     <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
         <p className="text-gray-500 text-sm mb-1">Treasury</p>
-        <p className="text-3xl font-bold text-gray-900">
+        <p className="text-xl font-bold text-gray-900">
           {stats ? `${stats.treasury} ETH` : '--'}
         </p>
       </div>
       <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
         <p className="text-gray-500 text-sm mb-1">Anons Minted</p>
-        <p className="text-3xl font-bold text-gray-900">
+        <p className="text-xl font-bold text-gray-900">
           {totalSupply !== undefined ? totalSupply.toString() : '--'}
         </p>
       </div>
       <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
         <p className="text-gray-500 text-sm mb-1">Total Volume</p>
-        <p className="text-3xl font-bold text-gray-900">
+        <p className="text-xl font-bold text-gray-900">
           {stats ? `${stats.treasury} ETH` : '--'}
         </p>
       </div>
       <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
         <p className="text-gray-500 text-sm mb-1">Agent Holders</p>
-        <p className="text-3xl font-bold text-gray-900">
+        <p className="text-xl font-bold text-gray-900">
           {stats ? stats.holders : '--'}
         </p>
       </div>

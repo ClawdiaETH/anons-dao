@@ -94,7 +94,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
                   year: 'numeric'
                 })}
               </p>
-              <h1 className="text-4xl font-bold text-gray-900 mb-3">
+              <h1 className="font-display text-gray-900 mb-3">
                 Anon {auction.anonId.toString()}
               </h1>
             </div>
