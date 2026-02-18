@@ -2,26 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { createPublicClient, http, parseAbiItem } from 'viem'
-import { base, mainnet } from 'viem/chains'
-import { normalize } from 'viem/ens'
+import { base } from 'viem/chains'
 import { useAccount } from 'wagmi'
 import ClaimModal from '@/components/ClaimModal'
 
 const ANON_TOKEN_ADDRESS = '0x1ad890FCE6cB865737A3411E7d04f1F5668b0686'
-const ERC8004_REGISTRY = '0x00256C0D814c455425A0699D5eEE2A7DB7A5519c'
 
 // ABIs
 const ERC721_ABI = [
-  parseAbiItem('function balanceOf(address owner) view returns (uint256)'),
-  parseAbiItem('function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)'),
   parseAbiItem('function tokenURI(uint256 tokenId) view returns (string)'),
-  parseAbiItem('function ownerOf(uint256 tokenId) view returns (address)'),
-  parseAbiItem('function totalSupply() view returns (uint256)'),
-] as const
-
-const ERC8004_ABI = [
-  parseAbiItem('function balanceOf(address owner) view returns (uint256)'),
-  parseAbiItem('function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)'),
 ] as const
 
 interface TokenData {
@@ -72,7 +61,7 @@ export default function HoldersPage() {
       })
 
       const enrichedHolders = await Promise.all(
-        data.holders.map(async (holder: any) => {
+        data.holders.map(async (holder) => {
           // Fetch images for first 3 tokens
           const tokenImages = await Promise.all(
             (holder.tokenIds || []).slice(0, 3).map(async (tokenId: string) => {

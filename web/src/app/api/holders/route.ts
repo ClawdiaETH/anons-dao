@@ -29,7 +29,7 @@ export async function GET() {
     `
 
     // Transform to expected format
-    const holdersData = holders.map((h: any) => ({
+    const holdersData = holders.map((h) => ({
       address: h.address,
       ensName: h.ens_name,
       tokenCount: h.token_count,
@@ -48,7 +48,7 @@ export async function GET() {
         : undefined,
     }))
 
-    const totalSupply = holdersData.reduce((sum: number, h: any) => sum + h.tokenCount, 0)
+    const totalSupply = holdersData.reduce((sum, h) => sum + h.tokenCount, 0)
 
     return NextResponse.json(
       {
