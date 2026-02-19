@@ -73,7 +73,7 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-start lg:items-end pt-4 lg:pt-12"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-start lg:items-end lg:pt-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -174,7 +174,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
 
   return (
     <div
-      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-start lg:items-end pt-4 lg:pt-12"
+      className="w-screen relative left-1/2 right-1/2 -mx-[50vw] flex items-start lg:items-end lg:pt-12"
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
