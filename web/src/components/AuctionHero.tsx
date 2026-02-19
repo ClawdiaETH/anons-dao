@@ -77,14 +77,14 @@ export function AuctionHero({ initialAuction, initialSeed }: AuctionHeroProps) {
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start lg:items-end max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-2 lg:gap-12 items-start lg:items-end max-w-7xl mx-auto">
           {/* Left: Anon Character */}
           <div className="flex justify-center lg:justify-end">
             <AnonImage tokenId={auction.anonId} size="xl" />
           </div>
 
           {/* Right: Bid Interface */}
-          <div className="flex items-start lg:items-end pb-4 lg:pb-8">
+          <div className="flex items-start lg:items-end pb-2 lg:pb-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-md w-full">
             {/* Header */}
             <div className="mb-3">
@@ -178,7 +178,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
       style={{ backgroundColor: bgColor }}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start lg:items-end max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-2 lg:gap-12 items-start lg:items-end max-w-7xl mx-auto">
           {/* Left: Clawdia's Anon #0 */}
           <div className="flex justify-center lg:justify-end">
             <div className="w-full max-w-md block">
@@ -194,7 +194,7 @@ function AuctionHeroPlaceholder({ isLoading, error }: { isLoading: boolean; erro
           </div>
 
           {/* Right: Placeholder Message */}
-          <div className="flex items-start lg:items-end pb-4 lg:pb-8">
+          <div className="flex items-start lg:items-end pb-2 lg:pb-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 max-w-md w-full">
             {isLoading ? (
               <div className="animate-pulse space-y-3">
