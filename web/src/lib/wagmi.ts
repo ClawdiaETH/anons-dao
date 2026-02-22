@@ -1,5 +1,9 @@
 import { createConfig, http, fallback } from 'wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
+import { Attribution } from 'ox/erc8021'
+
+// Base Builder Code attribution (ERC-8021) — bc_lul4sldw
+const DATA_SUFFIX = Attribution.toDataSuffix({ codes: ['bc_lul4sldw'] })
 
 /**
  * RPC Configuration
@@ -66,6 +70,7 @@ export const config = createConfig({
   },
   // Auto-detects injected wallet connectors (MetaMask, etc)
   ssr: true,
+  dataSuffix: DATA_SUFFIX,
 })
 
 // HARDCODED TO BASE MAINNET (8453) - all contracts deployed here
